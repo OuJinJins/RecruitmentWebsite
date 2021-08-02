@@ -3,16 +3,100 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
     <title>登录</title>
-    <link rel="stylesheet" href="/webjars/bootstrap/3.3.5/css/bootstrap.min.css" />
-    <script src="/webjars/jquery/3.1.1/jquery.min.js"></script>
-    <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-</head>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <body>
-<div class="container"><br/>
-    <div class="alert alert-success">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
-        <h3>index首页</h3>Hello, <strong>springboot and bootstrap！！！</strong>
+<div class="background" id="bg">
+    <div id="login-bg">
+        <div id="login-log">
+            <h2 id="login-text">招聘网</h2>
+        </div>
+        <div id="login-form">
+            <form id="loginForm" method="post" action="/login">
+                <input type="text" class="form-control login-input" id="username" placeholder="用户名 | 邮箱" >
+                <input type="password" class="form-control login-input" id="password" placeholder="密码" >
+                <input type="text" class="form-control login-input" id="checkCode" placeholder="验证码" >
+                <input type="submit" class="form-control login-input" id="submit" value="登录">
+            </form>
+            <hr id="login-hr">
+            <div id="login-other" class="login-input">
+                <a href="#" id="forgetPassword">忘记密码?</a>
+                <a href="#" id="register">注册</a>
+            </div>
+        </div>
+    </div>
+    <div id="div-toIndex">
+        <a href="/index" id="toIndex">返回首页</a>
     </div>
 </div>
 </body>
+<style type="text/css">
+
+    #div-toIndex{
+        width: 60px;
+        margin: 13px auto auto;
+    }
+
+    #toIndex{
+        margin: 13px auto auto;
+        font-size: 14px;
+        color: #8a8a8a;
+    }
+
+    #forgetPassword{
+        font-size: 13px;
+        color: #ffffff;
+        float: left;
+    }
+
+    #register{
+        font-size: 13px;
+        color: #ffffff;
+        float: right;
+    }
+
+    #login-log{
+        padding-top: 40px;
+        padding-bottom: 20px;
+    }
+
+    #login-text{
+        text-align: center;
+        color: #ffffff;
+    }
+
+    #login-hr{
+        width: 322px;
+        background-color: #ffffff;
+    }
+
+    #submit{
+        font-size: 16px;
+        background: #76BDFF;
+        color: #ffffff;
+    }
+
+    .login-input{
+        border: #333333;
+        margin: 13px auto auto;
+        width: 320px;
+        height: 45px;
+        border-radius: 3px;
+        font-size: 14px;
+    }
+
+    #login-form{
+        margin: 10px auto auto;
+        padding-bottom: 80px;
+    }
+
+    #login-bg{
+        border-radius: 5px;
+        margin: 50px auto auto;
+        background-color: #333333;
+        width: 450px;
+    }
+</style>
 </html>
