@@ -29,6 +29,11 @@ public class ResultInfo {
         this.message = message;
     }
 
+    public ResultInfo(Boolean success, Object data) {
+        this.success = success;
+        this.data = data;
+    }
+
 
     public ResultInfo(Boolean success, String message, Object data) {
         this.success = success;

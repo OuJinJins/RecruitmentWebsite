@@ -8,10 +8,19 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface UserDao {
+
     /**
      * 插入用户数据
      * @param user 用户数据
      * @return 操作行数
      */
     int insertUser(User user);
+
+    /**
+     * 查询用户数据
+     * @param user 用户数据
+     * @return 操作行数
+     */
+    User queryUserByUsernameAndPassword(User user);
+
 }

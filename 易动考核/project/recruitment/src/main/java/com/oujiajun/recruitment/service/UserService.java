@@ -8,4 +8,6 @@ import com.oujiajun.recruitment.entity.po.User;
  */
 public interface UserService {
     ResultInfo register(User user);
+
+    ResultInfo login(User user);
 }
