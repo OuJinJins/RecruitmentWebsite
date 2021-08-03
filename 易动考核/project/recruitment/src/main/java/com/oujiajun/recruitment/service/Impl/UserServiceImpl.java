@@ -20,7 +20,6 @@ public class UserServiceImpl implements UserService {
     public ResultInfo register(User user) {
         // MD5加密
         user.setPassword(DigestUtils.md5DigestAsHex(user.getPassword().getBytes()));
-        System.out.println(user);
         if(userDao.insertUser(user) == 0){
             return new ResultInfo(false);
         }
@@ -32,7 +31,6 @@ public class UserServiceImpl implements UserService {
         // MD5加密
         user.setPassword(DigestUtils.md5DigestAsHex(user.getPassword().getBytes()));
         // 查询
-        System.out.println(user);
         User loginUser = userDao.queryUserByUsernameAndPassword(user);
         if(loginUser == null){
             return new ResultInfo(false,"用户名或密码不正确");
