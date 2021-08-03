@@ -25,9 +25,9 @@ public class UserController {
         System.out.println(user);
         ResultInfo resultInfo = userService.register(user);
         if(resultInfo.getSuccess()){
-            return "redirect:/index.html";
+            return "/index.html";
         }else {
-            return "redirect:/login.html";
+            return "/register.html";
         }
     }
 
