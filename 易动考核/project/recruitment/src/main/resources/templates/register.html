@@ -2,33 +2,27 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="zh-CN">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
-    <title>登录</title>
+    <title>注册</title>
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <body>
 <div class="background" id="bg">
-    <div id="login-bg">
-        <div id="login-log">
-            <h2 id="login-text">登陆</h2>
+    <div id="register-bg">
+        <div id="register-log">
+            <h2 id="register-text">注册</h2>
         </div>
-        <div id="login-form">
-            <form id="loginForm" method="post" action="/recruitment/user/login">
-                <input type="text" class="form-control login-input" id="username" name="username" placeholder="用户名 | 邮箱" >
-                <input type="password" class="form-control login-input" id="password" name="password" placeholder="密码" >
-                <input type="text" class="form-control login-input" id="checkCode" name="checkCode" placeholder="验证码" >
-                <div class="checkbox" id="div-checkbox">
-                    <label>
-                        <input type="checkbox" id="checkbox">记住我
-                    </label>
-                </div>
-                <input type="submit" class="form-control login-input" id="submit" name="submit" value="登录">
+        <div id="register-form">
+            <form id="registerForm" type="post" action="/recruitment/user/register">
+                <input type="text" class="form-control register-input" id="username" name="username" placeholder="用户名 | 邮箱" >
+                <input type="password" class="form-control register-input" id="password" name="password" placeholder="密码" >
+                <input type="text" class="form-control register-input" id="checkCode" name="checkCode" placeholder="验证码" >
+                <input type="submit" class="form-control register-input" id="submit" name="submit" value="注册">
             </form>
-            <hr id="login-hr">
-            <div id="login-other" class="login-input">
-                <a href="#" id="forgetPassword">忘记密码?</a>
-                <a href="/recruitment/register.html" id="register">注册</a>
+            <hr id="register-hr">
+            <div id="register-other" class="register-input">
+                <a href="/recruitment/login.html" id="login">登录</a>
             </div>
         </div>
     </div>
@@ -40,11 +34,6 @@
 <script>
 </script>
 <style type="text/css">
-
-    #div-checkbox{
-        font-size: 14px;
-        color: #ffffff;
-    }
 
     #checkbox{
 
@@ -73,23 +62,23 @@
         float: left;
     }
 
-    #register{
+    #login{
         font-size: 13px;
         color: #ffffff;
         float: right;
     }
 
-    #login-log{
+    #register-log{
         padding-top: 40px;
         padding-bottom: 20px;
     }
 
-    #login-text{
+    #register-text{
         text-align: center;
         color: #ffffff;
     }
 
-    #login-hr{
+    #register-hr{
         width: 322px;
         background-color: #ffffff;
     }
@@ -100,7 +89,7 @@
         color: #ffffff;
     }
 
-    .login-input{
+    .register-input{
         border: #333333;
         margin: 13px auto auto;
         width: 320px;
@@ -109,12 +98,12 @@
         font-size: 14px;
     }
 
-    #login-form{
+    #register-form{
         margin: 10px auto auto;
         padding-bottom: 80px;
     }
 
-    #login-bg{
+    #register-bg{
         border-radius: 5px;
         margin: 50px auto auto;
         background-color: #333333;
