@@ -6,6 +6,7 @@ import com.oujiajun.recruitment.entity.po.User;
 import com.oujiajun.recruitment.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -34,14 +35,14 @@ public class UserController {
     }
 
     @RequestMapping("/login")
-    public String login(User user, Map<String,Object> map, HttpSession session){
+    public String login(User user, Model model, HttpSession session){
         // 登陆
         ResultInfo resultInfo = userService.login(user);
         if(resultInfo.getSuccess()){
-            return "redirect:/index.html";
+            return "index";
         }else {
-            map.put("msg",resultInfo.getMessage());
-            return "/login.html";
+            model.addAttribute("msg",resultInfo.getMessage());
+            return "login";
         }
     }
 }

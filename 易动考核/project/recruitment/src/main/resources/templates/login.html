@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
+<!DOCTYPE HTML>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
     <title>登录</title>
@@ -9,6 +9,10 @@
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <body>
 <div class="background" id="bg">
+    <div th:if="${not #strings.isEmpty(msg)}" class="alert alert-info alert-dismissible" id="alert" role="alert" >
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <p th:text="${msg}"></p>
+    </div>
     <div id="login-bg">
         <div id="login-log">
             <h2 id="login-text">登陆</h2>
@@ -32,14 +36,19 @@
             </div>
         </div>
     </div>
+
     <div id="div-toIndex">
         <a href="/recruitment/index.html" id="toIndex">返回首页</a>
     </div>
 </div>
 </body>
-<script>
-</script>
+
 <style type="text/css">
+
+    #alert{
+        margin: auto;
+        width: 600px;
+    }
 
     #div-checkbox{
         font-size: 14px;
