@@ -59,5 +59,13 @@ public class UserController {
         return "/index";
     }
 
+    @RequestMapping("/updateUser")
+    public void updateUser(User user){
+        ResultInfo resultInfo = userService.updateUser(user);
+        if (resultInfo.getSuccess()){
+            return;
+        }else {
 
+        }
+    }
 }
