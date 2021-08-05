@@ -37,4 +37,14 @@ public class UserServiceImpl implements UserService {
         }
         return new ResultInfo(true,loginUser);
     }
+
+    @Override
+    public ResultInfo queryUserById(int id) {
+        // 查询
+        User user = userDao.queryUserById(id);
+        if(user == null){
+            return new ResultInfo(false,"该用户不存在");
+        }
+        return new ResultInfo(true,user);
+    }
 }

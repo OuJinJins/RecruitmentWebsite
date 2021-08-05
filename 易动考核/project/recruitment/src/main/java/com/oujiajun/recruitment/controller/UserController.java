@@ -7,11 +7,12 @@ import com.oujiajun.recruitment.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.DigestUtils;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Map;
 
 /**
  * @author oujiajun
@@ -28,21 +29,35 @@ public class UserController {
         // 注册
         ResultInfo resultInfo = userService.register(user);
         if(resultInfo.getSuccess()){
-            return "redirect:/index.html";
+            return "index";
         }else {
-            return "redirect:/register.html";
+            return "register";
         }
     }
 
-    @RequestMapping("/login")
+    @GetMapping({"/login"})
+    public String login() {
+        return "user/login";
+    }
+
+    @PostMapping("/login")
     public String login(User user, Model model, HttpSession session){
         // 登陆
         ResultInfo resultInfo = userService.login(user);
         if(resultInfo.getSuccess()){
-            return "index";
+            session.setAttribute("loginUser",(User)resultInfo.getData());
+            return "redirect:/user/index";
         }else {
-            model.addAttribute("msg",resultInfo.getMessage());
+            session.setAttribute("errorMsg",resultInfo.getMessage());
             return "login";
         }
     }
+
+    @GetMapping({"", "/", "/index", "/index.html"})
+    public String index(HttpServletRequest request,HttpSession session) {
+        request.setAttribute("session", session);
+        return "/index";
+    }
+
+
 }

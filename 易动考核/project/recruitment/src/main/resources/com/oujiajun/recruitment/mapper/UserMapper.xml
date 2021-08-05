@@ -13,4 +13,8 @@
         select id,username,password,gender from user where username=#{username} And password=#{password}
     </select>
 
+    <select id="queryUserById" parameterType="Int" resultType="User">
+        select id,username,gender from user where id=#{id}
+    </select>
+
 </mapper>

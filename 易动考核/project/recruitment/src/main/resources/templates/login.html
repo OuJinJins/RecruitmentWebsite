@@ -10,9 +10,9 @@
 </head>
 <body>
 <div class="background" id="bg">
-    <div th:if="${not #strings.isEmpty(msg)}" class="alert alert-info alert-dismissible" id="alert" role="alert" >
+    <div th:if="${not #strings.isEmpty(session.errorMsg)}" class="alert alert-info alert-dismissible" id="alert" role="alert" >
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <p th:text="${msg}"></p>
+        <p th:text="${session.errorMsg}"></p>
     </div>
     <div id="login-bg">
         <div id="login-log">

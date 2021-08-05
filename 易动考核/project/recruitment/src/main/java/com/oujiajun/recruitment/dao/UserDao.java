@@ -18,9 +18,16 @@ public interface UserDao {
 
     /**
      * 查询用户数据
-     * @param user 用户数据
-     * @return 操作行数
+     * @param user 用户数据 UsernameAndPassword
+     * @return 用户数据
      */
     User queryUserByUsernameAndPassword(User user);
+
+    /**
+     * 查询用户数据
+     * @param id 用户id
+     * @return 用户数据
+     */
+    User queryUserById(int id);
 
 }
