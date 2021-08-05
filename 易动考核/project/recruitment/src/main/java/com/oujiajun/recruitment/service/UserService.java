@@ -27,4 +27,11 @@ public interface UserService {
      * @return 服务结果
      */
     ResultInfo queryUserById(int id);
+
+    /**
+     * 修改用户信息
+     * @param user 用户信息
+     * @return 服务结果
+     */
+    ResultInfo updateUser(User user);
 }

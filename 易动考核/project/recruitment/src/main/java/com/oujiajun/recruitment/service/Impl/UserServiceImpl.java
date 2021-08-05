@@ -47,4 +47,13 @@ public class UserServiceImpl implements UserService {
         }
         return new ResultInfo(true,user);
     }
+
+    @Override
+    public ResultInfo updateUser(User user){
+        if(userDao.updateUserById(user) >= 1){
+            return new ResultInfo(true);
+        }else {
+            return new ResultInfo(false,"修改失败");
+        }
+    }
 }
