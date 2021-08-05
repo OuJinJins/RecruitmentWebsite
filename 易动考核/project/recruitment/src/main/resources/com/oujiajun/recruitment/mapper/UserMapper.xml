@@ -6,15 +6,35 @@
 <mapper namespace="com.oujiajun.recruitment.dao.UserDao">
 
     <insert id="insertUser" parameterType="User">
-        insert into recruitment.user values(#{id},#{username},#{password},#{gender})
+        insert into recruitment.user
+        values(#{id},#{username},#{password},#{gender})
     </insert>
 
+
+    <update id="updateUserById" parameterType="User">
+        update user
+        set
+            username=#{username},
+            gender=#{gender}
+        where id=#{id}
+    </update>
+
     <select id="queryUserByUsernameAndPassword" parameterType="User" resultType="User">
-        select id,username,password,gender from user where username=#{username} And password=#{password}
+        select id,
+               username,
+               password,
+               gender
+        from user
+        where username=#{username}
+          And password=#{password}
     </select>
 
     <select id="queryUserById" parameterType="Int" resultType="User">
-        select id,username,gender from user where id=#{id}
+        select id,
+               username,
+               gender
+        from user
+        where id=#{id}
     </select>
 
 </mapper>
