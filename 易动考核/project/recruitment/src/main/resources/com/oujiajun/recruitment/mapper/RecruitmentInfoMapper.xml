@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.oujiajun.recruitment.dao.RecruitmentInfoDao">
+
+    <insert id="insertRecruitmentInfo" parameterType="RecruitmentInfo">
+        insert into recruitment.recruitment_info
+        values(#{recruitmentInfoId},
+               #{userId},
+               #{occupation},
+               #{monthlyPay},
+               #{introduction},
+               #{interviewDateBegin},
+               #{interviewDateEnd},
+               #{interviewTimeBegin},
+               #{interviewTimeEnd},
+               #{maxNumber})
+    </insert>
+
+    <delete id="deleteRecruitmentInfo" parameterType="int">
+        delete
+        from recruitment.recruitment_info
+        where recruitment_info_id=#{recruitment_info_id}
+    </delete>
+
+    <update id="updateRecruitmentInfo" parameterType="RecruitmentInfo">
+        update recruitment.recruitment_info
+        <set>
+            <if test="recruitmentInfoId != null">
+                recruitment_info_id=#{recruitmentInfoId},
+            </if>
+            <if test="userId != null">
+                user_id=#{userId},
+            </if>
+            <if test="occupation != null">
+                occupation=#{occupation},
+            </if>
+            <if test="monthlyPay != null">
+                monthly_pay=#{monthlyPay},
+            </if>
+            <if test="introduction != null">
+                introduction=#{introduction},
+            </if>
+            <if test="interviewDateBegin != null">
+                interview_date_begin=#{interviewDateBegin},
+            </if>
+            <if test="interviewDateEnd != null">
+                interview_date_end=#{interviewDateEnd},
+            </if>
+            <if test="interviewTimeBegin != null">
+                interview_time_begin=#{interviewTimeBegin},
+            </if>
+            <if test="interviewTimeEnd != null">
+                interview_time_end=#{interviewTimeEnd},
+            </if>
+            <if test="maxNumber != null">
+                max_number=#{maxNumber},
+            </if>
+        </set>
+        where recruitment_info_id=#{recruitmentInfoId}
+    </update>
+
+    <select id="queryAllRecruitmentInfo" resultType="RecruitmentInfo">
+        select recruitment_info_id,
+               user_id,
+               occupation,
+               monthly_pay,
+               introduction,
+               interview_date_begin,
+               interview_date_end,
+               interview_time_begin,
+               interview_time_end,
+               max_number
+        from recruitment.recruitment_info
+    </select>
+
+    <select id="queryRecruitmentInfoByUid" parameterType="Int" resultType="RecruitmentInfo">
+        select recruitment_info_id,
+               user_id,
+               occupation,
+               monthly_pay,
+               introduction,
+               interview_date_begin,
+               interview_date_end,
+               interview_time_begin,
+               interview_time_end,
+               max_number
+        from recruitment.recruitment_info
+        where recruitment_info_id=#{recruitmentInfoId}
+    </select>
+
+</mapper>
