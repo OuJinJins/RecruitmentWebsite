@@ -70,7 +70,7 @@
 </script>
 <!--END——发送请求脚本-->
 <body>
-<nav class="navbar navbar-inverse navbar-fixed-top" id="navbar">
+<nav class="navbar navbar-fixed-top" id="navbar">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header navbar-inverse">
@@ -100,15 +100,11 @@
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">我的招聘<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">招聘中心<span class="caret"></span></a>
                     <ul class="dropdown-menu">
+                        <li><a href="#">我的招聘/审核报名/进行面试/审核结果/修改</a></li>
+                        <li role="separator" class="divider"></li>
                         <li><a href="#">发布招聘</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">查看报名</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">进行面试</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">审核结果</a></li>
                     </ul>
                 </li>
             </ul>
@@ -136,7 +132,7 @@
     </div>
     <div id="div-personalInfo">
         <div id="div-profile">
-                <span class="text-white" id="text-profile">我的头像</span>
+                <span class="" id="text-profile">我的头像</span>
                 <a href="#">
                         <img src="../static/img/logo.jpg" alt="点击更换头像" class="img-rounded personalInfo-profile">
                     </a>
@@ -144,7 +140,7 @@
         <form class="form-horizontal" id="form-changInfo">
                 <div class="form-group form-div">
                         <label for="inputUid" class="col-sm-2 control-label">
-                                <span class="text-white">UID</span>
+                                <span class="">UID</span>
                             </label>
                         <div class="col-sm-10">
                                 <input type="text" class="form-control form-input" id="inputUid" placeholder="UID" readonly>
@@ -152,7 +148,7 @@
                     </div>
                 <div class="form-group form-div">
                         <label for="inputEmail" class="col-sm-2 control-label">
-                                <span class="text-white">邮箱</span>
+                                <span class="">邮箱</span>
                             </label>
                         <div class="col-sm-10">
                                 <input type="email" class="form-control form-input" id="inputEmail" placeholder="邮箱" readonly>
@@ -160,7 +156,7 @@
                     </div>
                 <div class="form-group form-div">
                         <label for="inputUsername" class="col-sm-2 control-label">
-                                <span class="text-white">用户名</span>
+                                <span class="">用户名</span>
                             </label>
                         <div class="col-sm-10">
                                 <input type="text" class="form-control form-input" id="inputUsername" placeholder="用户名">
@@ -168,7 +164,7 @@
                     </div>
                 <div class="form-group form-div">
                         <label  for="selectGender" class="col-sm-2 control-label">
-                                <span class="text-white">性别</span>
+                                <span class="">性别</span>
                             </label>
                         <div class="col-sm-10">
                                 <select class="form-control form-input" id="selectGender">
@@ -290,18 +286,21 @@
         margin: 10px auto auto auto;
         width: 97.5%;
         height: 100%;
-        background-color: #333333;
+        background-color: #ffffff;
         border-radius: 4px;
     }
     <!--                  -->
     body {
         background-color: #f5f5f5;
-        padding-top: 65px;
+        padding-top: 80px;
     }
 
     #navbar{
-        height: 65px;
-        padding-top: 6px;
+        font-weight: bold;
+        font-size: 17px;
+        background-color: #ffffff;
+        height: 80px;
+        padding-top: 15px;
     }
 
     #logo{
@@ -326,7 +325,12 @@
     }
 
     #search{
-        margin-left: 105px;
+        margin-left: 40px;
+    }
+
+    #input-search{
+        background-color: #f5f5f5;
+        border: #ffffff;
     }
 </style>
 </html>
