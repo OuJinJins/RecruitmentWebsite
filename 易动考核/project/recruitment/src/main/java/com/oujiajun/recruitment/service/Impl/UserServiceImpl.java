@@ -50,7 +50,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResultInfo updateUser(User user){
-        if(userDao.updateUserById(user) >= 1){
+        int result = userDao.updateUserById(user);
+        if(result >= 1){
             return new ResultInfo(true);
         }else {
             return new ResultInfo(false,"修改失败");
