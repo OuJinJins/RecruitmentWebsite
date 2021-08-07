@@ -59,6 +59,12 @@ class RecruitmentInfoDaoTest{
     }
 
     @Test
+    void queryRecruitmentInfoById() {
+        RecruitmentInfo info = recruitmentInfoDao.queryRecruitmentInfoById(2);
+        assert info != null;
+    }
+
+    @Test
     void queryRecruitmentInfoByUid() {
         List<RecruitmentInfo> list = recruitmentInfoDao.queryRecruitmentInfoByUid(1);
         assert list.size()>=1;

@@ -76,6 +76,21 @@
         from recruitment.recruitment_info
     </select>
 
+    <select id="queryRecruitmentInfoById" parameterType="Int" resultType="RecruitmentInfo">
+        select recruitment_info_id,
+               user_id,
+               occupation,
+               monthly_pay,
+               introduction,
+               interview_date_begin,
+               interview_date_end,
+               interview_time_begin,
+               interview_time_end,
+               max_number
+        from recruitment.recruitment_info
+        where recruitment_info_id=#{RecruitmentInfoId}
+    </select>
+
     <select id="queryRecruitmentInfoByUid" parameterType="Int" resultType="RecruitmentInfo">
         select recruitment_info_id,
                user_id,
@@ -90,5 +105,4 @@
         from recruitment.recruitment_info
         where user_id=#{userId}
     </select>
-
 </mapper>

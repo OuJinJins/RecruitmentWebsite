@@ -39,6 +39,13 @@ public interface RecruitmentInfoDao {
     List<RecruitmentInfo> queryAllRecruitmentInfo();
 
     /**
+     * 根据招聘信息id寻找招聘信息
+     * @param recruitmentInfoId 招聘信息id
+     * @return 招聘信息
+     */
+    RecruitmentInfo queryRecruitmentInfoById(int recruitmentInfoId);
+
+    /**
      * 通过招聘官id查询招聘信息
      * @param userId 招聘管用户id
      * @return 招聘信息
