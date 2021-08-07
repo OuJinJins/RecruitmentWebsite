@@ -6,6 +6,7 @@ import com.oujiajun.recruitment.entity.po.RecruitmentInfo;
 import com.oujiajun.recruitment.service.RecruitmentInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -50,33 +51,30 @@ public class RecruitmentInfoServiceImpl implements RecruitmentInfoService {
     @Override
     public ResultInfo queryAllRecruitmentInfo() {
         List<RecruitmentInfo> infoList = recruitmentInfoDao.queryAllRecruitmentInfo();
-        int number = infoList.size();
-        if (number >= 1){
+        if (!CollectionUtils.isEmpty(infoList)){
             return new ResultInfo(true,infoList);
         }else {
-            return new ResultInfo(false);
+            return new ResultInfo(false,"查询招聘信息错误");
         }
     }
 
     @Override
     public ResultInfo queryRecruitmentInfoById(int recruitmentInfoId) {
-        List<RecruitmentInfo> infoList = recruitmentInfoDao.queryRecruitmentInfoByUid(recruitmentInfoId);
-        int number = infoList.size();
-        if (number >= 1){
-            return new ResultInfo(true,infoList.get(0));
+        RecruitmentInfo info = recruitmentInfoDao.queryRecruitmentInfoById(recruitmentInfoId);
+        if (info != null){
+            return new ResultInfo(true,info);
         }else {
-            return new ResultInfo(false);
+            return new ResultInfo(false,"查询招聘信息错误");
         }
     }
 
     @Override
     public ResultInfo queryRecruitmentInfoByUid(int userId) {
         List<RecruitmentInfo> infoList = recruitmentInfoDao.queryRecruitmentInfoByUid(userId);
-        int number = infoList.size();
-        if (number >= 1){
+        if (!CollectionUtils.isEmpty(infoList)){
             return new ResultInfo(true,infoList);
         }else {
-            return new ResultInfo(false);
+            return new ResultInfo(false,"查询招聘信息错误");
         }
     }
 }

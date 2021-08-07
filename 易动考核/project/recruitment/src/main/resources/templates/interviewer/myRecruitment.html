@@ -131,6 +131,22 @@
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <p th:text="${session.errorMsg}"></p>
     </div>
+    <div id="div-recruitmentInfos">
+        <div class="div-recruitmentInfo" th:each="info:${infoList}">
+            <div id="div-recruitmentInfo-left">
+                <span id="occupation" th:text="${info.occupation}">
+
+                </span>
+                <span>
+
+                </span>
+            </div>
+            <div id="div-recruitmentInfo-right">
+
+            </div>
+
+        </div>
+    </div>
 </div>
 </body>
 <script  th:inline ="javascript" >

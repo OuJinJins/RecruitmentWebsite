@@ -66,7 +66,8 @@ class RecruitmentInfoDaoTest{
 
     @Test
     void queryRecruitmentInfoByUid() {
-        List<RecruitmentInfo> list = recruitmentInfoDao.queryRecruitmentInfoByUid(1);
+        List<RecruitmentInfo> list = recruitmentInfoDao.queryRecruitmentInfoByUid(6);
+        System.out.println(list);
         assert list.size()>=1;
     }
 }
