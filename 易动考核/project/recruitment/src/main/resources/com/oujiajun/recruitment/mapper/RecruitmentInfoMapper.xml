@@ -88,7 +88,7 @@
                interview_time_end,
                max_number
         from recruitment.recruitment_info
-        where recruitment_info_id=#{recruitmentInfoId}
+        where user_id=#{user_id}
     </select>
 
 </mapper>
