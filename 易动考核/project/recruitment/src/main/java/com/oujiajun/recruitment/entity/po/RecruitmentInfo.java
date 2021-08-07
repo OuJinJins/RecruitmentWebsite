@@ -18,7 +18,7 @@ public class RecruitmentInfo {
     /**
      * 招聘信息id
      */
-    Integer recruitmentId;
+    Integer recruitmentInfoId;
 
     /**
      * 面试官id

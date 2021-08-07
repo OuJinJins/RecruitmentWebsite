@@ -7,7 +7,7 @@
 
     <insert id="insertUser" parameterType="User">
         insert into recruitment.user
-        values(#{id},#{username},#{password},#{gender})
+        values(#{id},#{email},#{username},#{password},#{gender})
     </insert>
 
 
