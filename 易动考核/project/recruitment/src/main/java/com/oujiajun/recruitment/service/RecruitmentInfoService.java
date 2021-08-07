@@ -41,4 +41,11 @@ public interface RecruitmentInfoService {
      * @return 服务结果集
      */
     ResultInfo queryRecruitmentInfoById(int recruitmentInfoId);
+
+    /**
+     * 寻找用户发布的招聘信息
+     * @param userId 用户id
+     * @return 服务结果集
+     */
+    ResultInfo queryRecruitmentInfoByUid(int userId);
 }

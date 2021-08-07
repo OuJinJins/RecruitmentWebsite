@@ -68,4 +68,15 @@ public class RecruitmentInfoServiceImpl implements RecruitmentInfoService {
             return new ResultInfo(false);
         }
     }
+
+    @Override
+    public ResultInfo queryRecruitmentInfoByUid(int userId) {
+        List<RecruitmentInfo> infoList = recruitmentInfoDao.queryRecruitmentInfoByUid(userId);
+        int number = infoList.size();
+        if (number >= 1){
+            return new ResultInfo(true,infoList);
+        }else {
+            return new ResultInfo(false);
+        }
+    }
 }
