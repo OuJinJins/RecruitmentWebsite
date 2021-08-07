@@ -133,18 +133,18 @@
     </div>
     <div id="div-recruitmentInfos">
         <div class="div-recruitmentInfo" th:each="info:${infoList}">
-            <div id="div-recruitmentInfo-left">
-                <span id="occupation" th:text="${info.occupation}">
-
-                </span>
-                <span>
-
-                </span>
+            <div class="div-info">
+                <div class="div-info-top">
+                    <div class="div-recruitmentInfo-left">
+                        <a class="a-occupation" th:text="${info.occupation}" href="@{/interviewer/infoDetail/} + ${info.recruitmentInfoId}"></a>
+                        <span class="span-city"></span>
+                    </div>
+                    <div class="div-recruitmentInfo-right">
+                        <span class="span-monthlyPay" th:text="${info.monthlyPay} + K"></span>
+                    </div>
+                </div>
+                <hr class="hr-info">
             </div>
-            <div id="div-recruitmentInfo-right">
-
-            </div>
-
         </div>
     </div>
 </div>
@@ -174,6 +174,63 @@
 
 </script>
 <style>
+    .span-monthlyPay{
+        font-size: 15px;
+        color: #FD7240;
+    }
+    
+    .a-occupation{
+        font-size: 15px;
+        color: #414a60;
+    }
+
+    .div-recruitmentInfos{
+        margin-top: 20px;
+    }
+
+    .hr-info{
+        width: 100%;
+        margin: auto auto auto auto;
+        float: top;
+    }
+
+    .div-info-top{
+        float: top;
+        width: 100%;
+        height: 50%;
+    }
+    
+    .div-recruitmentInfo-left{
+        float: left;
+    }
+
+    .div-recruitmentInfo-right{
+        float: right;
+    }
+
+    .div-info{
+        margin: auto auto auto auto;
+        width: 88%;
+        height: 90%;
+        padding-top: 18px;
+    }
+
+    .div-recruitmentInfo{
+        float: left;
+        margin-top: 18px;
+        margin-left: 18px;
+        width: 384px;
+        height: 130px;
+        background-color: #ffffff;
+    }
+
+
+    #div-recruitmentInfos{
+        margin: auto auto auto auto;
+        width: 100%;
+        height: 100%;
+    }
+
     #text-profile{
         margin-right: 10px;
         font-size: 16px;
