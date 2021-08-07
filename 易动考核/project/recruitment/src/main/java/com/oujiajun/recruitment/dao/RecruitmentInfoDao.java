@@ -2,6 +2,8 @@ package com.oujiajun.recruitment.dao;
 
 import com.oujiajun.recruitment.entity.po.RecruitmentInfo;
 
+import java.util.List;
+
 /**
  * @author oujiajun
  */
@@ -32,12 +34,12 @@ public interface RecruitmentInfoDao {
      * 查询所有的招聘信息
      * @return 招聘信息
      */
-    RecruitmentInfo queryAllRecruitmentInfo();
+    List<RecruitmentInfo> queryAllRecruitmentInfo();
 
     /**
      * 通过招聘官id查询招聘信息
      * @param userId 招聘管用户id
      * @return 招聘信息
      */
-    RecruitmentInfo queryRecruitmentInfoByUid(int userId);
+    List<RecruitmentInfo> queryRecruitmentInfoByUid(int userId);
 }
