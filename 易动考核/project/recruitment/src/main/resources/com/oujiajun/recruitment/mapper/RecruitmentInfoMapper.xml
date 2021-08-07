@@ -10,6 +10,8 @@
         <result property ="occupation"  column ="occupation"/>
         <result property ="monthlyPay"  column ="monthly_pay"/>
         <result property ="introduction"  column ="introduction"/>
+        <result property="workCity" column="work_city"/>
+        <result property="company" column="company"/>
         <result property ="interviewDateBegin"  column ="interview_date_begin"/>
         <result property ="interviewDateEnd"  column ="interview_date_end"/>
         <result property ="interviewTimeBegin"  column ="interview_time_begin"/>
@@ -24,6 +26,8 @@
                #{occupation},
                #{monthlyPay},
                #{introduction},
+               #{workCity},
+               #{company},
                #{interviewDateBegin},
                #{interviewDateEnd},
                #{interviewTimeBegin},
@@ -55,6 +59,12 @@
             <if test="introduction != null">
                 introduction=#{introduction},
             </if>
+            <if test="workCity != null">
+                work_city=#{workCity},
+            </if>
+            <if test="company != null">
+                company=#{company},
+            </if>
             <if test="interviewDateBegin != null">
                 interview_date_begin=#{interviewDateBegin},
             </if>
@@ -80,6 +90,8 @@
                occupation,
                monthly_pay,
                introduction,
+               work_city,
+               company,
                interview_date_begin,
                interview_date_end,
                interview_time_begin,
@@ -94,6 +106,8 @@
                occupation,
                monthly_pay,
                introduction,
+               work_city,
+               company,
                interview_date_begin,
                interview_date_end,
                interview_time_begin,
@@ -109,6 +123,8 @@
                occupation,
                monthly_pay,
                introduction,
+               work_city,
+               company,
                interview_date_begin,
                interview_date_end,
                interview_time_begin,

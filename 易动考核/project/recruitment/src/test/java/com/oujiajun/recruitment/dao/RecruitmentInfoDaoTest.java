@@ -24,7 +24,18 @@ class RecruitmentInfoDaoTest{
 
     @Test
     void insertRecruitmentInfo() {
-        RecruitmentInfo info = new RecruitmentInfo(1,6,"copier",20,"haha", LocalDate.now(),LocalDate.now(),LocalTime.now(), LocalTime.now(),5);
+        RecruitmentInfo info = new RecruitmentInfo(1,
+                6,
+                "copier",
+                20,
+                "haha",
+                "广州",
+                "阿里之家",
+                LocalDate.now(),
+                LocalDate.now(),
+                LocalTime.now(),
+                LocalTime.now(),
+                5);
         int count = recruitmentInfoDao.insertRecruitmentInfo(info);
         assert count>=1;
     }
@@ -42,6 +53,8 @@ class RecruitmentInfoDaoTest{
                 "copier",
                 66,
                 "haha",
+                "广州",
+                "阿里之家",
                 LocalDate.now(),
                 LocalDate.now(),
                 LocalTime.now(),

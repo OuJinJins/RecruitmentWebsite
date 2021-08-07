@@ -137,13 +137,18 @@
                 <div class="div-info-top">
                     <div class="div-recruitmentInfo-left">
                         <a class="a-occupation" th:text="${info.occupation}" href="@{/interviewer/infoDetail/} + ${info.recruitmentInfoId}"></a>
-                        <span class="span-city"></span>
+                        <span class="span-city" th:text="${info.workCity}"></span>
                     </div>
                     <div class="div-recruitmentInfo-right">
                         <span class="span-monthlyPay" th:text="${info.monthlyPay} + K"></span>
                     </div>
                 </div>
                 <hr class="hr-info">
+                <div class="div-info-bottom">
+                    <div class="div-info-bottomleft">
+                        <span class="span-company" th:text="${info.company}"></span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -174,6 +179,25 @@
 
 </script>
 <style>
+
+    .a-occupation{
+        float: top;
+    }
+
+
+    .span-city{
+        float: top;
+        font-size: 13px;
+        color: #61687c;
+    }
+
+    .div-info-bottomleft{
+        color: #61687c;
+        font-size: 13px;
+        padding-top: 15px;
+        float: left;
+    }
+
     .span-monthlyPay{
         font-size: 15px;
         color: #FD7240;

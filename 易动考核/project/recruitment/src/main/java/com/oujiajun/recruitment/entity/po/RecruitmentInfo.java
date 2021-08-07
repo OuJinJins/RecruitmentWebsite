@@ -41,6 +41,16 @@ public class RecruitmentInfo {
     String introduction;
 
     /**
+     * 工作城市
+     */
+    String workCity;
+
+    /**
+     * 公司名称
+     */
+    String company;
+
+    /**
      * 面试开始日期
      */
     LocalDate interviewDateBegin;
