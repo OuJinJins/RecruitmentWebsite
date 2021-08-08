@@ -4,6 +4,7 @@ import com.oujiajun.recruitment.entity.dto.ResultInfo;
 import com.oujiajun.recruitment.entity.po.RecruitmentInfo;
 import com.oujiajun.recruitment.entity.po.User;
 import com.oujiajun.recruitment.service.RecruitmentInfoService;
+import com.oujiajun.recruitment.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,9 @@ public class RecruitmentInfoController {
 
     @Autowired
     RecruitmentInfoService recruitmentInfoService;
+
+    @Autowired
+    UserService userService;
 
     @GetMapping({ "/interviewer/myRecruitment","/interviewer/myRecruitment.html"})
     public String toMyRecruitment(HttpServletRequest request, HttpSession session) {
@@ -48,8 +52,15 @@ public class RecruitmentInfoController {
     public String toDetailRecruitmentInfo(@PathVariable("recruitmentInfoId") Integer recruitmentInfoId,HttpServletRequest request,HttpSession session){
         ResultInfo resultInfo = recruitmentInfoService.queryRecruitmentInfoById(recruitmentInfoId);
         if (resultInfo.getSuccess()) {
-            System.out.println(resultInfo.getData());
-            request.setAttribute("recruitmentInfo",resultInfo.getData());
+            RecruitmentInfo recruitmentInfo = (RecruitmentInfo) resultInfo.getData();
+            request.setAttribute("recruitmentInfo",recruitmentInfo);
+            ResultInfo userServiceInfo = userService.queryUserById(recruitmentInfo.getUserId());
+            if(userServiceInfo.getSuccess()){
+                User interviewer = (User)userServiceInfo.getData();
+                request.setAttribute("interviewer",interviewer);
+            }else {
+                session.setAttribute("errorMsg",userServiceInfo.getMessage());
+            }
         }else {
             session.setAttribute("errorMsg",resultInfo.getMessage());
         }
