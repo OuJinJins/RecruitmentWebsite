@@ -30,6 +30,18 @@ public class RecruitmentInfoController {
     @Autowired
     UserService userService;
 
+    @GetMapping({"", "/", "/index","/index.html"})
+    public String index(HttpServletRequest request, HttpSession session) {
+        ResultInfo resultInfo = recruitmentInfoService.queryAllRecruitmentInfo();
+        if(resultInfo.getSuccess()){
+            List<RecruitmentInfo> infoList = (List<RecruitmentInfo>)resultInfo.getData();
+            request.setAttribute("infoList",infoList);
+        }else {
+            session.setAttribute("errorMsg",resultInfo.getMessage());
+        }
+        return "/index";
+    }
+
     @GetMapping({ "/interviewer/myRecruitment","/interviewer/myRecruitment.html"})
     public String toMyRecruitment(HttpServletRequest request, HttpSession session) {
         User loginUser = (User)session.getAttribute("loginUser");

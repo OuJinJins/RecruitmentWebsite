@@ -131,6 +131,27 @@
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <p th:text="${session.errorMsg}"></p>
     </div>
+    <div id="div-recruitmentInfos">
+        <div class="div-recruitmentInfo" th:each="info:${infoList}">
+            <div class="div-info">
+                <div class="div-info-top">
+                    <div class="div-recruitmentInfo-left">
+                        <a class="a-occupation" th:text="${info.occupation}" th:href="@{/interviewer/myRecruitment/detail/id/} + ${info.recruitmentInfoId}"></a>
+                        <span class="span-city" th:text="${info.workCity}"></span>
+                    </div>
+                    <div class="div-recruitmentInfo-right">
+                        <span class="span-monthlyPay" th:text="${info.monthlyPay} + K"></span>
+                    </div>
+                </div>
+                <hr class="hr-info">
+                <div class="div-info-bottom">
+                    <div class="div-info-bottomleft">
+                        <span class="span-company" th:text="${info.company}"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 <script  th:inline ="javascript" >
@@ -158,65 +179,79 @@
 
 </script>
 <style>
-    #text-profile{
-        margin-right: 10px;
-        font-size: 16px;
+    .a-occupation{
         float: top;
     }
 
-    #div-profile{
+
+    .span-city{
         float: top;
-        padding-top: 2%;
-        margin-left: 17.2%;
-    }
-
-    .personalInfo-profile{
-        width:10%;
-        height:10%;
-    }
-
-    #form-changInfo{
-        padding-top: 30px;
-        padding-bottom: 20px;
-    }
-
-    .form-div{
-        float: top;
-    }
-
-    #button-changePassword{
-        color: #ffffff;
-        font-size: 16px;
-        border: #333333;
-        border-radius: 6px;
-        background: #76BDFF;
-        width: 80%;
-    }
-
-    #button-changInfo{
-        color: #ffffff;
-        font-size: 16px;
-        border: #333333;
-        border-radius: 6px;
-        background: #76BDFF;
-        width: 80%;
-    }
-
-    .form-input{
-        width: 80%;
-    }
-
-    .text-white{
-        color: #ffffff;
         font-size: 13px;
+        color: #61687c;
     }
 
-    #div-personalInfo{
-        margin: 10px auto auto auto;
-        width: 97.5%;
+    .div-info-bottomleft{
+        color: #61687c;
+        font-size: 13px;
+        padding-top: 15px;
+        float: left;
+    }
+
+    .span-monthlyPay{
+        font-size: 15px;
+        color: #FD7240;
+    }
+
+    .a-occupation{
+        font-size: 15px;
+        color: #414a60;
+    }
+
+    .div-recruitmentInfos{
+        margin-top: 20px;
+    }
+
+    .hr-info{
+        width: 100%;
+        margin: auto auto auto auto;
+        float: top;
+    }
+
+    .div-info-top{
+        float: top;
+        width: 100%;
+        height: 50%;
+    }
+
+    .div-recruitmentInfo-left{
+        float: left;
+    }
+
+    .div-recruitmentInfo-right{
+        float: right;
+    }
+
+    .div-info{
+        margin: auto auto auto auto;
+        width: 88%;
+        height: 90%;
+        padding-top: 18px;
+    }
+
+    .div-recruitmentInfo{
+        float: left;
+        margin-top: 18px;
+        margin-left: 18px;
+        width: 384px;
+        height: 130px;
+        background-color: #ffffff;
+    }
+
+
+    #div-recruitmentInfos{
+        margin: auto auto auto auto;
+        width: 100%;
         height: 100%;
-        background-color: #333333;
-        border-radius: 4px;
     }
 
     body {

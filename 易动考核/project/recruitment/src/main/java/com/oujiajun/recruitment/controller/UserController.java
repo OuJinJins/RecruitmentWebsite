@@ -55,11 +55,6 @@ public class UserController {
         }
     }
 
-    @GetMapping({"", "/", "/index","/index.html"})
-    public String index() {
-        return "/index";
-    }
-
     @RequestMapping("/user/updateUser")
     @ResponseBody
     public String updateUser(User user,HttpSession session){
