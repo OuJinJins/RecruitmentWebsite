@@ -142,7 +142,9 @@
             </div>
             <p id="p-city" th:text="${recruitmentInfo.workCity}"></p>
             <div id="div-option">
-                <button id="signUp" class="button-option">报名面试</button>
+                <a th:href="@{/recruitment/signUp/id/} + ${recruitmentInfo.recruitmentInfoId}">
+                    <button id="signUp" class="button-option">报名面试</button>
+                </a>
             </div>
         </div>
     </div>
