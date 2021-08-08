@@ -131,6 +131,9 @@
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <p th:text="${session.errorMsg}"></p>
     </div>
+    <div id="div-title">
+        <span id="span-title">我 的 招 聘</span>
+    </div>
     <div id="div-recruitmentInfos">
         <div class="div-recruitmentInfo" th:each="info:${myInfoList}">
             <div class="div-info">
@@ -248,6 +251,19 @@
         background-color: #ffffff;
     }
 
+    #span-title{
+        margin-left: 520px;
+    }
+
+    #div-title{
+        padding-top: 22px;
+        height: 100px;
+        color: #61687c;
+        font-size: 32px;
+        background-color: #ffffff;
+        margin-left: 18px;
+        width: 1190px;
+    }
 
     #div-recruitmentInfos{
         margin: auto auto auto auto;
