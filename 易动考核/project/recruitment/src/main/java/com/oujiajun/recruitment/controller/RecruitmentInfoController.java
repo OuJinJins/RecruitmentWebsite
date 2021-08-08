@@ -35,7 +35,13 @@ public class RecruitmentInfoController {
         return "/interviewer/myRecruitment";
     }
 
-    @RequestMapping("/interview/publish")
+    @GetMapping({ "/interviewer/publish","/interviewer/publish.html"})
+    public String toPublish(){
+        return "/interviewer/publish";
+    }
+
+
+    @RequestMapping("/interview/doPublish")
     public String publishRecruitment(RecruitmentInfo recruitmentInfo,HttpSession session){
         User loginUser = (User)session.getAttribute("loginUser");
         recruitmentInfo.setUserId(loginUser.getId());
