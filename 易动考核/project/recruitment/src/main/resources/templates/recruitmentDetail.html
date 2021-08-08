@@ -89,7 +89,7 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li><a href="#">首页</a></li>
+                <li><a href="/recruitment/index">首页</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">个人中心<span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -141,6 +141,9 @@
                 <span id="job-salary" th:text="${recruitmentInfo.monthlyPay} + K"></span><span id="job-salary-after">每月</span>
             </div>
             <p id="p-city" th:text="${recruitmentInfo.workCity}"></p>
+            <div id="div-option">
+                <button id="signUp" class="button-option">报名面试</button>
+            </div>
         </div>
     </div>
     <div id="text-interviewer">
@@ -186,6 +189,16 @@
 </script>
 <style>
 
+    .button-option{
+        color: #ffffff;
+        font-size: 16px;
+        border: #5dd5c8;
+        background: #5dd5c8;
+        width: 130px;
+        height: 45px;
+        border-radius: 0px;
+    }
+
     #text-company{
         margin-top: 20px;
         color: #61687c;
@@ -215,6 +228,7 @@
         float: top;
         font-size: 14px;
         color: #ffffffb3;
+        margin-bottom: 22px;
     }
 
     #job-salary-after{
