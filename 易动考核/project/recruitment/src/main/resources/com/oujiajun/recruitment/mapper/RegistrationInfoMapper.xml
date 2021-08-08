@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oujiajun.recruitment.dao.RegistrationInfoDao">
+    <resultMap id ="RegistrationMap" type="com.oujiajun.recruitment.entity.po.RegistrationInfo">
+        <id property ="registrationInfoId" column="registration_info_id"/>
+        <result property="recruitmentInfoId" column="recruitment_info_id"/>
+        <result property ="userId"  column ="user_id"/>
+        <result property ="isRegistrationPass"  column ="is_registration_pass"/>
+        <result property ="isInterviewerPass"  column ="is_interviewer_pass"/>
+        <result property ="interviewDate"  column ="interview_date"/>
+        <result property="interviewTimeBegin" column="interviewer_time_begin"/>
+        <result property="interviewTimeEnd" column="interviewer_time_end"/>
+    </resultMap>
+
+    <insert id="insertRegistrationInfo" parameterType="Registration">
+        insert into recruitment.registration_info
+        values(#{registrationInfoId},
+               #{recruitmentInfoId},
+               #{userId},
+               #{isRegistrationPass},
+               #{isInterviewerPass},
+               #{interviewDate},
+               #{interviewTimeBegin},
+               #{interviewTimeEnd}
+               )
+    </insert>
+
+    <delete id="deleteRegistrationInfo" parameterType="int">
+        delete
+        from recruitment.registration_info
+        where registration_info_id=#{registration_info_id}
+    </delete>
+
+    <update id="updateRecruitmentInfo" parameterType="Registration">
+        update recruitment.registration_info
+        <set>
+            <if test="registrationId != null">
+                recruitment_info_id=#{registrationInfoId},
+            </if>
+            <if test="recruitmentInfoId != null">
+                recruitment_info_id=#{recruitmentInfoId},
+            </if>
+            <if test="userId != null">
+                user_id=#{userId},
+            </if>
+            <if test="isRegistrationPass != null">
+                is_registration_pass=#{isRegistrationPass},
+            </if>
+            <if test="isInterviewerPass != null">
+                is_interviewer_pass=#{isInterviewerPass},
+            </if>
+            <if test="interviewDate != null">
+                interview_date=#{interviewDate},
+            </if>
+            <if test="interviewTimeBegin != null">
+                interview_time_begin=#{interviewTimeBegin},
+            </if>
+            <if test="interviewTimeEnd != null">
+                interview_time_end=#{interviewTimeEnd},
+            </if>
+        </set>
+        where registration_info_id=#{registrationId}
+    </update>
+
+    <select id="queryAllRegistrationInfo" resultMap="RegistrationInfo">
+        select registration_info_id,
+               recruitment_info_id,
+               user_id,
+               is_registration_pass,
+               is_interview_pass,
+               interview_date,
+               interview_time_begin,
+               interview_end
+        from recruitment.registration_info
+    </select>
+
+    <select id="queryRegistrationInfoById" resultMap="RegistrationInfo">
+        select registration_info_id,
+               recruitment_info_id,
+               user_id,
+               is_registration_pass,
+               is_interview_pass,
+               interview_date,
+               interview_time_begin,
+               interview_end
+        from recruitment.registration_info
+        where registration_info_id=#{registrationId}
+    </select>
+
+    <select id="queryRegistrationInfoByUid" resultMap="RegistrationInfo">
+        select registration_info_id,
+               recruitment_info_id,
+               user_id,
+               is_registration_pass,
+               is_interview_pass,
+               interview_date,
+               interview_time_begin,
+               interview_end
+        from recruitment.registration_info
+        where user_id=#{userId}
+    </select>
+</mapper>

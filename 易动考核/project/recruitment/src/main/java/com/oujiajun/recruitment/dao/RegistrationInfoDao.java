@@ -1,12 +1,14 @@
 package com.oujiajun.recruitment.dao;
 
 import com.oujiajun.recruitment.entity.po.RegistrationInfo;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 /**
  * @author oujiajun
  */
+@Mapper
 public interface RegistrationInfoDao {
 
 
