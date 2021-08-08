@@ -131,24 +131,30 @@
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <p th:text="${session.errorMsg}"></p>
     </div>
-    <div id="div-recruitmentInfos">
-        <div class="div-recruitmentInfo" th:each="info:${infoList}">
-            <div class="div-info">
-                <div class="div-info-top">
-                    <div class="div-recruitmentInfo-left">
-                        <a class="a-occupation" th:text="${info.occupation}" th:href="@{/interviewer/myRecruitment/detail/id/} + ${info.recruitmentInfoId}"></a>
-                        <span class="span-city" th:text="${info.workCity}"></span>
-                    </div>
-                    <div class="div-recruitmentInfo-right">
-                        <span class="span-monthlyPay" th:text="${info.monthlyPay} + K"></span>
-                    </div>
-                </div>
-                <hr class="hr-info">
-                <div class="div-info-bottom">
-                    <div class="div-info-bottomleft">
-                        <span class="span-company" th:text="${info.company}"></span>
-                    </div>
-                </div>
+    <div id="job-banner">
+        <div id="div-job-banner">
+            <div id="job-status">
+                <span id="span-status">报名中</span>
+            </div>
+            <div id="div-name">
+                <span id="job-name" th:text="${recruitmentInfo.occupation}"></span>
+                <span id="job-salary" th:text="${recruitmentInfo.monthlyPay} + K"></span><span id="job-salary-after">每月</span>
+            </div>
+            <p id="p-city" th:text="${recruitmentInfo.workCity}"></p>
+        </div>
+    </div>
+    <div id="text-interviewer">
+        <div id="interviewer">
+            <h3 class="span-interviewer-name">招聘官:</h3><h3 class="span-interviewer-name" th:text="${interviewer.username}">欧先生</h3>
+        </div>
+        <div id="div-introduction">
+            <h4 id="span-introduction">职位描述:</h4>
+            <div id="text-introduction" th:text="${recruitmentInfo.introduction}">
+            </div>
+        </div>
+        <div id="div-company">
+            <h4 id="span-company">工商信息:</h4>
+            <div id="text-company" th:text="${recruitmentInfo.company}">
             </div>
         </div>
     </div>
@@ -180,140 +186,82 @@
 </script>
 <style>
 
-    .a-occupation{
-        float: top;
-    }
-
-
-    .span-city{
-        float: top;
-        font-size: 13px;
-        color: #61687c;
-    }
-
-    .div-info-bottomleft{
-        color: #61687c;
-        font-size: 13px;
-        padding-top: 15px;
-        float: left;
-    }
-
-    .span-monthlyPay{
-        font-size: 15px;
-        color: #FD7240;
-    }
-
-    .a-occupation{
-        font-size: 15px;
-        color: #414a60;
-    }
-
-    .div-recruitmentInfos{
+    #text-company{
         margin-top: 20px;
+        color: #61687c;
     }
 
-    .hr-info{
-        width: 100%;
-        margin: auto auto auto auto;
-        float: top;
-    }
-
-    .div-info-top{
-        float: top;
-        width: 100%;
-        height: 50%;
-    }
-
-    .div-recruitmentInfo-left{
+    .span-interviewer-name{
         float: left;
     }
 
-    .div-recruitmentInfo-right{
-        float: right;
+    #text-introduction{
+        margin-top: 20px;
+        color: #61687c;
     }
 
-    .div-info{
-        margin: auto auto auto auto;
-        width: 88%;
-        height: 90%;
-        padding-top: 18px;
-    }
-
-    .div-recruitmentInfo{
-        float: left;
-        margin-top: 18px;
-        margin-left: 18px;
-        width: 384px;
-        height: 130px;
-        background-color: #ffffff;
-    }
-
-
-    #div-recruitmentInfos{
-        margin: auto auto auto auto;
+    #interviewer{
+        height: 60px;
         width: 100%;
-        height: 100%;
+        float: top;
+        color: #424a51;
     }
 
-    #text-profile{
-        margin-right: 10px;
-        font-size: 16px;
+    #text-interviewer{
+        padding-left: 15px;
+    }
+
+    #p-city{
+        float: top;
+        font-size: 14px;
+        color: #ffffffb3;
+    }
+
+    #job-salary-after{
+        font-weight: bold;
+        float: left;
+        font-size: 30px;
+        color: #fa6a43;
+    }
+
+    #job-salary{
+        font-weight: bold;
+        float: left;
+        font-size: 30px;
+        color: #fa6a43;
+    }
+
+    #job-name{
+        float: left;
+        margin-right: 30px;
+        font-size: 32px;
+        color: #ffffff;
+    }
+
+    #div-name{
+        height: 63.38px;
+        padding-top: 8px;
+        padding-bottom: 8px;
         float: top;
     }
 
-    #div-profile{
+    #job-status{
         float: top;
-        padding-top: 2%;
-        margin-left: 17.2%;
+        color: #ffffffb3;
+        font-size: 14px;
     }
 
-    .personalInfo-profile{
-        width:10%;
-        height:10%;
+    #div-job-banner{
+        padding-left: 15px;
+        padding-top: 25px;
+        width: 100%;
+        height: 172px;
     }
 
-    #form-changInfo{
-        padding-top: 30px;
-        padding-bottom: 20px;
-    }
-
-    .form-div{
-        float: top;
-    }
-
-    #button-changePassword{
-        color: #ffffff;
-        font-size: 16px;
-        border: #333333;
-        border-radius: 6px;
-        background: #76BDFF;
-        width: 80%;
-    }
-
-    #button-changInfo{
-        color: #ffffff;
-        font-size: 16px;
-        border: #333333;
-        border-radius: 6px;
-        background: #76BDFF;
-        width: 80%;
-    }
-
-    .form-input{
-        width: 80%;
-    }
-
-    .text-white{
-        color: #ffffff;
-        font-size: 13px;
-    }
-
-    #div-personalInfo{
-        margin: 10px auto auto auto;
-        width: 97.5%;
-        height: 100%;
-        background-color: #333333;
-        border-radius: 4px;
+    #job-banner{
+        width: 100%;
+        height: 218px;
+        background-color: #444C60;
     }
 
     body {

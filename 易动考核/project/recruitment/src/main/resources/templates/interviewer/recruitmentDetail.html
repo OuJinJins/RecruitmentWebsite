@@ -137,10 +137,10 @@
                 <span id="span-status">报名中</span>
             </div>
             <div id="div-name">
-                <span id="job-name" th:text="${recruitmentInfo.occupation}"></span>
-                <span id="job-salary" th:text="${recruitmentInfo.monthlyPay} + K"></span><span id="job-salary-after">每月</span>
+                <span id="job-name" th:text="${myRecruitmentInfo.occupation}"></span>
+                <span id="job-salary" th:text="${myRecruitmentInfo.monthlyPay} + K"></span><span id="job-salary-after">每月</span>
             </div>
-            <p id="p-city" th:text="${recruitmentInfo.workCity}"></p>
+            <p id="p-city" th:text="${myRecruitmentInfo.workCity}"></p>
         </div>
     </div>
     <div id="text-interviewer">
@@ -149,12 +149,12 @@
         </div>
         <div id="div-introduction">
             <h4 id="span-introduction">职位描述:</h4>
-            <div id="text-introduction" th:text="${recruitmentInfo.introduction}">
+            <div id="text-introduction" th:text="${myRecruitmentInfo.introduction}">
             </div>
         </div>
         <div id="div-company">
-            <h4 id="span-compant">工商信息:</h4>
-            <div id="text-company" th:text="${recruitmentInfo.company}">
+            <h4 id="span-company">工商信息:</h4>
+            <div id="text-company" th:text="${myRecruitmentInfo.company}">
             </div>
         </div>
     </div>

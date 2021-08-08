@@ -48,7 +48,7 @@ public class RecruitmentInfoController {
         ResultInfo resultInfo = recruitmentInfoService.queryRecruitmentInfoByUid(loginUser.getId());
         if(resultInfo.getSuccess()){
             List<RecruitmentInfo> infoList = (List<RecruitmentInfo>)resultInfo.getData();
-            request.setAttribute("infoList",infoList);
+            request.setAttribute("myInfoList",infoList);
         }else {
             session.setAttribute("errorMsg",resultInfo.getMessage());
         }
@@ -84,7 +84,7 @@ public class RecruitmentInfoController {
         ResultInfo resultInfo = recruitmentInfoService.queryRecruitmentInfoById(recruitmentInfoId);
         if (resultInfo.getSuccess()) {
             RecruitmentInfo recruitmentInfo = (RecruitmentInfo) resultInfo.getData();
-            request.setAttribute("recruitmentInfo",recruitmentInfo);
+            request.setAttribute("myRecruitmentInfo",recruitmentInfo);
             ResultInfo userServiceInfo = userService.queryUserById(recruitmentInfo.getUserId());
             if(userServiceInfo.getSuccess()){
                 User interviewer = (User)userServiceInfo.getData();
