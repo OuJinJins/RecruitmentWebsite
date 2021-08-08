@@ -5,11 +5,10 @@ import com.oujiajun.recruitment.entity.po.RecruitmentInfo;
 import com.oujiajun.recruitment.entity.po.User;
 import com.oujiajun.recruitment.service.RecruitmentInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -31,10 +30,19 @@ public class RecruitmentInfoController {
             List<RecruitmentInfo> infoList = (List<RecruitmentInfo>)resultInfo.getData();
             request.setAttribute("infoList",infoList);
         }else {
-            request.setAttribute("errorMsg",resultInfo.getMessage());
+            session.setAttribute("errorMsg",resultInfo.getMessage());
         }
         return "/interviewer/myRecruitment";
     }
 
-
+    @RequestMapping("/interview/publish")
+    public String publishRecruitment(RecruitmentInfo recruitmentInfo,HttpSession session){
+        User loginUser = (User)session.getAttribute("loginUser");
+        recruitmentInfo.setUserId(loginUser.getId());
+        ResultInfo resultInfo = recruitmentInfoService.insertRecruitmentInfo(recruitmentInfo);
+        if (!resultInfo.getSuccess()){
+            session.setAttribute("errorMsg",resultInfo.getMessage());
+        }
+        return "redirect:/interviewer/myRecruitment";
+    }
 }
