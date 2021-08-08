@@ -133,7 +133,7 @@
     </div>
     <div id="job-banner">
         <div id="job-status">
-            <span id=span-status">报名中</span>
+            <span id="span-status">报名中</span>
         </div>
         <div id="div-name">
             <h1 id="job-name" th:text="${recruitmentInfo.occupation}"></h1>
@@ -146,7 +146,8 @@
     </div>
     <div id="div-introduction">
         <span id="span-introduction">职位描述</span>
-        <div id="text-introduction" th:text="${recrutmentInfo.introduction}"></div>
+        <div id="text-introduction" th:text="${recruitmentInfo.introduction}">
+        </div>
     </div>
 </div>
 </body>

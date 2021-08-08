@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -43,6 +44,17 @@ public class RecruitmentInfoController {
         return "/interviewer/publish";
     }
 
+    @GetMapping("/interviewer/myRecruitment/detail/id/{recruitmentInfoId}")
+    public String toDetailRecruitmentInfo(@PathVariable("recruitmentInfoId") Integer recruitmentInfoId,HttpServletRequest request,HttpSession session){
+        ResultInfo resultInfo = recruitmentInfoService.queryRecruitmentInfoById(recruitmentInfoId);
+        if (resultInfo.getSuccess()) {
+            System.out.println(resultInfo.getData());
+            request.setAttribute("recruitmentInfo",resultInfo.getData());
+        }else {
+            session.setAttribute("errorMsg",resultInfo.getMessage());
+        }
+        return "/interviewer/recruitmentDetail";
+    }
 
     @RequestMapping("/interview/doPublish")
     public String publishRecruitment(
