@@ -127,7 +127,7 @@
                     <ul class="dropdown-menu">
                         <li><a href="/recruitment/interviewer/myRecruitment">我的招聘/审核报名/进行面试/审核结果/修改</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="/recruitment/interviewer/doPublish">发布招聘</a></li>
+                        <li><a href="/recruitment/interviewer/publish">发布招聘</a></li>
                     </ul>
                 </li>
             </ul>
@@ -155,33 +155,33 @@
     </div>
     <div id="div-publish-recruitment">
         <span id="title">发布招聘</span>
-        <form id="form-publish-recruitment" action="/recruitment/interview/publish ">
+        <form id="form-publish-recruitment" method="post" action="/recruitment/interview/doPublish ">
             <div class="form-group-publish">
                 <label for="occupation">Occupation</label>
-                <input type="text" class="form-control form-input" id="occupation" placeholder="职业名称">
+                <input type="text" class="form-control form-input" id="occupation" name="occupation" placeholder="职业名称">
             </div>
             <div class="form-group-publish">
                 <label for="monthlyPay">MonthlyPay</label>
-                <input type="text" class="form-control form-input" id="monthlyPay" placeholder="月薪 单位:K/月">
+                <input type="text" class="form-control form-input" id="monthlyPay" name="monthlyPay" placeholder="月薪 单位:K/月">
             </div>
             <div class="form-group-publish">
                 <label for="workCity">WorkCity</label>
-                <input type="text" class="form-control form-input" id="workCity" placeholder="工作城市">
+                <input type="text" class="form-control form-input" id="workCity" name="workCity" placeholder="工作城市">
             </div>
             <div class="form-group-publish">
                 <label for="company">Company</label>
-                <input type="text" class="form-control form-input" id="company" placeholder="公司名称">
+                <input type="text" class="form-control form-input" id="company" name="company" placeholder="公司名称">
             </div>
             <div class="form-group-publish">
-                <label for="textareaIntroduction">Introduction</label>
-                <textarea class="form-control form-textarea" rows="3" id="textareaIntroduction"></textarea>
+                <label for="introduction">Introduction</label>
+                <textarea class="form-control form-textarea" rows="3" id="introduction" name="introduction"></textarea>
             </div>
             <div class='col-sm-6 form-group-publish' >
                 <div class="form-group">
                     <!--指定 date标记-->
                     <label for="interviewDateBegin">选择面试开始日期</label>
                     <div class='input-group date' id='datetimepicker1'>
-                            <input  id="interviewDateBegin" type='text' class="form-control form-input-date" />
+                            <input  id="interviewDateBegin" type='text' class="form-control form-input-date" name="interviewDateBegin" />
                         <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
@@ -193,7 +193,7 @@
                     <!--指定 date标记-->
                     <label for="interviewDateEnd">选择面试结束日期</label>
                     <div class='input-group date' id='datetimepicker3'>
-                        <input  id="interviewDateEnd" type='text' class="form-control form-input-date" />
+                        <input  id="interviewDateEnd" type='text' class="form-control form-input-date" name="interviewDateEnd" />
                         <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>

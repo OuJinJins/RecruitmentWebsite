@@ -36,11 +36,6 @@ public class RecruitmentInfo {
     Integer monthlyPay;
 
     /**
-     * 职业要求简介
-     */
-    String introduction;
-
-    /**
      * 工作城市
      */
     String workCity;
@@ -49,6 +44,11 @@ public class RecruitmentInfo {
      * 公司名称
      */
     String company;
+
+    /**
+     * 职业要求简介
+     */
+    String introduction;
 
     /**
      * 面试开始日期
@@ -75,4 +75,13 @@ public class RecruitmentInfo {
      */
     Integer maxNumber;
 
+    public RecruitmentInfo(String occupation, Integer monthlyPay, String workCity, String company, String introduction, LocalDate interviewDateBegin, LocalDate interviewDateEnd) {
+        this.occupation = occupation;
+        this.monthlyPay = monthlyPay;
+        this.workCity = workCity;
+        this.company = company;
+        this.introduction = introduction;
+        this.interviewDateBegin = interviewDateBegin;
+        this.interviewDateEnd = interviewDateEnd;
+    }
 }
