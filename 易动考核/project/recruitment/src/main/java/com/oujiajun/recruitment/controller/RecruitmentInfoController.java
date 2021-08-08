@@ -60,8 +60,27 @@ public class RecruitmentInfoController {
         return "/interviewer/publish";
     }
 
-    @GetMapping("/interviewer/myRecruitment/detail/id/{recruitmentInfoId}")
+    @GetMapping("/recruitment/detail/id/{recruitmentInfoId}")
     public String toDetailRecruitmentInfo(@PathVariable("recruitmentInfoId") Integer recruitmentInfoId,HttpServletRequest request,HttpSession session){
+        ResultInfo resultInfo = recruitmentInfoService.queryRecruitmentInfoById(recruitmentInfoId);
+        if (resultInfo.getSuccess()) {
+            RecruitmentInfo recruitmentInfo = (RecruitmentInfo) resultInfo.getData();
+            request.setAttribute("recruitmentInfo",recruitmentInfo);
+            ResultInfo userServiceInfo = userService.queryUserById(recruitmentInfo.getUserId());
+            if(userServiceInfo.getSuccess()){
+                User interviewer = (User)userServiceInfo.getData();
+                request.setAttribute("interviewer",interviewer);
+            }else {
+                session.setAttribute("errorMsg",userServiceInfo.getMessage());
+            }
+        }else {
+            session.setAttribute("errorMsg",resultInfo.getMessage());
+        }
+        return "/recruitmentDetail";
+    }
+
+    @GetMapping("/interviewer/myRecruitment/detail/id/{recruitmentInfoId}")
+    public String toMyDetailRecruitmentInfo(@PathVariable("recruitmentInfoId") Integer recruitmentInfoId,HttpServletRequest request,HttpSession session){
         ResultInfo resultInfo = recruitmentInfoService.queryRecruitmentInfoById(recruitmentInfoId);
         if (resultInfo.getSuccess()) {
             RecruitmentInfo recruitmentInfo = (RecruitmentInfo) resultInfo.getData();
