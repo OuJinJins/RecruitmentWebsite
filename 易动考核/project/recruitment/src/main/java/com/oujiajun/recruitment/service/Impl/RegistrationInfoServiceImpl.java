@@ -39,6 +39,16 @@ public class RegistrationInfoServiceImpl implements RegistrationInfoService {
     }
 
     @Override
+    public ResultInfo deleteRegistrationInfoByUidAndRid(Integer userId, Integer registrationInfoId) {
+        int count = recruitmentInfoDao.deleteRegistrationInfoByUidAndRid(userId,registrationInfoId);
+        if (count >= 1){
+            return new ResultInfo(true,count);
+        }else {
+            return new ResultInfo(false,"删除报名信息失败");
+        }
+    }
+
+    @Override
     public ResultInfo updateRegistrationInfo(RegistrationInfo recruitmentInfo) {
         int count = recruitmentInfoDao.updateRegistrationInfo(recruitmentInfo);
         if (count >= 1){

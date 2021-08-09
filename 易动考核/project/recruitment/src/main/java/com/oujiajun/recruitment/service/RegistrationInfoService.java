@@ -23,6 +23,14 @@ public interface RegistrationInfoService {
     ResultInfo deleteRegistrationInfo(int registrationInfoId);
 
     /**
+     * 取消面试报名
+     * @param userId 用户id
+     * @param registrationInfoId 报名信息id
+     * @return 服务结果
+     */
+    ResultInfo deleteRegistrationInfoByUidAndRid(Integer userId, Integer registrationInfoId);
+
+    /**
      * 修改报名信息
      * @param registrationInfo 报名信息
      * @return 服务结果集

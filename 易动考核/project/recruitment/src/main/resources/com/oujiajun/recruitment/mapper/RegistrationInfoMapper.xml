@@ -30,14 +30,14 @@
     <delete id="deleteRegistrationInfo" parameterType="int">
         delete
         from recruitment.registration_info
-        where registration_info_id=#{registration_info_id}
+        where registration_info_id=#{registrationInfoId}
     </delete>
 
     <delete id="deleteRegistrationInfoByUidAndRid">
         delete
         from recruitment.registration_info
         where user_id=#{userId}
-          and registration_info_id=#{registration_info_id}
+          and recruitment_info_id=#{recruitmentInfoId}
     </delete>
 
     <update id="updateRegistrationInfo" parameterType="RegistrationInfo">
