@@ -150,4 +150,17 @@ public class RecruitmentInfoController {
         }
         return "redirect:/recruitment/detail/id/"+recruitmentInfoId;
     }
+
+    @GetMapping({ "/interviewer/myRegistration","/interviewer/myRegistration.html"})
+    public String toMyRegistration(HttpServletRequest request, HttpSession session) {
+        User loginUser = (User)session.getAttribute("loginUser");
+        ResultInfo resultInfo = registrationInfoService.queryRegistrationInfoByUid(loginUser.getId());
+        if(resultInfo.getSuccess()){
+            List<RegistrationInfo> infoList = (List<RegistrationInfo>)resultInfo.getData();
+            request.setAttribute("myInfoList",infoList);
+        }else {
+            session.setAttribute("errorMsg",resultInfo.getMessage());
+        }
+        return "/interviewer/myRecruitment";
+    }
 }
