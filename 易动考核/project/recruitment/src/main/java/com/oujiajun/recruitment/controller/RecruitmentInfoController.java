@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -151,16 +152,25 @@ public class RecruitmentInfoController {
         return "redirect:/recruitment/detail/id/"+recruitmentInfoId;
     }
 
-    @GetMapping({ "/interviewer/myRegistration","/interviewer/myRegistration.html"})
+    @GetMapping({ "/myRegistration","/myRegistration.html"})
     public String toMyRegistration(HttpServletRequest request, HttpSession session) {
         User loginUser = (User)session.getAttribute("loginUser");
         ResultInfo resultInfo = registrationInfoService.queryRegistrationInfoByUid(loginUser.getId());
         if(resultInfo.getSuccess()){
-            List<RegistrationInfo> infoList = (List<RegistrationInfo>)resultInfo.getData();
-            request.setAttribute("myInfoList",infoList);
+            List<RegistrationInfo> registrationInfoList = (List<RegistrationInfo>)resultInfo.getData();
+            List<RecruitmentInfo> recruitmentInfoList = new ArrayList<RecruitmentInfo>();
+            for (RegistrationInfo registrationInfo : registrationInfoList) {
+                ResultInfo queryRecruitmentInfoResult = recruitmentInfoService.queryRecruitmentInfoById(registrationInfo.getRecruitmentInfoId());
+                if (queryRecruitmentInfoResult.getSuccess()){
+                    recruitmentInfoList.add((RecruitmentInfo) queryRecruitmentInfoResult.getData());
+                }else {
+                    session.setAttribute("errorMsg",resultInfo.getMessage());
+                }
+            }
+            request.setAttribute("myInfoList",recruitmentInfoList);
         }else {
             session.setAttribute("errorMsg",resultInfo.getMessage());
         }
-        return "/interviewer/myRecruitment";
+        return "/myRegistration";
     }
 }
