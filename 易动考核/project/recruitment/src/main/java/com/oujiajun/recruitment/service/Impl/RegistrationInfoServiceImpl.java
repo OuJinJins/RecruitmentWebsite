@@ -3,6 +3,7 @@ package com.oujiajun.recruitment.service.Impl;
 import com.oujiajun.recruitment.dao.RegistrationInfoDao;
 import com.oujiajun.recruitment.entity.dto.ResultInfo;
 import com.oujiajun.recruitment.entity.po.RegistrationInfo;
+import com.oujiajun.recruitment.entity.vo.UserRegistrationInfo;
 import com.oujiajun.recruitment.service.RegistrationInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -91,6 +92,16 @@ public class RegistrationInfoServiceImpl implements RegistrationInfoService {
     @Override
     public ResultInfo queryRegistrationInfoByUidAndRid(Integer userId, Integer recruitmentInfoId) {
         RegistrationInfo info = recruitmentInfoDao.queryRegistrationInfoByUidAndRid(userId,recruitmentInfoId);
+        if (info != null){
+            return new ResultInfo(true,info);
+        }else {
+            return new ResultInfo(false,"查询招聘信息错误");
+        }
+    }
+
+    @Override
+    public ResultInfo queryUserRegistrationInfo(Integer userId, Integer recruitmentInfoId) {
+        UserRegistrationInfo info = recruitmentInfoDao.queryUserRegistrationInfo(userId,recruitmentInfoId);
         if (info != null){
             return new ResultInfo(true,info);
         }else {

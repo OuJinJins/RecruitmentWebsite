@@ -65,4 +65,12 @@ public interface RegistrationInfoService {
      */
     ResultInfo queryRegistrationInfoByUidAndRid(Integer userId,Integer recruitmentInfoId);
 
+    /**
+     * 根据用户id与招聘信息id寻找用户报名信息
+     * @param userId 用户id
+     * @param recruitmentInfoId 报名信息id
+     * @return 服务结果集
+     */
+    ResultInfo queryUserRegistrationInfo(Integer userId,Integer recruitmentInfoId);
+
 }
