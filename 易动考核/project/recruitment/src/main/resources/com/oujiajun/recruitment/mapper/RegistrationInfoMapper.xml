@@ -102,7 +102,7 @@
         where user_id=#{userId}
     </select>
 
-    <select id="queryRegistrationInfoByUidAndRid" parameterType="int" resultMap="RegistrationInfoMap">
+    <select id="queryRegistrationInfoByUidAndRid" resultMap="RegistrationInfoMap">
         select registration_info_id,
                recruitment_info_id,
                user_id,
