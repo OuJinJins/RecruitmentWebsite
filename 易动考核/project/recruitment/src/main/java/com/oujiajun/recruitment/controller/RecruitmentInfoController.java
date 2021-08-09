@@ -88,6 +88,7 @@ public class RecruitmentInfoController {
     @GetMapping("/interviewer/myRecruitment/detail/id/{recruitmentInfoId}")
     public String toMyDetailRecruitmentInfo(@PathVariable("recruitmentInfoId") Integer recruitmentInfoId,HttpServletRequest request,HttpSession session){
         ResultInfo resultInfo = recruitmentInfoService.queryRecruitmentInfoById(recruitmentInfoId);
+        User loginUser = (User)session.getAttribute("loginUser");
         if (resultInfo.getSuccess()) {
             RecruitmentInfo recruitmentInfo = (RecruitmentInfo) resultInfo.getData();
             request.setAttribute("myRecruitmentInfo",recruitmentInfo);
@@ -96,7 +97,7 @@ public class RecruitmentInfoController {
                 User interviewer = (User)userServiceInfo.getData();
                 request.setAttribute("interviewer",interviewer);
                 // 检查是否已经报名
-                ResultInfo queryRegistrationResult = registrationInfoService.queryRegistrationInfoById(recruitmentInfo.getRecruitmentInfoId());
+                ResultInfo queryRegistrationResult = registrationInfoService.queryRegistrationInfoByUidAndRid(loginUser.getId(),recruitmentInfo.getRecruitmentInfoId());
                 if(queryRegistrationResult.getSuccess()){
                     RegistrationInfo registrationInfo = (RegistrationInfo) queryRegistrationResult.getData();
                     request.setAttribute("registrationInfo",registrationInfo);
