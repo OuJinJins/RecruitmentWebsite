@@ -223,7 +223,6 @@ public class RecruitmentInfoController {
         }
         ResultInfo resultInfo = registrationInfoService.queryUserRegistrationInfoForInterviewer(recruitmentInfoId);
         if(resultInfo.getSuccess()){
-            System.out.println(resultInfo.getData());
             List<UserRegistrationInfo> userRegistrationInfoList = (List<UserRegistrationInfo>)resultInfo.getData();
             request.setAttribute("infoList",userRegistrationInfoList);
         }else {
@@ -231,5 +230,14 @@ public class RecruitmentInfoController {
             return "redirect:/interviewer/myRecruitment/detail/id/" + recruitmentInfoId;
         }
         return "/interviewer/applicants";
+    }
+
+    @GetMapping("/interviewer/registration/pass/id/{registrationInfoId}")
+    public String passRegistration(@PathVariable("registrationInfoId")Integer registrationInfoId, HttpServletRequest request, HttpSession session){
+        ResultInfo resultInfo = registrationInfoService.passRegistration(registrationInfoId);
+        if(!resultInfo.getSuccess()){
+            session.setAttribute("errorMsg", resultInfo.getMessage());
+        }
+        return "redirect:/interviewer/applicants";
     }
 }
