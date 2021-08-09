@@ -142,12 +142,12 @@
             </div>
             <p id="p-city" th:text="${recruitmentInfo.workCity}"></p>
             <div class="div-option">
-                <a th:href="@{/signUp/id/} + ${recruitmentInfo.recruitmentInfoId}"  th:if="${#strings.isEmpty(registrationInfo)}">
+                <a th:href="@{/registrationInfo/signUp/id/} + ${recruitmentInfo.recruitmentInfoId}"  th:if="${#strings.isEmpty(registrationInfo)}">
                     <button id="signUp" class="button-option">报名面试</button>
                 </a>
             </div>
             <div class="div-option">
-                <a th:href="@{/cancelRegistration/id/} + ${recruitmentInfo.recruitmentInfoId}"  th:if="${not #strings.isEmpty(registrationInfo)}">
+                <a th:href="@{/registrationInfo/cancel/id/} + ${recruitmentInfo.recruitmentInfoId}"  th:if="${not #strings.isEmpty(registrationInfo)}">
                     <button id="cancelRegistration" class="button-option">取消报名</button>
                 </a>
             </div>

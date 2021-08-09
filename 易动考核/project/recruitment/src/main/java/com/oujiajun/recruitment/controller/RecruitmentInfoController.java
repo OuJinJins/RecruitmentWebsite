@@ -66,6 +66,19 @@ public class RecruitmentInfoController {
         return "/interviewer/publish";
     }
 
+    @GetMapping("/registrationInfo/cancel/id/{recruitmentInfoId}")
+    public String deleteRegistrationInfo(@PathVariable("recruitmentInfoId") Integer recruitmentInfoId,HttpServletRequest request,HttpSession session){
+        User loginUser = (User)session.getAttribute("loginUser");
+        if (loginUser == null){
+            request.setAttribute("errorMsg","请登陆后进行该操作");
+            return "redirect:/login";
+        }
+        ResultInfo resultInfo = registrationInfoService.deleteRegistrationInfoByUidAndRid(loginUser.getId(), recruitmentInfoId);
+        if(!resultInfo.getSuccess()){
+            request.setAttribute("errorMsg","请登陆后进行该操作");
+        }
+        return "redirect:/recruitment/detail/id/" + recruitmentInfoId;
+    }
     /**
      * 普通用户前往招聘详情
      * @param recruitmentInfoId 招聘信息id
@@ -78,7 +91,7 @@ public class RecruitmentInfoController {
         ResultInfo resultInfo = recruitmentInfoService.queryRecruitmentInfoById(recruitmentInfoId);
         User loginUser = (User)session.getAttribute("loginUser");
         if (loginUser == null){
-            request.setAttribute("error","请登陆后进行该操作");
+            request.setAttribute("errorMsg","请登陆后进行该操作");
             return "redirect:/login";
         }
         if (resultInfo.getSuccess()) {
@@ -159,7 +172,7 @@ public class RecruitmentInfoController {
         return "redirect:/interviewer/myRecruitment";
     }
 
-    @GetMapping("/signUp/id/{recruitmentInfoId}")
+    @GetMapping("/registrationInfo/signUp/id/{recruitmentInfoId}")
     public String signUp(@PathVariable("recruitmentInfoId") Integer recruitmentInfoId,HttpSession session){
         ResultInfo recruitmentInfoServiceResult = recruitmentInfoService.queryRecruitmentInfoById(recruitmentInfoId);
         if(recruitmentInfoServiceResult.getSuccess()){
