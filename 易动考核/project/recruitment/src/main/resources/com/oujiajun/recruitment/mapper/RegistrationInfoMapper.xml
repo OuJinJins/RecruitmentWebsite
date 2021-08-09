@@ -101,4 +101,18 @@
         from recruitment.registration_info
         where user_id=#{userId}
     </select>
+
+    <select id="queryRegistrationInfoByUidAndRid" parameterType="int" resultMap="RegistrationInfoMap">
+        select registration_info_id,
+               recruitment_info_id,
+               user_id,
+               is_registration_pass,
+               is_interview_pass,
+               interview_date,
+               interview_time_begin,
+               interview_time_end
+        from recruitment.registration_info
+        where user_id=#{userId}
+        and recruitment_info_id=#{recruitmentInfoId}
+    </select>
 </mapper>

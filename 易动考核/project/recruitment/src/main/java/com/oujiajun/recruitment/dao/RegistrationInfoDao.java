@@ -52,4 +52,12 @@ public interface RegistrationInfoDao {
      * @return 报名信息
      */
     List<RegistrationInfo> queryRegistrationInfoByUid(Integer userId);
+
+    /**
+     * 根据用户id与招聘信息id寻找报名信息
+     * @param userId 用户id
+     * @param recruitmentInfoId 报名信息id
+     * @return 报名信息
+     */
+    RegistrationInfo queryRegistrationInfoByUidAndRid(Integer userId,Integer recruitmentInfoId);
 }
