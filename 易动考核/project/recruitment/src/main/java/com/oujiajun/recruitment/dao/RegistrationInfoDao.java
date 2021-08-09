@@ -2,6 +2,7 @@ package com.oujiajun.recruitment.dao;
 
 import com.oujiajun.recruitment.entity.po.RegistrationInfo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -59,5 +60,5 @@ public interface RegistrationInfoDao {
      * @param recruitmentInfoId 报名信息id
      * @return 报名信息
      */
-    RegistrationInfo queryRegistrationInfoByUidAndRid(Integer userId,Integer recruitmentInfoId);
+    RegistrationInfo queryRegistrationInfoByUidAndRid(@Param("userId") Integer userId, @Param("recruitmentInfoId")Integer recruitmentInfoId);
 }

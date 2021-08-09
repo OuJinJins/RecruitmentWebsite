@@ -89,6 +89,10 @@ public class RecruitmentInfoController {
     public String toMyDetailRecruitmentInfo(@PathVariable("recruitmentInfoId") Integer recruitmentInfoId,HttpServletRequest request,HttpSession session){
         ResultInfo resultInfo = recruitmentInfoService.queryRecruitmentInfoById(recruitmentInfoId);
         User loginUser = (User)session.getAttribute("loginUser");
+        if (loginUser == null){
+            request.setAttribute("error","请登陆后进行该操作");
+            return "redirect:/login";
+        }
         if (resultInfo.getSuccess()) {
             RecruitmentInfo recruitmentInfo = (RecruitmentInfo) resultInfo.getData();
             request.setAttribute("myRecruitmentInfo",recruitmentInfo);
@@ -98,9 +102,11 @@ public class RecruitmentInfoController {
                 request.setAttribute("interviewer",interviewer);
                 // 检查是否已经报名
                 ResultInfo queryRegistrationResult = registrationInfoService.queryRegistrationInfoByUidAndRid(loginUser.getId(),recruitmentInfo.getRecruitmentInfoId());
-                if(queryRegistrationResult.getSuccess()){
-                    RegistrationInfo registrationInfo = (RegistrationInfo) queryRegistrationResult.getData();
-                    request.setAttribute("registrationInfo",registrationInfo);
+                if(queryRegistrationResult != null){
+                    if(queryRegistrationResult.getSuccess()){
+                        RegistrationInfo registrationInfo = (RegistrationInfo) queryRegistrationResult.getData();
+                        request.setAttribute("registrationInfo",registrationInfo);
+                    }
                 }
             }else {
                 session.setAttribute("errorMsg",userServiceInfo.getMessage());
