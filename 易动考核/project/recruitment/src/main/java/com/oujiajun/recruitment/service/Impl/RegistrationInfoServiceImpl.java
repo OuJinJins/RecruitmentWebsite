@@ -108,4 +108,14 @@ public class RegistrationInfoServiceImpl implements RegistrationInfoService {
             return new ResultInfo(false,"查询招聘信息错误");
         }
     }
+
+    @Override
+    public ResultInfo queryUserRegistrationInfoForInterviewer(Integer recruitmentInfoId) {
+        List<UserRegistrationInfo> infoList = recruitmentInfoDao.queryUserRegistrationInfoForInterviewer(recruitmentInfoId);
+        if (infoList != null){
+            return new ResultInfo(true,infoList);
+        }else {
+            return new ResultInfo(false,"查询招聘信息错误");
+        }
+    }
 }
