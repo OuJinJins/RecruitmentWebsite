@@ -238,7 +238,14 @@ public class RecruitmentInfoController {
         if(!resultInfo.getSuccess()){
             session.setAttribute("errorMsg", resultInfo.getMessage());
         }
-        return "redirect:/interviewer/applicants";
+        ResultInfo queryResult = registrationInfoService.queryRegistrationInfoById(registrationInfoId);
+        Integer recruitmentInfoId = null;
+        if (!resultInfo.getSuccess()){
+            session.setAttribute("errorMsg", resultInfo.getMessage());
+        }else {
+            recruitmentInfoId = ((RegistrationInfo)queryResult.getData()).getRecruitmentInfoId();
+        }
+        return "redirect:/registrationInfo/show/allApplicants/id/" + recruitmentInfoId;
     }
 
     @GetMapping("/interviewer/registration/out/id/{registrationInfoId}")
@@ -247,6 +254,13 @@ public class RecruitmentInfoController {
         if(!resultInfo.getSuccess()){
             session.setAttribute("errorMsg", resultInfo.getMessage());
         }
-        return "redirect:/interviewer/applicants";
+        ResultInfo queryResult = registrationInfoService.queryRegistrationInfoById(registrationInfoId);
+        Integer recruitmentInfoId = null;
+        if (!resultInfo.getSuccess()){
+            session.setAttribute("errorMsg", resultInfo.getMessage());
+        }else {
+            recruitmentInfoId = ((RegistrationInfo)queryResult.getData()).getRecruitmentInfoId();
+        }
+        return "redirect:/registrationInfo/show/allApplicants/id/" + recruitmentInfoId;
     }
 }
