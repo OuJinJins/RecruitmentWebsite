@@ -141,6 +141,16 @@
                 <span id="job-salary" th:text="${myRecruitmentInfo.monthlyPay} + K"></span><span id="job-salary-after">每月</span>
             </div>
             <p id="p-city" th:text="${myRecruitmentInfo.workCity}"></p>
+            <div class="div-option">
+                <a th:href="@{/registrationInfo/show/allApplicants/id/} + ${myRecruitmentInfo.recruitmentInfoId}">
+                    <button id="showRegistration" class="button-option">查看报名</button>
+                </a>
+            </div>
+            <div class="div-option">
+                <a th:href="@{/registrationInfo/show/allApplicants/id/} + ${myRecruitmentInfo.recruitmentInfoId}">
+                    <button id="cancelRegistration" class="button-option">查看面试</button>
+                </a>
+            </div>
         </div>
     </div>
     <div id="text-interviewer">
@@ -185,6 +195,21 @@
 
 </script>
 <style>
+
+    .div-option{
+        margin-right: 18px;
+        float: left;
+    }
+
+    .button-option{
+        color: #ffffff;
+        font-size: 16px;
+        border: #5dd5c8;
+        background: #5dd5c8;
+        width: 130px;
+        height: 45px;
+        border-radius: 0;
+    }
 
     #text-company{
         margin-top: 20px;
