@@ -95,6 +95,12 @@ public class RecruitmentInfoController {
             if(userServiceInfo.getSuccess()){
                 User interviewer = (User)userServiceInfo.getData();
                 request.setAttribute("interviewer",interviewer);
+                // 检查是否已经报名
+                ResultInfo queryRegistrationResult = registrationInfoService.queryRegistrationInfoById(recruitmentInfo.getRecruitmentInfoId());
+                if(queryRegistrationResult.getSuccess()){
+                    RegistrationInfo registrationInfo = (RegistrationInfo) queryRegistrationResult.getData();
+                    request.setAttribute("registrationInfo",registrationInfo);
+                }
             }else {
                 session.setAttribute("errorMsg",userServiceInfo.getMessage());
             }
