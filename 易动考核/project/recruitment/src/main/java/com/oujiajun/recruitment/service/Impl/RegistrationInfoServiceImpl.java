@@ -73,6 +73,19 @@ public class RegistrationInfoServiceImpl implements RegistrationInfoService {
     }
 
     @Override
+    public ResultInfo passOutRegistration(Integer registrationInfoId) {
+        RegistrationInfo registrationInfo = new RegistrationInfo();
+        registrationInfo.setRegistrationInfoId(registrationInfoId);
+        registrationInfo.setIsRegistrationPass(false);
+        int count = recruitmentInfoDao.updateRegistrationInfo(registrationInfo);
+        if (count >= 1){
+            return new ResultInfo(true);
+        }else {
+            return new ResultInfo(false,"更新报名信息失败");
+        }
+    }
+
+    @Override
     public ResultInfo queryAllRegistrationInfo() {
         List<RegistrationInfo> infoList = recruitmentInfoDao.queryAllRegistrationInfo();
         if (!CollectionUtils.isEmpty(infoList)){
