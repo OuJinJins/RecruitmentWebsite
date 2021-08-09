@@ -139,29 +139,28 @@
             <div class="div-info">
                 <div class="div-info-top">
                     <div class="div-recruitmentInfo-left">
-                        <a class="a-occupation" th:text="${info.username}" th:href="@{/interviewer/myRecruitment/detail/id/} + ${info.recruitmentInfoId}"></a>
-                        <span class="span-city" th:text="${info.age}"></span>
-                        <span class="span-city" th:text="${info.gender}"></span>
-                        <span class="span-city" th:text="${info.education}"></span>
+                        <span class="span-city">姓名:</span><a class="a-occupation span-city" th:text="${info.user.username}"></a>
+                        <span class="span-city">年龄:</span><span class="span-city" th:text="${info.user.age}"></span>
+                        <span class="span-city">性别:</span><span class="span-city" th:text="${info.user.gender}"></span>
                     </div>
                     <div class="div-recruitmentInfo-right">
-                        <span class="span-monthlyPay" th:text="${info.monthlyPay} + K"></span>
+                        <span class="span-monthlyPay" th:text="${info.user.education}"></span>
                     </div>
                 </div>
                 <hr class="hr-info">
                 <div class="div-info-bottom">
                     <div class="div-info-bottomleft">
-                        <span class="span-company" th:text="${info.briefIntroduction}"></span>
+                        <span class="span-company" th:text="${info.user.briefIntroduction}"></span>
                     </div>
                     <div class="div-info-bottomright">
                         <div class="div-option">
-                            <a th:href="@{/interviewer/registration/pass/id/} + ">
-                                <button id="signUp" class="button-option">通过报名</button>
+                            <a th:href="@{/interviewer/registration/pass/id/} + ${info.registrationInfoId}">
+                                <button class="button-option">通过报名</button>
                             </a>
                         </div>
                         <div class="div-option">
-                            <a href="">
-                                <button id="signUp" class="button-option">不通过</button>
+                            <a th:href="@{/interviewer/registration/out/id/} + ${info.registrationInfoId}">
+                                <button class="button-option">不通过</button>
                             </a>
                         </div>
                     </div>
@@ -196,6 +195,14 @@
 
 </script>
 <style>
+    .span-city{
+        font-size: 15px;
+    }
+
+    .span-monthlyPay{
+        font-size: 15px;
+    }
+
     .div-option{
         margin-left: 16px;
         margin-top: 12px;

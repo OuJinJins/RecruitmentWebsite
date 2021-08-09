@@ -225,7 +225,7 @@ public class RecruitmentInfoController {
         if(resultInfo.getSuccess()){
             System.out.println(resultInfo.getData());
             List<UserRegistrationInfo> userRegistrationInfoList = (List<UserRegistrationInfo>)resultInfo.getData();
-            request.setAttribute("myInfoList",userRegistrationInfoList);
+            request.setAttribute("infoList",userRegistrationInfoList);
         }else {
             session.setAttribute("errorMsg",resultInfo.getMessage());
             return "redirect:/interviewer/myRecruitment/detail/id/" + recruitmentInfoId;
