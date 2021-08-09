@@ -5,6 +5,7 @@ import com.oujiajun.recruitment.entity.dto.ResultInfo;
 import com.oujiajun.recruitment.entity.po.RegistrationInfo;
 import com.oujiajun.recruitment.service.RegistrationInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 /**
  * @author oujiajun
  */
+@Service
 public class RegistrationInfoServiceImpl implements RegistrationInfoService {
     @Autowired
     RegistrationInfoDao recruitmentInfoDao;

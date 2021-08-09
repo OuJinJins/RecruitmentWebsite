@@ -2,8 +2,10 @@ package com.oujiajun.recruitment.controller;
 
 import com.oujiajun.recruitment.entity.dto.ResultInfo;
 import com.oujiajun.recruitment.entity.po.RecruitmentInfo;
+import com.oujiajun.recruitment.entity.po.RegistrationInfo;
 import com.oujiajun.recruitment.entity.po.User;
 import com.oujiajun.recruitment.service.RecruitmentInfoService;
+import com.oujiajun.recruitment.service.RegistrationInfoService;
 import com.oujiajun.recruitment.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -29,6 +31,9 @@ public class RecruitmentInfoController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    RegistrationInfoService registrationInfoService;
 
     @GetMapping({"", "/", "/index","/index.html"})
     public String index(HttpServletRequest request, HttpSession session) {
@@ -123,5 +128,26 @@ public class RecruitmentInfoController {
             session.setAttribute("errorMsg",resultInfo.getMessage());
         }
         return "redirect:/interviewer/myRecruitment";
+    }
+
+    @GetMapping("/recruitment/signUp/id/{recruitmentInfoId}")
+    public String signUp(@PathVariable("recruitmentInfoId") Integer recruitmentInfoId,HttpSession session){
+        ResultInfo recruitmentInfoServiceResult = recruitmentInfoService.queryRecruitmentInfoById(recruitmentInfoId);
+        if(recruitmentInfoServiceResult.getSuccess()){
+            RecruitmentInfo recruitmentInfo = (RecruitmentInfo)recruitmentInfoServiceResult.getData();
+            User loginUser = (User)session.getAttribute("loginUser");
+            RegistrationInfo registrationInfo = new RegistrationInfo();
+            registrationInfo.setRecruitmentInfoId(recruitmentInfoId);
+            registrationInfo.setUserId(loginUser.getId());
+            registrationInfo.setIsRegistrationPass(false);
+            registrationInfo.setIsInterviewPass(false);
+            ResultInfo registrationInfoServiceResult = registrationInfoService.insertRegistrationInfo(registrationInfo);
+            if(!registrationInfoServiceResult.getSuccess()){
+                session.setAttribute("errorMsg",registrationInfoServiceResult.getMessage());
+            }
+        }else {
+            session.setAttribute("errorMsg",recruitmentInfoServiceResult.getMessage());
+        }
+        return "redirect:/recruitment/detail/id/"+recruitmentInfoId;
     }
 }

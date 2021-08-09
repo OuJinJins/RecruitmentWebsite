@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 /**
  * @author oujiajun
  */
-@Service
 public interface RegistrationInfoService {
     /**
      * 增加报名信息
