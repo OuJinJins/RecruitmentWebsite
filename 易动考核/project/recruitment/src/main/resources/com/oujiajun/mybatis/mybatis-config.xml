@@ -6,6 +6,7 @@
         <typeAlias alias="User" type="com.oujiajun.recruitment.entity.po.User" />
         <typeAlias alias="RecruitmentInfo" type="com.oujiajun.recruitment.entity.po.RecruitmentInfo" />
         <typeAlias alias="RegistrationInfo" type="com.oujiajun.recruitment.entity.po.RegistrationInfo" />
+        <typeAlias alias="UserRegistrationInfo" type="com.oujiajun.recruitment.entity.vo.UserRegistrationInfo" />
     </typeAliases>
 
 </configuration>

@@ -1,6 +1,7 @@
 package com.oujiajun.recruitment.dao;
 
 import com.oujiajun.recruitment.entity.po.RegistrationInfo;
+import com.oujiajun.recruitment.entity.vo.UserRegistrationInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -65,8 +66,16 @@ public interface RegistrationInfoDao {
     /**
      * 根据用户id与招聘信息id寻找报名信息
      * @param userId 用户id
-     * @param recruitmentInfoId 报名信息id
+     * @param recruitmentInfoId 招聘信息id
      * @return 报名信息
      */
     RegistrationInfo queryRegistrationInfoByUidAndRid(@Param("userId") Integer userId, @Param("recruitmentInfoId")Integer recruitmentInfoId);
+
+    /**
+     * 寻找用户报名信息
+     * @param userId 用户id
+     * @param recruitmentInfoId 招聘信息id
+     * @return 用户报名信息视图类
+     */
+    UserRegistrationInfo queryUserRegistrationInfo(@Param("userId") Integer userId, @Param("recruitmentInfoId")Integer recruitmentInfoId);
 }

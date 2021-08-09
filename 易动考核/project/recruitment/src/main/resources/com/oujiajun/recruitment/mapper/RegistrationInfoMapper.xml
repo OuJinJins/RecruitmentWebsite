@@ -122,4 +122,49 @@
         where user_id=#{userId}
           and recruitment_info_id=#{recruitmentInfoId}
     </select>
+
+    <select id="queryUserRegistrationInfo" resultMap="UserRegistrationInfo">
+        select info.registration_info_id,
+               info.recruitment_info_id,
+               info.user_id,
+               info.is_registration_pass,
+               info.is_interview_pass,
+               info.interview_date,
+               info.interview_time_begin,
+               info.interview_time_end,
+               user.id,
+               user.email,
+               user.username,
+               user.password,
+               user.gender,
+               user.city,
+               user.brief_introduction,
+               user.age,
+               user.education
+        from recruitment.registration_info info,recruitment.user user
+        where info.user_id=#{userId}
+          and recruitment_info_id=#{recruitmentInfoId}
+          and info.user_id=user.id
+    </select>
+
+    <resultMap id="UserRegistrationInfo" type="UserRegistrationInfo">
+        <result property="registrationInfoId" column="registration_info_id"/>
+        <result property="recruitmentInfoId" column="recruitment_info_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="isRegistrationPass" column="is_registration_pass"/>
+        <result property="isInterviewPass" column="is_interview_pass"/>
+        <result property="interviewDate" column="interview_date"/>
+        <result property="interviewTimeBegin" column="interview_time_begin"/>
+        <result property="interviewTimeEnd" column="interview_time_end"/>
+        <association property="user" javaType="User">
+            <result property="id" column="id"/>
+            <result property="email" column="email"/>
+            <result property="username" column="username"/>
+            <result property="gender" column="gender"/>
+            <result property="city" column="city"/>
+            <result property="briefIntroduction" column="brief_introduction"/>
+            <result property="age" column="age"/>
+            <result property="education" column="education"/>
+        </association>
+    </resultMap>
 </mapper>

@@ -1,6 +1,7 @@
 package com.oujiajun.recruitment.dao;
 
 import com.oujiajun.recruitment.entity.po.RegistrationInfo;
+import com.oujiajun.recruitment.entity.vo.UserRegistrationInfo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -71,5 +72,13 @@ class RegistrationInfoDaoTest {
     void queryRegistrationInfoByUid() {
         List list = registrationInfoDao.queryRegistrationInfoByUid(6);
         assertNotNull(list);
+    }
+
+    @Test
+    void queryUserRegistrationInfo() {
+        UserRegistrationInfo userRegistrationInfo = registrationInfoDao.queryUserRegistrationInfo(6,1);
+        System.out.println(userRegistrationInfo);
+        System.out.println(userRegistrationInfo.getUser());
+        assertNotNull(userRegistrationInfo);
     }
 }

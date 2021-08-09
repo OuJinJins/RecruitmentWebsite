@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 /**
  * @author oujiajun
  */
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserRegistrationInfo extends RegistrationInfo {
