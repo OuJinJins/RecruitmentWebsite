@@ -51,7 +51,7 @@ public class RecruitmentInfoServiceImpl implements RecruitmentInfoService {
     @Override
     public ResultInfo queryAllRecruitmentInfo() {
         List<RecruitmentInfo> infoList = recruitmentInfoDao.queryAllRecruitmentInfo();
-        if (!CollectionUtils.isEmpty(infoList)){
+        if (infoList != null){
             return new ResultInfo(true,infoList);
         }else {
             return new ResultInfo(false,"查询招聘信息错误");
@@ -71,7 +71,7 @@ public class RecruitmentInfoServiceImpl implements RecruitmentInfoService {
     @Override
     public ResultInfo queryRecruitmentInfoByUid(int userId) {
         List<RecruitmentInfo> infoList = recruitmentInfoDao.queryRecruitmentInfoByUid(userId);
-        if (!CollectionUtils.isEmpty(infoList)){
+        if (infoList != null){
             return new ResultInfo(true,infoList);
         }else {
             return new ResultInfo(false,"查询招聘信息错误");

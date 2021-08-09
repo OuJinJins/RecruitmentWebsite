@@ -27,12 +27,14 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping("/user/register")
-    public String register(User user){
+    public String register(User user,HttpSession session){
         // 注册
         ResultInfo resultInfo = userService.register(user);
         if(resultInfo.getSuccess()){
-            return "index";
+            session.setAttribute("loginUser",(User)resultInfo.getData());
+            return "redirect:/index";
         }else {
+            session.setAttribute("errorMsg",resultInfo.getMessage());
             return "register";
         }
     }
