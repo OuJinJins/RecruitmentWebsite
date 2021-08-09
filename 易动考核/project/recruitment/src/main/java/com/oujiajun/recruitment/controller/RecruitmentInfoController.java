@@ -181,8 +181,6 @@ public class RecruitmentInfoController {
             RegistrationInfo registrationInfo = new RegistrationInfo();
             registrationInfo.setRecruitmentInfoId(recruitmentInfoId);
             registrationInfo.setUserId(loginUser.getId());
-            registrationInfo.setIsRegistrationPass(false);
-            registrationInfo.setIsInterviewPass(false);
             ResultInfo registrationInfoServiceResult = registrationInfoService.insertRegistrationInfo(registrationInfo);
             if(!registrationInfoServiceResult.getSuccess()){
                 session.setAttribute("errorMsg",registrationInfoServiceResult.getMessage());
