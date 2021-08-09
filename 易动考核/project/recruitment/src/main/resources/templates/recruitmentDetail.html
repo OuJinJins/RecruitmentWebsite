@@ -141,9 +141,14 @@
                 <span id="job-salary" th:text="${recruitmentInfo.monthlyPay} + K"></span><span id="job-salary-after">每月</span>
             </div>
             <p id="p-city" th:text="${recruitmentInfo.workCity}"></p>
-            <div id="div-option">
-                <a th:href="@{/signUp/id/} + ${recruitmentInfo.recruitmentInfoId}">
+            <div class="div-option">
+                <a th:href="@{/signUp/id/} + ${recruitmentInfo.recruitmentInfoId}"  th:if="${#strings.isEmpty(registrationInfo)}">
                     <button id="signUp" class="button-option">报名面试</button>
+                </a>
+            </div>
+            <div class="div-option">
+                <a th:href="@{/cancelRegistration/id/} + ${recruitmentInfo.recruitmentInfoId}"  th:if="${not #strings.isEmpty(registrationInfo)}">
+                    <button id="cancelRegistration" class="button-option">取消报名</button>
                 </a>
             </div>
         </div>
@@ -190,6 +195,11 @@
 
 </script>
 <style>
+
+
+    .div-option{
+        float: left;
+    }
 
     .button-option{
         color: #ffffff;

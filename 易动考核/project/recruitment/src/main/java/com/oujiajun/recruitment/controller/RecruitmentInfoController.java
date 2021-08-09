@@ -66,6 +66,13 @@ public class RecruitmentInfoController {
         return "/interviewer/publish";
     }
 
+    /**
+     * 普通用户前往招聘详情
+     * @param recruitmentInfoId 招聘信息id
+     * @param request 请求
+     * @param session session
+     * @return 视图
+     */
     @GetMapping("/recruitment/detail/id/{recruitmentInfoId}")
     public String toDetailRecruitmentInfo(@PathVariable("recruitmentInfoId") Integer recruitmentInfoId,HttpServletRequest request,HttpSession session){
         ResultInfo resultInfo = recruitmentInfoService.queryRecruitmentInfoById(recruitmentInfoId);
@@ -85,6 +92,7 @@ public class RecruitmentInfoController {
                 ResultInfo queryRegistrationResult = registrationInfoService.queryRegistrationInfoByUidAndRid(loginUser.getId(),recruitmentInfo.getRecruitmentInfoId());
                 if(queryRegistrationResult != null){
                     if(queryRegistrationResult.getSuccess()){
+                        request.removeAttribute("registrationInfo");
                         RegistrationInfo registrationInfo = (RegistrationInfo) queryRegistrationResult.getData();
                         request.setAttribute("registrationInfo",registrationInfo);
                     }
@@ -98,6 +106,13 @@ public class RecruitmentInfoController {
         return "/recruitmentDetail";
     }
 
+    /**
+     * 招聘官前往招聘详情
+     * @param recruitmentInfoId 招聘信息id
+     * @param request 请求
+     * @param session session
+     * @return 视图
+     */
     @GetMapping("/interviewer/myRecruitment/detail/id/{recruitmentInfoId}")
     public String toMyDetailRecruitmentInfo(@PathVariable("recruitmentInfoId") Integer recruitmentInfoId,HttpServletRequest request,HttpSession session){
         ResultInfo resultInfo = recruitmentInfoService.queryRecruitmentInfoById(recruitmentInfoId);
