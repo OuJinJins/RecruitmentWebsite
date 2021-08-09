@@ -240,4 +240,13 @@ public class RecruitmentInfoController {
         }
         return "redirect:/interviewer/applicants";
     }
+
+    @GetMapping("/interviewer/registration/out/id/{registrationInfoId}")
+    public String passOutRegistration(@PathVariable("registrationInfoId")Integer registrationInfoId, HttpServletRequest request, HttpSession session){
+        ResultInfo resultInfo = registrationInfoService.passOutRegistration(registrationInfoId);
+        if(!resultInfo.getSuccess()){
+            session.setAttribute("errorMsg", resultInfo.getMessage());
+        }
+        return "redirect:/interviewer/applicants";
+    }
 }
