@@ -145,6 +145,9 @@
                     </div>
                     <div class="div-recruitmentInfo-right">
                         <span class="span-monthlyPay" th:text="${info.user.education}"></span>
+                        <span class="span-city" th:if="${info.isRegistrationPass} eq null">未审核</span>
+                        <span class="span-city" th:if="${info.isRegistrationPass} eq true">报名通过</span>
+                        <span class="span-city" th:if="${info.isRegistrationPass} eq false">不通过报名</span>
                     </div>
                 </div>
                 <hr class="hr-info">
@@ -285,7 +288,7 @@
     .div-registrationInfo{
         float: left;
         margin-top: 18px;
-        margin-left: 18px;
+        margin-left: 28px;
         width: 570px;
         height: 150px;
         background-color: #ffffff;

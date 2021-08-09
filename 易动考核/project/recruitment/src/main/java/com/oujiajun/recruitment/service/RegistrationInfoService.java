@@ -39,6 +39,12 @@ public interface RegistrationInfoService {
     ResultInfo updateRegistrationInfo(RegistrationInfo registrationInfo);
 
     /**
+     * 报名通过
+     * @param registrationInfoId 报名信息id
+     * @return 服务结果集
+     */
+    ResultInfo passRegistration(@Param("registrationInfoId") Integer registrationInfoId);
+    /**
      * 查询所有报名信息
      * @return 服务结果集
      */
