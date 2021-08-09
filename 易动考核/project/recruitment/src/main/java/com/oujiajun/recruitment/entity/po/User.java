@@ -16,4 +16,8 @@ public class User {
     private String username;
     private String password;
     private String gender;
+    private String city;
+    private String briefIntroduction;
+    private Integer age;
+    private String education;
 }

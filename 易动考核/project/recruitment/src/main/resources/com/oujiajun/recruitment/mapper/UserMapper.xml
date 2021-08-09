@@ -7,7 +7,16 @@
 
     <insert id="insertUser" parameterType="User">
         insert into recruitment.user
-        values(#{id},#{email},#{username},#{password},#{gender})
+        values(#{id},
+               #{email},
+               #{username},
+               #{password},
+               #{gender},
+               #{city},
+               #{briefIntroduction},
+               #{age},
+               #{education}
+       )
     </insert>
 
 
@@ -15,7 +24,11 @@
         update user
         set
             username=#{username},
-            gender=#{gender}
+            gender=#{gender},
+            city=#{city},
+            brief_introduction=#{briefIntroduction},
+            age=#{age},
+            eduction=#{eduction}
         where id=#{id}
     </update>
 
@@ -23,7 +36,11 @@
         select id,
                username,
                password,
-               gender
+               gender,
+               city,
+               brief_introduction,
+               age,
+               eduction
         from user
         where username=#{username}
           And password=#{password}
@@ -32,7 +49,12 @@
     <select id="queryUserById" parameterType="Int" resultType="User">
         select id,
                username,
-               gender
+               password,
+               gender,
+               city,
+               brief_introduction,
+               age,
+               eduction
         from user
         where id=#{id}
     </select>
