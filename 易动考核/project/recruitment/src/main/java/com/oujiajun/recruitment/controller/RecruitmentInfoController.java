@@ -221,7 +221,7 @@ public class RecruitmentInfoController {
             request.setAttribute("errorMsg","请登陆后进行该操作");
             return "redirect:/login";
         }
-        ResultInfo resultInfo = registrationInfoService.queryUserRegistrationInfo(loginUser.getId(),recruitmentInfoId);
+        ResultInfo resultInfo = registrationInfoService.queryUserRegistrationInfoForInterviewer(recruitmentInfoId);
         if(resultInfo.getSuccess()){
             System.out.println(resultInfo.getData());
             List<UserRegistrationInfo> userRegistrationInfoList = (List<UserRegistrationInfo>)resultInfo.getData();
