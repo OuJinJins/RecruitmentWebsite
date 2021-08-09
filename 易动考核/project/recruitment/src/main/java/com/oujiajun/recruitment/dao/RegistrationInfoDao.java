@@ -28,6 +28,14 @@ public interface RegistrationInfoDao {
     int deleteRegistrationInfo(Integer registrationInfoId);
 
     /**
+     * 根据用户id和招聘信息id删除报名信息
+     * @param userId 用户id
+     * @param recruitmentInfoId 招聘信息id
+     * @return 修改行数
+     */
+    int deleteRegistrationInfoByUidAndRid(@Param("userId") Integer userId, @Param("recruitmentInfoId")Integer recruitmentInfoId);
+
+    /**
      * 修改报名信息
      * @param registrationInfo 报名信息
      * @return 修改行数

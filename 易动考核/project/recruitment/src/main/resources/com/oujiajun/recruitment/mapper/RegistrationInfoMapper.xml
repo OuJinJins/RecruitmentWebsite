@@ -33,6 +33,13 @@
         where registration_info_id=#{registration_info_id}
     </delete>
 
+    <delete id="deleteRegistrationInfoByUidAndRid">
+        delete
+        from recruitment.registration_info
+        where user_id=#{userId}
+          and registration_info_id=#{registration_info_id}
+    </delete>
+
     <update id="updateRegistrationInfo" parameterType="RegistrationInfo">
         update recruitment.registration_info
         <set>
@@ -113,6 +120,6 @@
                interview_time_end
         from recruitment.registration_info
         where user_id=#{userId}
-        and recruitment_info_id=#{recruitmentInfoId}
+          and recruitment_info_id=#{recruitmentInfoId}
     </select>
 </mapper>
