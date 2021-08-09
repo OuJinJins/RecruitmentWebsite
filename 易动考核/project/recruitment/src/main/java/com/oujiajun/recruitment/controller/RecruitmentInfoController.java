@@ -69,25 +69,6 @@ public class RecruitmentInfoController {
     @GetMapping("/recruitment/detail/id/{recruitmentInfoId}")
     public String toDetailRecruitmentInfo(@PathVariable("recruitmentInfoId") Integer recruitmentInfoId,HttpServletRequest request,HttpSession session){
         ResultInfo resultInfo = recruitmentInfoService.queryRecruitmentInfoById(recruitmentInfoId);
-        if (resultInfo.getSuccess()) {
-            RecruitmentInfo recruitmentInfo = (RecruitmentInfo) resultInfo.getData();
-            request.setAttribute("recruitmentInfo",recruitmentInfo);
-            ResultInfo userServiceInfo = userService.queryUserById(recruitmentInfo.getUserId());
-            if(userServiceInfo.getSuccess()){
-                User interviewer = (User)userServiceInfo.getData();
-                request.setAttribute("interviewer",interviewer);
-            }else {
-                session.setAttribute("errorMsg",userServiceInfo.getMessage());
-            }
-        }else {
-            session.setAttribute("errorMsg",resultInfo.getMessage());
-        }
-        return "/recruitmentDetail";
-    }
-
-    @GetMapping("/interviewer/myRecruitment/detail/id/{recruitmentInfoId}")
-    public String toMyDetailRecruitmentInfo(@PathVariable("recruitmentInfoId") Integer recruitmentInfoId,HttpServletRequest request,HttpSession session){
-        ResultInfo resultInfo = recruitmentInfoService.queryRecruitmentInfoById(recruitmentInfoId);
         User loginUser = (User)session.getAttribute("loginUser");
         if (loginUser == null){
             request.setAttribute("error","请登陆后进行该操作");
@@ -95,7 +76,7 @@ public class RecruitmentInfoController {
         }
         if (resultInfo.getSuccess()) {
             RecruitmentInfo recruitmentInfo = (RecruitmentInfo) resultInfo.getData();
-            request.setAttribute("myRecruitmentInfo",recruitmentInfo);
+            request.setAttribute("recruitmentInfo",recruitmentInfo);
             ResultInfo userServiceInfo = userService.queryUserById(recruitmentInfo.getUserId());
             if(userServiceInfo.getSuccess()){
                 User interviewer = (User)userServiceInfo.getData();
@@ -108,6 +89,25 @@ public class RecruitmentInfoController {
                         request.setAttribute("registrationInfo",registrationInfo);
                     }
                 }
+            }else {
+                session.setAttribute("errorMsg",userServiceInfo.getMessage());
+            }
+        }else {
+            session.setAttribute("errorMsg",resultInfo.getMessage());
+        }
+        return "/recruitmentDetail";
+    }
+
+    @GetMapping("/interviewer/myRecruitment/detail/id/{recruitmentInfoId}")
+    public String toMyDetailRecruitmentInfo(@PathVariable("recruitmentInfoId") Integer recruitmentInfoId,HttpServletRequest request,HttpSession session){
+        ResultInfo resultInfo = recruitmentInfoService.queryRecruitmentInfoById(recruitmentInfoId);
+        if (resultInfo.getSuccess()) {
+            RecruitmentInfo recruitmentInfo = (RecruitmentInfo) resultInfo.getData();
+            request.setAttribute("myRecruitmentInfo",recruitmentInfo);
+            ResultInfo userServiceInfo = userService.queryUserById(recruitmentInfo.getUserId());
+            if(userServiceInfo.getSuccess()){
+                User interviewer = (User)userServiceInfo.getData();
+                request.setAttribute("interviewer",interviewer);
             }else {
                 session.setAttribute("errorMsg",userServiceInfo.getMessage());
             }
