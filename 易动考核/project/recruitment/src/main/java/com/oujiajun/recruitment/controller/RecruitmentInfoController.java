@@ -4,6 +4,7 @@ import com.oujiajun.recruitment.entity.dto.ResultInfo;
 import com.oujiajun.recruitment.entity.po.RecruitmentInfo;
 import com.oujiajun.recruitment.entity.po.RegistrationInfo;
 import com.oujiajun.recruitment.entity.po.User;
+import com.oujiajun.recruitment.entity.vo.UserRegistrationInfo;
 import com.oujiajun.recruitment.service.RecruitmentInfoService;
 import com.oujiajun.recruitment.service.RegistrationInfoService;
 import com.oujiajun.recruitment.service.UserService;
@@ -211,5 +212,24 @@ public class RecruitmentInfoController {
             session.setAttribute("errorMsg",resultInfo.getMessage());
         }
         return "/myRegistration";
+    }
+
+    @GetMapping({ "/registrationInfo/show/allApplicants/id/{recruitmentInfoId}"})
+    public String toApplicants(@PathVariable("recruitmentInfoId")Integer recruitmentInfoId, HttpServletRequest request, HttpSession session) {
+        User loginUser = (User)session.getAttribute("loginUser");
+        if (loginUser == null){
+            request.setAttribute("errorMsg","请登陆后进行该操作");
+            return "redirect:/login";
+        }
+        ResultInfo resultInfo = registrationInfoService.queryUserRegistrationInfo(loginUser.getId(),recruitmentInfoId);
+        if(resultInfo.getSuccess()){
+            System.out.println(resultInfo.getData());
+            List<UserRegistrationInfo> userRegistrationInfoList = (List<UserRegistrationInfo>)resultInfo.getData();
+            request.setAttribute("myInfoList",userRegistrationInfoList);
+        }else {
+            session.setAttribute("errorMsg",resultInfo.getMessage());
+            return "redirect:/interviewer/myRecruitment/detail/id/" + recruitmentInfoId;
+        }
+        return "/interviewer/applicants";
     }
 }

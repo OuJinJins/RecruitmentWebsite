@@ -147,6 +147,29 @@
           and info.user_id=user.id
     </select>
 
+    <select id="queryUserRegistrationInfoForInterviewer" resultMap="UserRegistrationInfo">
+        select info.registration_info_id,
+               info.recruitment_info_id,
+               info.user_id,
+               info.is_registration_pass,
+               info.is_interview_pass,
+               info.interview_date,
+               info.interview_time_begin,
+               info.interview_time_end,
+               user.id,
+               user.email,
+               user.username,
+               user.password,
+               user.gender,
+               user.city,
+               user.brief_introduction,
+               user.age,
+               user.education
+        from recruitment.registration_info info,recruitment.user user
+        where recruitment_info_id=#{recruitmentInfoId}
+          and info.user_id=user.id
+    </select>
+
     <resultMap id="UserRegistrationInfo" type="UserRegistrationInfo">
         <result property="registrationInfoId" column="registration_info_id"/>
         <result property="recruitmentInfoId" column="recruitment_info_id"/>

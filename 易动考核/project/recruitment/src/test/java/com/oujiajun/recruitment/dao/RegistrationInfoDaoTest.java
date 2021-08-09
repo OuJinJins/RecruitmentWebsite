@@ -81,4 +81,11 @@ class RegistrationInfoDaoTest {
         System.out.println(userRegistrationInfo.getUser());
         assertNotNull(userRegistrationInfo);
     }
+
+    @Test
+    void queryUserRegistrationInfoForInterviewer(){
+        List<UserRegistrationInfo> infoList = registrationInfoDao.queryUserRegistrationInfoForInterviewer(1);
+        System.out.println(infoList.get(0).getRegistrationInfoId());
+        assertNotNull(infoList);
+    }
 }

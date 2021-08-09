@@ -78,4 +78,12 @@ public interface RegistrationInfoDao {
      * @return 用户报名信息视图类
      */
     UserRegistrationInfo queryUserRegistrationInfo(@Param("userId") Integer userId, @Param("recruitmentInfoId")Integer recruitmentInfoId);
+
+
+    /**
+     * 寻找用户报名信息
+     * @param recruitmentInfoId 招聘信息id
+     * @return 用户报名信息视图类
+     */
+    List<UserRegistrationInfo> queryUserRegistrationInfoForInterviewer(@Param("recruitmentInfoId")Integer recruitmentInfoId);
 }
