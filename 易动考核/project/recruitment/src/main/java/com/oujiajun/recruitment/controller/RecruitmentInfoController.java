@@ -130,7 +130,7 @@ public class RecruitmentInfoController {
         return "redirect:/interviewer/myRecruitment";
     }
 
-    @GetMapping("/recruitment/signUp/id/{recruitmentInfoId}")
+    @GetMapping("/signUp/id/{recruitmentInfoId}")
     public String signUp(@PathVariable("recruitmentInfoId") Integer recruitmentInfoId,HttpSession session){
         ResultInfo recruitmentInfoServiceResult = recruitmentInfoService.queryRecruitmentInfoById(recruitmentInfoId);
         if(recruitmentInfoServiceResult.getSuccess()){
