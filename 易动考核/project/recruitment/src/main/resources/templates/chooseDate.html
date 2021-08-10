@@ -157,7 +157,7 @@
                 <div class="form-group">
                     <!--指定 date标记-->
                     <label for="selectInterviewDate">选择面试日期</label>
-                    <select class="select form-control" id="selectInterviewDate" >
+                    <select class="select form-control" id="selectInterviewDate" name="interviewPeriodId">
                         <option th:each="period:${periodList}" th:value="${period.interviewPeriodId}" th:text="'日期:' + ${period.interviewDate} + ' 时间:' + ${period.interviewTimeBegin} + '-' + ${period.interviewTimeEnd}"></option>
                     </select>
                 </div>
