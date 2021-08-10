@@ -135,9 +135,12 @@
         <div id="div-job-banner">
             <div id="job-status">
                 <span id="span-status" th:if="${#strings.isEmpty(registrationInfo)}" >未报名</span>
-                <span id="span-status" th:if="${registrationInfo?.isRegistrationPass} eq null" >审核中</span>
+                <span id="span-status" th:if="${not #strings.isEmpty(registrationInfo) && registrationInfo?.isRegistrationPass eq null}" >报名审核中</span>
                 <span id="span-status" th:if="${registrationInfo?.isRegistrationPass} eq true" >通过报名</span>
                 <span id="span-status" th:if="${registrationInfo?.isRegistrationPass} eq false" >报名未通过</span>
+                <span id="span-status" th:if="${registrationInfo?.isRegistrationPass eq true && registrationInfo?.isInterviewPass eq null}" >面试审核中</span>
+                <span id="span-status" th:if="${registrationInfo?.isRegistrationPass eq true && registrationInfo?.isInterviewPass eq true}" >通过面试</span>
+                <span id="span-status" th:if="${registrationInfo?.isRegistrationPass eq true && registrationInfo?.isInterviewPass eq false}" >面试未通过</span>
             </div>
             <div id="div-name">
                 <span id="job-name" th:text="${recruitmentInfo.occupation}"></span>
