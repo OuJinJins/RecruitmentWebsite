@@ -30,7 +30,7 @@
     <insert id="insertInterviewRegistrationInfo">
         insert into recruitment.interview_registration
         values(null,
-               #{recruitmentInfoId},
+               #{interviewPeriodId},
                #{registrationInfoId}
               )
     </insert>
