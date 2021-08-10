@@ -1,12 +1,16 @@
 package com.oujiajun.recruitment.service.Impl;
 
+import com.oujiajun.recruitment.dao.RecruitmentInfoDao;
 import com.oujiajun.recruitment.dao.RegistrationInfoDao;
 import com.oujiajun.recruitment.entity.dto.ResultInfo;
+import com.oujiajun.recruitment.entity.po.InterviewPeriod;
 import com.oujiajun.recruitment.entity.po.RegistrationInfo;
 import com.oujiajun.recruitment.entity.vo.UserRegistrationInfo;
 import com.oujiajun.recruitment.service.RegistrationInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
@@ -17,11 +21,14 @@ import java.util.List;
 @Service
 public class RegistrationInfoServiceImpl implements RegistrationInfoService {
     @Autowired
-    RegistrationInfoDao recruitmentInfoDao;
+    RegistrationInfoDao registrationInfoDao;
+
+    @Autowired
+    RecruitmentInfoDao recruitmentInfoDao;
 
     @Override
     public ResultInfo insertRegistrationInfo(RegistrationInfo recruitmentInfo) {
-        int count = recruitmentInfoDao.insertRegistrationInfo(recruitmentInfo);
+        int count = registrationInfoDao.insertRegistrationInfo(recruitmentInfo);
         if (count >= 1){
             return new ResultInfo(true);
         }else {
@@ -31,7 +38,7 @@ public class RegistrationInfoServiceImpl implements RegistrationInfoService {
 
     @Override
     public ResultInfo deleteRegistrationInfo(int recruitmentInfoId) {
-        int count = recruitmentInfoDao.deleteRegistrationInfo(recruitmentInfoId);
+        int count = registrationInfoDao.deleteRegistrationInfo(recruitmentInfoId);
         if (count >= 1){
             return new ResultInfo(true);
         }else {
@@ -41,7 +48,7 @@ public class RegistrationInfoServiceImpl implements RegistrationInfoService {
 
     @Override
     public ResultInfo deleteRegistrationInfoByUidAndRid(Integer userId, Integer registrationInfoId) {
-        int count = recruitmentInfoDao.deleteRegistrationInfoByUidAndRid(userId,registrationInfoId);
+        int count = registrationInfoDao.deleteRegistrationInfoByUidAndRid(userId,registrationInfoId);
         if (count >= 1){
             return new ResultInfo(true,count);
         }else {
@@ -51,7 +58,7 @@ public class RegistrationInfoServiceImpl implements RegistrationInfoService {
 
     @Override
     public ResultInfo updateRegistrationInfo(RegistrationInfo recruitmentInfo) {
-        int count = recruitmentInfoDao.updateRegistrationInfo(recruitmentInfo);
+        int count = registrationInfoDao.updateRegistrationInfo(recruitmentInfo);
         if (count >= 1){
             return new ResultInfo(true);
         }else {
@@ -64,7 +71,7 @@ public class RegistrationInfoServiceImpl implements RegistrationInfoService {
         RegistrationInfo registrationInfo = new RegistrationInfo();
         registrationInfo.setRegistrationInfoId(registrationInfoId);
         registrationInfo.setIsRegistrationPass(true);
-        int count = recruitmentInfoDao.updateRegistrationInfo(registrationInfo);
+        int count = registrationInfoDao.updateRegistrationInfo(registrationInfo);
         if (count >= 1){
             return new ResultInfo(true);
         }else {
@@ -77,7 +84,7 @@ public class RegistrationInfoServiceImpl implements RegistrationInfoService {
         RegistrationInfo registrationInfo = new RegistrationInfo();
         registrationInfo.setRegistrationInfoId(registrationInfoId);
         registrationInfo.setIsRegistrationPass(false);
-        int count = recruitmentInfoDao.updateRegistrationInfo(registrationInfo);
+        int count = registrationInfoDao.updateRegistrationInfo(registrationInfo);
         if (count >= 1){
             return new ResultInfo(true);
         }else {
@@ -87,7 +94,7 @@ public class RegistrationInfoServiceImpl implements RegistrationInfoService {
 
     @Override
     public ResultInfo queryAllRegistrationInfo() {
-        List<RegistrationInfo> infoList = recruitmentInfoDao.queryAllRegistrationInfo();
+        List<RegistrationInfo> infoList = registrationInfoDao.queryAllRegistrationInfo();
         if (!CollectionUtils.isEmpty(infoList)){
             return new ResultInfo(true,infoList);
         }else {
@@ -97,7 +104,7 @@ public class RegistrationInfoServiceImpl implements RegistrationInfoService {
 
     @Override
     public ResultInfo queryRegistrationInfoById(int recruitmentInfoId) {
-        RegistrationInfo info = recruitmentInfoDao.queryRegistrationInfoById(recruitmentInfoId);
+        RegistrationInfo info = registrationInfoDao.queryRegistrationInfoById(recruitmentInfoId);
         if (info != null){
             return new ResultInfo(true,info);
         }else {
@@ -107,7 +114,7 @@ public class RegistrationInfoServiceImpl implements RegistrationInfoService {
 
     @Override
     public ResultInfo queryRegistrationInfoByUid(int userId) {
-        List<RegistrationInfo> infoList = recruitmentInfoDao.queryRegistrationInfoByUid(userId);
+        List<RegistrationInfo> infoList = registrationInfoDao.queryRegistrationInfoByUid(userId);
         if (infoList != null){
             return new ResultInfo(true,infoList);
         }else {
@@ -117,7 +124,7 @@ public class RegistrationInfoServiceImpl implements RegistrationInfoService {
 
     @Override
     public ResultInfo queryRegistrationInfoByUidAndRid(Integer userId, Integer recruitmentInfoId) {
-        RegistrationInfo info = recruitmentInfoDao.queryRegistrationInfoByUidAndRid(userId,recruitmentInfoId);
+        RegistrationInfo info = registrationInfoDao.queryRegistrationInfoByUidAndRid(userId,recruitmentInfoId);
         if (info != null){
             return new ResultInfo(true,info);
         }else {
@@ -127,7 +134,7 @@ public class RegistrationInfoServiceImpl implements RegistrationInfoService {
 
     @Override
     public ResultInfo queryUserRegistrationInfo(Integer userId, Integer recruitmentInfoId) {
-        UserRegistrationInfo info = recruitmentInfoDao.queryUserRegistrationInfo(userId,recruitmentInfoId);
+        UserRegistrationInfo info = registrationInfoDao.queryUserRegistrationInfo(userId,recruitmentInfoId);
         if (info != null){
             return new ResultInfo(true,info);
         }else {
@@ -137,7 +144,7 @@ public class RegistrationInfoServiceImpl implements RegistrationInfoService {
 
     @Override
     public ResultInfo queryUserRegistrationInfoForInterviewer(Integer recruitmentInfoId) {
-        List<UserRegistrationInfo> infoList = recruitmentInfoDao.queryUserRegistrationInfoForInterviewer(recruitmentInfoId);
+        List<UserRegistrationInfo> infoList = registrationInfoDao.queryUserRegistrationInfoForInterviewer(recruitmentInfoId);
         if (infoList != null){
             return new ResultInfo(true,infoList);
         }else {
@@ -145,13 +152,27 @@ public class RegistrationInfoServiceImpl implements RegistrationInfoService {
         }
     }
 
+    //TODO 使用异常
     @Override
+    @Transactional
     public ResultInfo insertInterviewRegistrationInfo(int interviewPeriodId, int registrationInfoId) {
-        int count = recruitmentInfoDao.insertInterviewRegistrationInfo(interviewPeriodId,registrationInfoId);
-        if (count >= 1){
-            return new ResultInfo(true);
-        }else {
-            return new ResultInfo(false,"选择面试时间段失败");
+        InterviewPeriod period = recruitmentInfoDao.queryInterviewPeriodByInterviewPeriodId(interviewPeriodId);
+        if (period != null){
+            int count = registrationInfoDao.insertInterviewRegistrationInfo(interviewPeriodId,registrationInfoId);
+            if (count >= 1){
+                RegistrationInfo registrationInfo = new RegistrationInfo();
+                registrationInfo.setRegistrationInfoId(registrationInfoId);
+                registrationInfo.setInterviewDate(period.getInterviewDate());
+                registrationInfo.setInterviewTimeBegin(period.getInterviewTimeBegin());
+                registrationInfo.setInterviewTimeEnd(period.getInterviewTimeEnd());
+                count = registrationInfoDao.updateRegistrationInfo(registrationInfo);
+                if (count >= 1){
+                    return new ResultInfo(true);
+                }else {
+                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                }
+            }
         }
+        return new ResultInfo(false,"选择面试时间段失败");
     }
 }
