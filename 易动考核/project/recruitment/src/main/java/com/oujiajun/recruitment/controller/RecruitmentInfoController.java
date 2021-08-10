@@ -287,18 +287,24 @@ public class RecruitmentInfoController {
 
     @GetMapping("/interview/chooseDate")
     public String chooseDate(
-            @RequestParam("recruitmentInfoId")Integer recruitmentInfoId,
+            @RequestParam("interviewPeriodId")Integer interviewPeriodId,
             HttpServletRequest request,
             HttpSession session){
-        ResultInfo resultInfo = recruitmentInfoService.queryRecruitmentInfoById(recruitmentInfoId);
         User loginUser = (User)session.getAttribute("loginUser");
         if (loginUser == null){
             request.setAttribute("errorMsg","请登陆后进行该操作");
             return "redirect:/login";
         }
+        ResultInfo resultInfo = recruitmentInfoService.queryInterviewPeriodByInterviewPeriodId(interviewPeriodId);
         if (resultInfo.getSuccess()) {
-            RecruitmentInfo recruitmentInfo = (RecruitmentInfo) resultInfo.getData();
-            request.setAttribute("recruitmentInfo",recruitmentInfo);
+            InterviewPeriod interviewPeriod = (InterviewPeriod)resultInfo.getData();
+            ResultInfo registrationInfoResult = registrationInfoService.deleteRegistrationInfoByUidAndRid(loginUser.getId(),interviewPeriod.getRecruitmentInfoId());
+            if (registrationInfoResult.getSuccess()){
+                RegistrationInfo registrationInfo = (RegistrationInfo) registrationInfoResult.getData();
+
+            }else {
+                session.setAttribute("errorMsg",registrationInfoResult.getMessage());
+            }
         }else {
             session.setAttribute("errorMsg",resultInfo.getMessage());
         }
