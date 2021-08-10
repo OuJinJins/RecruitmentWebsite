@@ -96,4 +96,11 @@ public interface RegistrationInfoService {
      */
     ResultInfo queryUserRegistrationInfoForInterviewer(@Param("recruitmentInfoId") Integer recruitmentInfoId);
 
+    /**
+     * 插入面试时间报名信息
+     * @param interviewPeriodId 面试时间段id
+     * @param registrationInfoId 报名信息id
+     * @return 服务结果集
+     */
+    ResultInfo insertInterviewRegistrationInfo(@Param("interviewPeriodId")int interviewPeriodId,@Param("registrationInfoId")int registrationInfoId);
 }

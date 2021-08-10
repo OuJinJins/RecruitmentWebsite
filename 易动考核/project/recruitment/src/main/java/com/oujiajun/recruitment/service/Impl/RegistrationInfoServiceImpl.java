@@ -144,4 +144,14 @@ public class RegistrationInfoServiceImpl implements RegistrationInfoService {
             return new ResultInfo(false,"查询招聘信息错误");
         }
     }
+
+    @Override
+    public ResultInfo insertInterviewRegistrationInfo(int interviewPeriodId, int registrationInfoId) {
+        int count = recruitmentInfoDao.insertInterviewRegistrationInfo(interviewPeriodId,registrationInfoId);
+        if (count >= 1){
+            return new ResultInfo(true);
+        }else {
+            return new ResultInfo(false,"选择面试时间段失败");
+        }
+    }
 }
