@@ -19,6 +19,16 @@
         <result property ="maxNumber"  column ="max_number"/>
     </resultMap>
 
+    <resultMap id ="InterviewPeriodMap" type="com.oujiajun.recruitment.entity.po.InterviewPeriod">
+        <id property ="interviewPeriodId" column="interview_period_id"/>
+        <result property ="recruitmentInfoId"  column ="recruitment_info_id"/>
+        <result property ="interviewDate"  column ="interview_date"/>
+        <result property ="interviewTimeBegin"  column ="interview_time_begin"/>
+        <result property ="interviewTimeEnd"  column ="interview_time_end"/>
+        <result property="maxNumber" column="max_number"/>
+        <result property="version" column="version"/>
+    </resultMap>
+
     <insert id="insertRecruitmentInfo" parameterType="RecruitmentInfo">
         insert into recruitment.recruitment_info
         values(#{recruitmentInfoId},
@@ -132,5 +142,17 @@
                max_number
         from recruitment.recruitment_info
         where user_id=#{userId}
+    </select>
+
+    <select id="queryInterviewPeriodByRecruitmentInfoId" parameterType="int" resultMap="InterviewPeriodMap">
+        select interview_period.interview_period_id,
+               interview_period.recruitment_info_id,
+               interview_period.interview_date,
+               interview_period.interview_time_begin,
+               interview_period.interview_time_end,
+               interview_period.max_number,
+               interview_period.version
+        from recruitment.recruitment_info,recruitment.interview_period
+        where interview_period.recruitment_info_id=#{recruitment_info_id}
     </select>
 </mapper>

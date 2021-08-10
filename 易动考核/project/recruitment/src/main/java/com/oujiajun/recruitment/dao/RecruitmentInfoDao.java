@@ -1,5 +1,6 @@
 package com.oujiajun.recruitment.dao;
 
+import com.oujiajun.recruitment.entity.po.InterviewPeriod;
 import com.oujiajun.recruitment.entity.po.RecruitmentInfo;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -51,4 +52,11 @@ public interface RecruitmentInfoDao {
      * @return 招聘信息
      */
     List<RecruitmentInfo> queryRecruitmentInfoByUid(int userId);
+
+    /**
+     * 根据招聘信息id寻找面试时间段
+     * @param recruitmentInfoId 招聘信息id
+     * @return 面试时间段集合
+     */
+    List<InterviewPeriod> queryInterviewPeriodByRecruitmentInfoId(Integer recruitmentInfoId);
 }
