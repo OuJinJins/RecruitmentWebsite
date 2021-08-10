@@ -295,7 +295,7 @@ public class RecruitmentInfoController {
         ResultInfo resultInfo = recruitmentInfoService.queryInterviewPeriodByInterviewPeriodId(interviewPeriodId);
         if (resultInfo.getSuccess()) {
             InterviewPeriod interviewPeriod = (InterviewPeriod)resultInfo.getData();
-            ResultInfo registrationInfoResult = registrationInfoService.deleteRegistrationInfoByUidAndRid(loginUser.getId(),interviewPeriod.getRecruitmentInfoId());
+            ResultInfo registrationInfoResult = registrationInfoService.queryRegistrationInfoByUidAndRid(loginUser.getId(),interviewPeriod.getRecruitmentInfoId());
             if (registrationInfoResult.getSuccess()){
                 RegistrationInfo registrationInfo = (RegistrationInfo) registrationInfoResult.getData();
                 ResultInfo insertResult = registrationInfoService.insertInterviewRegistrationInfo(interviewPeriodId,registrationInfo.getRegistrationInfoId());
