@@ -8,6 +8,7 @@ import com.oujiajun.recruitment.entity.vo.UserRegistrationInfo;
 import com.oujiajun.recruitment.service.RecruitmentInfoService;
 import com.oujiajun.recruitment.service.RegistrationInfoService;
 import com.oujiajun.recruitment.service.UserService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -262,5 +264,45 @@ public class RecruitmentInfoController {
             recruitmentInfoId = ((RegistrationInfo)queryResult.getData()).getRecruitmentInfoId();
         }
         return "redirect:/registrationInfo/show/allApplicants/id/" + recruitmentInfoId;
+    }
+
+    @GetMapping("/interview/chooseDate/{recruitmentInfoId}")
+    public String toChooseDate(@PathVariable("recruitmentInfoId") Integer recruitmentInfoId, HttpServletRequest request,HttpSession session){
+        ResultInfo resultInfo = recruitmentInfoService.queryRecruitmentInfoById(recruitmentInfoId);
+        User loginUser = (User)session.getAttribute("loginUser");
+        if (loginUser == null){
+            request.setAttribute("errorMsg","请登陆后进行该操作");
+            return "redirect:/login";
+        }
+        if (resultInfo.getSuccess()) {
+            RecruitmentInfo recruitmentInfo = (RecruitmentInfo) resultInfo.getData();
+            request.setAttribute("recruitmentInfo",recruitmentInfo);
+        }else {
+            session.setAttribute("errorMsg",resultInfo.getMessage());
+        }
+        return "/chooseDate";
+    }
+
+    @GetMapping("/interview/chooseDate")
+    public String ChooseDate(
+            @RequestParam(value = "interviewDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate interviewDate,
+            @RequestParam(value = "interviewTimeBegin") @DateTimeFormat(pattern = "hh:mm:ss") LocalTime interviewTimeBegin,
+            @RequestParam(value = "interviewTimeEnd") @DateTimeFormat(pattern = "hh:mm:ss") LocalTime interviewTimeEnd,
+            @RequestParam("recruitmentInfoId")Integer recruitmentInfoId,
+            HttpServletRequest request,
+            HttpSession session){
+        ResultInfo resultInfo = recruitmentInfoService.queryRecruitmentInfoById(recruitmentInfoId);
+        User loginUser = (User)session.getAttribute("loginUser");
+        if (loginUser == null){
+            request.setAttribute("errorMsg","请登陆后进行该操作");
+            return "redirect:/login";
+        }
+        if (resultInfo.getSuccess()) {
+            RecruitmentInfo recruitmentInfo = (RecruitmentInfo) resultInfo.getData();
+            request.setAttribute("recruitmentInfo",recruitmentInfo);
+        }else {
+            session.setAttribute("errorMsg",resultInfo.getMessage());
+        }
+        return "/chooseDate";
     }
 }
