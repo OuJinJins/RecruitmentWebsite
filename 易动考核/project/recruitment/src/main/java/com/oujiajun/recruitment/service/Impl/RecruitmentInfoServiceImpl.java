@@ -2,6 +2,7 @@ package com.oujiajun.recruitment.service.Impl;
 
 import com.oujiajun.recruitment.dao.RecruitmentInfoDao;
 import com.oujiajun.recruitment.entity.dto.ResultInfo;
+import com.oujiajun.recruitment.entity.po.InterviewPeriod;
 import com.oujiajun.recruitment.entity.po.RecruitmentInfo;
 import com.oujiajun.recruitment.service.RecruitmentInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,6 +76,16 @@ public class RecruitmentInfoServiceImpl implements RecruitmentInfoService {
             return new ResultInfo(true,infoList);
         }else {
             return new ResultInfo(false,"查询招聘信息错误");
+        }
+    }
+
+    @Override
+    public ResultInfo queryInterviewPeriodByRecruitmentInfoId(int recruitmentInfoId) {
+        List<InterviewPeriod> infoList = recruitmentInfoDao.queryInterviewPeriodByRecruitmentInfoId(recruitmentInfoId);
+        if (infoList != null){
+            return new ResultInfo(true,infoList);
+        }else {
+            return new ResultInfo(false,"查询面试时间段错误");
         }
     }
 }

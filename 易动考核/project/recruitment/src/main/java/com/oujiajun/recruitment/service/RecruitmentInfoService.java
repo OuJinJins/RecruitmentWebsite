@@ -48,4 +48,11 @@ public interface RecruitmentInfoService {
      * @return 服务结果集
      */
     ResultInfo queryRecruitmentInfoByUid(int userId);
+
+    /**
+     * 根据招聘信息id寻找面试时间段
+     * @param recruitmentInfoId 招聘信息id
+     * @return 服务结果集
+     */
+    ResultInfo queryInterviewPeriodByRecruitmentInfoId(int recruitmentInfoId);
 }
