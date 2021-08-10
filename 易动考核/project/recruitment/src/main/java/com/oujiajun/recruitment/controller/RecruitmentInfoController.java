@@ -1,6 +1,7 @@
 package com.oujiajun.recruitment.controller;
 
 import com.oujiajun.recruitment.entity.dto.ResultInfo;
+import com.oujiajun.recruitment.entity.po.InterviewPeriod;
 import com.oujiajun.recruitment.entity.po.RecruitmentInfo;
 import com.oujiajun.recruitment.entity.po.RegistrationInfo;
 import com.oujiajun.recruitment.entity.po.User;
@@ -268,26 +269,24 @@ public class RecruitmentInfoController {
 
     @GetMapping("/interview/chooseDate/{recruitmentInfoId}")
     public String toChooseDate(@PathVariable("recruitmentInfoId") Integer recruitmentInfoId, HttpServletRequest request,HttpSession session){
-        ResultInfo resultInfo = recruitmentInfoService.queryRecruitmentInfoById(recruitmentInfoId);
         User loginUser = (User)session.getAttribute("loginUser");
         if (loginUser == null){
             request.setAttribute("errorMsg","请登陆后进行该操作");
             return "redirect:/login";
         }
+        ResultInfo resultInfo = recruitmentInfoService.queryInterviewPeriodByRecruitmentInfoId(recruitmentInfoId);
         if (resultInfo.getSuccess()) {
-            RecruitmentInfo recruitmentInfo = (RecruitmentInfo) resultInfo.getData();
-            request.setAttribute("recruitmentInfo",recruitmentInfo);
+            List<InterviewPeriod> periodList = (List<InterviewPeriod>) resultInfo.getData();
+            request.setAttribute("periodList",periodList);
         }else {
             session.setAttribute("errorMsg",resultInfo.getMessage());
+            return "redirect:/recruitment/detail/id/" + recruitmentInfoId;
         }
         return "/chooseDate";
     }
 
     @GetMapping("/interview/chooseDate")
-    public String ChooseDate(
-            @RequestParam(value = "interviewDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate interviewDate,
-            @RequestParam(value = "interviewTimeBegin") @DateTimeFormat(pattern = "hh:mm:ss") LocalTime interviewTimeBegin,
-            @RequestParam(value = "interviewTimeEnd") @DateTimeFormat(pattern = "hh:mm:ss") LocalTime interviewTimeEnd,
+    public String chooseDate(
             @RequestParam("recruitmentInfoId")Integer recruitmentInfoId,
             HttpServletRequest request,
             HttpSession session){
