@@ -145,14 +145,26 @@
     </select>
 
     <select id="queryInterviewPeriodByRecruitmentInfoId" parameterType="int" resultMap="InterviewPeriodMap">
-        select interview_period.interview_period_id,
-               interview_period.recruitment_info_id,
-               interview_period.interview_date,
-               interview_period.interview_time_begin,
-               interview_period.interview_time_end,
-               interview_period.max_number,
-               interview_period.version
-        from recruitment.recruitment_info,recruitment.interview_period
-        where interview_period.recruitment_info_id=#{recruitment_info_id}
+        select interview_period_id,
+               recruitment_info_id,
+               interview_date,
+               interview_time_begin,
+               interview_time_end,
+               max_number,
+               version
+        from recruitment.interview_period
+        where recruitment_info_id=#{recruitment_info_id}
+    </select>
+
+    <select id="queryInterviewPeriodByInterviewPeriodId" parameterType="int" resultMap="InterviewPeriodMap">
+        select interview_period_id,
+               recruitment_info_id,
+               interview_date,
+               interview_time_begin,
+               interview_time_end,
+               max_number,
+               version
+        from recruitment.interview_period
+        where interview_period_id=#{interview_period_id}
     </select>
 </mapper>

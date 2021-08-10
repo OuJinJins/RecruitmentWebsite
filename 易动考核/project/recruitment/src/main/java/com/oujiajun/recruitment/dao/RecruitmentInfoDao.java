@@ -59,4 +59,11 @@ public interface RecruitmentInfoDao {
      * @return 面试时间段集合
      */
     List<InterviewPeriod> queryInterviewPeriodByRecruitmentInfoId(Integer recruitmentInfoId);
+
+    /**
+     * 面试时间段id寻找面试时间段
+     * @param interviewPeriodId 面试时间段id
+     * @return 面试时间段
+     */
+    InterviewPeriod queryInterviewPeriodByInterviewPeriodId(Integer interviewPeriodId);
 }
