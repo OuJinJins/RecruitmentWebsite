@@ -153,19 +153,13 @@
     </div>
     <div id="div-date">
         <form method="post" th:action="@{/interview/chooseDate}" id="form-date">
-            <input type="hidden" value="${info.recruitmentInfoId}">
-            <input type="hidden" value="${info.interviewTimeBegin}">
-            <input type="hidden" value="${info.interviewTimeEnd}">
             <div class='col-sm-6 div-choose-date top' >
                 <div class="form-group">
                     <!--指定 date标记-->
-                    <label for="interviewDateBegin">选择面试开始日期</label>
-                    <div class='input-group date' id='datetimepicker1'>
-                        <input  id="interviewDateBegin" type='text' class="form-control form-input-date" name="interviewDate" />
-                        <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                    </div>
+                    <label for="selectInterviewDate">选择面试日期</label>
+                    <select class="select form-control" id="selectInterviewDate" >
+                        <option th:each="period:${periodList}" th:value="${period.interviewPeriodId}" th:text="'日期:' + ${period.interviewDate} + ' 时间:' + ${period.interviewTimeBegin} + '-' + ${period.interviewTimeEnd}"></option>
+                    </select>
                 </div>
             </div>
             <button type="submit" class="top bottom-date">确定日期</button>
@@ -198,6 +192,11 @@
 
 </script>
 <style>
+
+    .select{
+        width: 400px;
+        height: 40px;
+    }
 
     .top{
         margin: 60px auto auto 150px;
