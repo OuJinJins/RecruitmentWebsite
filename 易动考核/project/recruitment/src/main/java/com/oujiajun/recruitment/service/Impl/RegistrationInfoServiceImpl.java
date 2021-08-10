@@ -91,7 +91,7 @@ public class RegistrationInfoServiceImpl implements RegistrationInfoService {
         if (!CollectionUtils.isEmpty(infoList)){
             return new ResultInfo(true,infoList);
         }else {
-            return new ResultInfo(false,"查询招聘信息错误");
+            return new ResultInfo(false,"查询报名信息错误");
         }
     }
 
@@ -101,17 +101,17 @@ public class RegistrationInfoServiceImpl implements RegistrationInfoService {
         if (info != null){
             return new ResultInfo(true,info);
         }else {
-            return new ResultInfo(false,"查询招聘信息错误");
+            return new ResultInfo(false,"查询报名信息错误");
         }
     }
 
     @Override
     public ResultInfo queryRegistrationInfoByUid(int userId) {
         List<RegistrationInfo> infoList = recruitmentInfoDao.queryRegistrationInfoByUid(userId);
-        if (!CollectionUtils.isEmpty(infoList)){
+        if (infoList != null){
             return new ResultInfo(true,infoList);
         }else {
-            return new ResultInfo(false,"查询招聘信息错误");
+            return new ResultInfo(false,"查询报名信息错误");
         }
     }
 
@@ -121,7 +121,7 @@ public class RegistrationInfoServiceImpl implements RegistrationInfoService {
         if (info != null){
             return new ResultInfo(true,info);
         }else {
-            return new ResultInfo(false,"查询招聘信息错误");
+            return new ResultInfo(false,"查询报名信息错误");
         }
     }
 
@@ -131,7 +131,7 @@ public class RegistrationInfoServiceImpl implements RegistrationInfoService {
         if (info != null){
             return new ResultInfo(true,info);
         }else {
-            return new ResultInfo(false,"查询招聘信息错误");
+            return new ResultInfo(false,"查询报名信息错误");
         }
     }
 
@@ -141,7 +141,7 @@ public class RegistrationInfoServiceImpl implements RegistrationInfoService {
         if (infoList != null){
             return new ResultInfo(true,infoList);
         }else {
-            return new ResultInfo(false,"查询招聘信息错误");
+            return new ResultInfo(false,"查询报名信息错误");
         }
     }
 

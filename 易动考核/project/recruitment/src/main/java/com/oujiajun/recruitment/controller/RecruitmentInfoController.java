@@ -267,7 +267,7 @@ public class RecruitmentInfoController {
         return "redirect:/registrationInfo/show/allApplicants/id/" + recruitmentInfoId;
     }
 
-    @GetMapping("/interview/chooseDate/{recruitmentInfoId}")
+    @GetMapping("/registrationInfo/chooseDate/id/{recruitmentInfoId}")
     public String toChooseDate(@PathVariable("recruitmentInfoId") Integer recruitmentInfoId, HttpServletRequest request,HttpSession session){
         User loginUser = (User)session.getAttribute("loginUser");
         if (loginUser == null){
@@ -306,11 +306,11 @@ public class RecruitmentInfoController {
                     return "redirect:/recruitment/detail/id/" + interviewPeriod.getRecruitmentInfoId();
                 }else {
                     session.setAttribute("errorMsg",insertResult.getMessage());
-                    return "redirect:/interview/chooseDate/" + interviewPeriod.getRecruitmentInfoId();
+                    return "redirect:/registrationInfo/chooseDate/id/" + interviewPeriod.getRecruitmentInfoId();
                 }
             }else {
                 session.setAttribute("errorMsg",registrationInfoResult.getMessage());
-                return "redirect:/interview/chooseDate/" + interviewPeriod.getRecruitmentInfoId();
+                return "redirect:/registrationInfo/chooseDate/id/" + interviewPeriod.getRecruitmentInfoId();
             }
         }else {
             session.setAttribute("errorMsg",resultInfo.getMessage());
