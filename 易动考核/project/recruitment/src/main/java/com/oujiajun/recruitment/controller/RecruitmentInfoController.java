@@ -301,13 +301,20 @@ public class RecruitmentInfoController {
             ResultInfo registrationInfoResult = registrationInfoService.deleteRegistrationInfoByUidAndRid(loginUser.getId(),interviewPeriod.getRecruitmentInfoId());
             if (registrationInfoResult.getSuccess()){
                 RegistrationInfo registrationInfo = (RegistrationInfo) registrationInfoResult.getData();
-
+                ResultInfo insertResult = registrationInfoService.insertInterviewRegistrationInfo(interviewPeriodId,registrationInfo.getRegistrationInfoId());
+                if (insertResult.getSuccess()){
+                    return "redirect:/recruitment/detail/id/" + interviewPeriod.getRecruitmentInfoId();
+                }else {
+                    session.setAttribute("errorMsg",insertResult.getMessage());
+                    return "redirect:/interview/chooseDate/" + interviewPeriod.getRecruitmentInfoId();
+                }
             }else {
                 session.setAttribute("errorMsg",registrationInfoResult.getMessage());
+                return "redirect:/interview/chooseDate/" + interviewPeriod.getRecruitmentInfoId();
             }
         }else {
             session.setAttribute("errorMsg",resultInfo.getMessage());
+            return "redirect:/myRegistration";
         }
-        return "/chooseDate";
     }
 }
