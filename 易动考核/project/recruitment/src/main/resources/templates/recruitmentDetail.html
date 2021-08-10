@@ -134,7 +134,9 @@
     <div id="job-banner">
         <div id="div-job-banner">
             <div id="job-status">
-                <span id="span-status">报名中</span>
+                <span id="span-status" th:if="${registrationInfo.isRegistrationPass} eq null" >审核中</span>
+                <span id="span-status" th:if="${registrationInfo.isRegistrationPass} eq true" >通过报名</span>
+                <span id="span-status" th:if="${registrationInfo.isRegistrationPass} eq false" >报名未通过</span>
             </div>
             <div id="div-name">
                 <span id="job-name" th:text="${recruitmentInfo.occupation}"></span>
@@ -149,6 +151,16 @@
             <div class="div-option">
                 <a th:href="@{/registrationInfo/cancel/id/} + ${recruitmentInfo.recruitmentInfoId}"  th:if="${not #strings.isEmpty(registrationInfo)}">
                     <button id="cancelRegistration" class="button-option">取消报名</button>
+                </a>
+            </div>
+            <div class="div-option">
+                <a th:href="@{/registrationInfo/chooseDate/id/} + ${recruitmentInfo.recruitmentInfoId}" th:if="${registrationInfo.isRegistrationPass} eq true">
+                    <button id="chooseDate" class="button-option">选择面试日期</button>
+                </a>
+            </div>
+            <div class="div-option">
+                <a th:href="@{/registrationInfo/lineUp/id/} + ${recruitmentInfo.recruitmentInfoId}" th:if="${registrationInfo.isRegistrationPass} eq true">
+                    <button id="lineUp" class="button-option">排队面试</button>
                 </a>
             </div>
         </div>
@@ -198,6 +210,7 @@
 
 
     .div-option{
+        margin-right: 12px;
         float: left;
     }
 
