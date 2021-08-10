@@ -1,6 +1,7 @@
 package com.oujiajun.recruitment.service;
 
 import com.oujiajun.recruitment.entity.dto.ResultInfo;
+import com.oujiajun.recruitment.entity.po.InterviewPeriod;
 import com.oujiajun.recruitment.entity.po.RecruitmentInfo;
 
 /**
@@ -55,4 +56,11 @@ public interface RecruitmentInfoService {
      * @return 服务结果集
      */
     ResultInfo queryInterviewPeriodByRecruitmentInfoId(int recruitmentInfoId);
+
+    /**
+     * 面试时间段id寻找面试时间段
+     * @param interviewPeriodId 面试时间段id
+     * @return 服务结果集
+     */
+    ResultInfo queryInterviewPeriodByInterviewPeriodId(Integer interviewPeriodId);
 }

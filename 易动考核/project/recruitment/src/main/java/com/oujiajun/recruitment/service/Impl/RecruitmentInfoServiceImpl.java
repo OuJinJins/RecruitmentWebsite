@@ -88,4 +88,14 @@ public class RecruitmentInfoServiceImpl implements RecruitmentInfoService {
             return new ResultInfo(false,"查询面试时间段错误");
         }
     }
+
+    @Override
+    public ResultInfo queryInterviewPeriodByInterviewPeriodId(Integer interviewPeriodId) {
+        InterviewPeriod period = recruitmentInfoDao.queryInterviewPeriodByInterviewPeriodId(interviewPeriodId);
+        if (period != null){
+            return new ResultInfo(true,period);
+        }else {
+            return new ResultInfo(false,"查询面试时间段错误");
+        }
+    }
 }
