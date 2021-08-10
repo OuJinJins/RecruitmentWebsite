@@ -27,6 +27,14 @@
                )
     </insert>
 
+    <insert id="insertInterviewRegistrationInfo">
+        insert into recruitment.interview_registration
+        values(null,
+               #{recruitmentInfoId},
+               #{registrationInfoId}
+              )
+    </insert>
+
     <delete id="deleteRegistrationInfo" parameterType="int">
         delete
         from recruitment.registration_info

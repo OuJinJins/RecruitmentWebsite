@@ -86,4 +86,12 @@ public interface RegistrationInfoDao {
      * @return 用户报名信息视图类
      */
     List<UserRegistrationInfo> queryUserRegistrationInfoForInterviewer(@Param("recruitmentInfoId")Integer recruitmentInfoId);
+
+    /**
+     * 插入面试时间报名信息
+     * @param interviewPeriodId 面试时间段id
+     * @param registrationInfoId 报名信息id
+     * @return 改变行数
+     */
+    int insertInterviewRegistrationInfo(@Param("interviewPeriodId")int interviewPeriodId,@Param("registrationInfoId")int registrationInfoId);
 }
