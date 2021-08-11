@@ -340,7 +340,7 @@ public class RecruitmentInfoController {
             return "redirect:/myRegistration";
         }
         RegistrationInfo registrationInfo = (RegistrationInfo) queryRegistrationInfoResult.getData();
-        ResultInfo queryInterviewPeriodResult = interviewPeriodService.queryInterviewPeriodByRegistrationInfoId(registrationInfo.getRecruitmentInfoId());
+        ResultInfo queryInterviewPeriodResult = interviewPeriodService.queryInterviewPeriodByRegistrationInfoId(registrationInfoId);
         if (!queryInterviewPeriodResult.getSuccess()){
             session.setAttribute("errorMsg",queryInterviewPeriodResult.getData()+" 面试排队失败");
             return "redirect:/recruitment/detail/id/" + registrationInfo.getRecruitmentInfoId();
@@ -350,7 +350,6 @@ public class RecruitmentInfoController {
         int beforeLineUpNumber;
         UserRegistrationInfo userRegistrationInfo = new UserRegistrationInfo(registrationInfo,loginUser);
         List<UserRegistrationInfo> userRegistrationInfoList = interviewPeriodListMap.get(interviewPeriod.getInterviewPeriodId());
-
         if (userRegistrationInfoList == null){
             // 创建一个新的
             LinkedList<UserRegistrationInfo> userRegistrationInfos = new LinkedList<>();
