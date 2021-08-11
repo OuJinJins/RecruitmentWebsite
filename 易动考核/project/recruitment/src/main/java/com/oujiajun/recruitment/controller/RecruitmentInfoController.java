@@ -371,8 +371,8 @@ public class RecruitmentInfoController {
                 userRegistrationInfoList.add(userRegistrationInfo);
             }
         }
-        System.out.println(interviewPeriodListMap);
         request.setAttribute("beforeLineUpNumber",beforeLineUpNumber);
+        request.setAttribute("current", Objects.requireNonNull(userRegistrationInfoList).get(0));
         return "/lineUp";
     }
 }

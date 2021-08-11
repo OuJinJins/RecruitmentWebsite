@@ -158,26 +158,47 @@
     </div>
     <div id="div-interview-left">
         <div id="div-left-top">
-            <span>排队名单</span>
+            <span>排 队 名 单</span>
         </div>
-        <div id="div-interview-applicant">
-
+        <div class="div-interview-applicant" th:each="userRegistrationInfo:${userRegistrationInfoList}">
+            <div class="div-interview-applicant-top">
+                <span class="span-city">姓名:</span><a class="a-occupation span-city" th:text="${userRegistrationInfo.user.username}"></a>
+                <span class="span-city">年龄:</span><span class="span-city" th:text="${userRegistrationInfo.user.age}"></span>
+                <span class="span-city">性别:</span><span class="span-city" th:text="${userRegistrationInfo.user.gender}"></span>
+            </div>
+            <div class="div-interview-applicant-bottom">
+                <span class="span-monthlyPay" th:text="${userRegistrationInfo.user.education}"></span>
+            </div>
         </div>
     </div>
     <div id="div-interview-right">
         <div id="div-right-top">
-            <span></span>
+            <span id="span-right-top">当前正在面试:</span>
         </div>
         <div id="div-info-applicant">
-
+            <div>
+                <span class="current">姓名:</span><a class="a-occupation span-city" th:text="${userRegistrationInfo.user.username}"></a>
+            </div>
+            <div>
+                <span class="current">年龄:</span><span class="span-city" th:text="${userRegistrationInfo.user.age}"></span>
+            </div>
+            <div>
+                <span class="current">性别:</span><span class="span-city" th:text="${userRegistrationInfo.user.gender}"></span>
+            </div>
+            <div>
+                <span class="current">居住地:</span><a class="a-occupation span-city" th:text="${userRegistrationInfo.user.city}"></a>
+            </div>
+            <div>
+                <span class="current">简介:</span><a class="a-occupation span-city" th:text="${userRegistrationInfo.user.briefIntroduction}"></a>
+            </div>
         </div>
         <div id="div-button-option">
             <div>
-                <a>
-                    <button id="button-completeInterview">完成面试</button>
+                <a th:href="@{/next/}+${userRegistrationInfo.registrationInfoId}">
+                    <button class="button-option" id="button-completeInterview">完成面试</button>
                 </a>
-                <a>
-                    <button id="buttom-next">迟到(下一位)</button>
+                <a th:href="@{/next/}+${userRegistrationInfo.registrationInfoId}">
+                    <button class="button-option" id="button-next">迟到(下一位)</button>
                 </a>
             </div>
         </div>
@@ -209,6 +230,109 @@
 
 </script>
 <style>
+    .current{
+        font-size: 16px;
+        color: #61687c;
+    }
+
+    #div-info-applicant{
+        height: 170px;
+        float: top;
+        margin-left: 40px;
+    }
+
+    #div-button-option{
+        float: top;
+        margin-left: 38px;
+    }
+
+    #span-right-top{
+        padding-left: 20px;
+    }
+
+    #div-right-top{
+        margin-top: 20px;
+        padding-top: 22px;
+        height: 100px;
+        color: #61687c;
+        font-size: 32px;
+        background-color: #ffffff;
+        margin-left: 18px;
+        width: 800px;
+    }
+
+    .button-option{
+        margin-right: 10px;
+        color: #ffffff;
+        font-size: 16px;
+        border: #5dd5c8;
+        background: #5dd5c8;
+        width: 130px;
+        height: 45px;
+        border-radius: 0px;
+    }
+
+    #div-interview-right{
+        border-radius: 5px;
+        margin-top: 20px;
+        margin-left: 18px;
+        float: left;
+        background-color: #ffffff;
+        width: 922px;
+        height: 350px;
+    }
+
+    .div-interview-applicant{
+        margin-bottom: 10px;
+        margin-left: 14px;
+        width: 220px;
+        border-radius: 5px;
+        border: #5dd5c8 solid 2px;
+        float: top;
+    }
+
+    #div-left-top{
+        font-size: 16px;
+        margin: auto auto 10px 80px;
+    }
+
+    #div-interview-left{
+        float: left;
+        border-radius: 5px;
+        background-color: #ffffff;
+        margin-top: 20px;
+        margin-left: 18px;
+        width: 250px;
+        padding-top: 30px;
+        padding-bottom: 30px;
+    }
+
+    #span-title{
+        margin-left: 520px;
+    }
+
+    #div-title{
+        margin-top: 20px;
+        padding-top: 22px;
+        height: 100px;
+        color: #61687c;
+        font-size: 32px;
+        background-color: #ffffff;
+        margin-left: 18px;
+        width: 1190px;
+    }
+
+    .span-monthlyPay{
+        font-size: 15px;
+        color: #FD7240;
+    }
+
+    .span-city{
+        float: top;
+        font-size: 13px;
+        color: #61687c;
+    }
+
     .bg{
     }
 
