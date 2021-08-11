@@ -94,6 +94,17 @@
         where recruitment_info_id=#{recruitmentInfoId}
     </update>
 
+    <update id="updateInterviewPeriod">
+        update recruitment.interview_period ip
+        <set>
+            <if test="numberGap != null">
+                ip.current_number = current_number + #{numberGap},
+            </if>
+        </set>
+        where ip.interview_period_id=#{interviewPeriodId}
+          and ip.version=#{version}
+    </update>
+
     <select id="queryAllRecruitmentInfo" resultMap="RecruitmentInfoMap">
         select recruitment_info_id,
                user_id,

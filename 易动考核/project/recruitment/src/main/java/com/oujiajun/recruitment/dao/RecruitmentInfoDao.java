@@ -3,6 +3,7 @@ package com.oujiajun.recruitment.dao;
 import com.oujiajun.recruitment.entity.po.InterviewPeriod;
 import com.oujiajun.recruitment.entity.po.RecruitmentInfo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -32,6 +33,15 @@ public interface RecruitmentInfoDao {
      * @return 修改行数
      */
     int updateRecruitmentInfo(RecruitmentInfo recruitmentInfo);
+
+    /**
+     * 更新面试时间段
+     * @param interviewPeriodId 报名信息
+     * @param version 版本号
+     * @param numberGap 报名人数改变量
+     * @return 修改行数
+     */
+    int updateInterviewPeriod(@Param("interviewPeriodId")int interviewPeriodId, @Param("version") int version, @Param("numberGap")int numberGap);
 
     /**
      * 查询所有的招聘信息

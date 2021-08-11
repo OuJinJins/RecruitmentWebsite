@@ -165,6 +165,9 @@ public class RegistrationInfoServiceImpl implements RegistrationInfoService {
     public ResultInfo insertInterviewRegistrationInfo(int interviewPeriodId, int registrationInfoId) {
         InterviewPeriod period = recruitmentInfoDao.queryInterviewPeriodByInterviewPeriodId(interviewPeriodId);
         if (period != null){
+            if (period.getCurrentNumber() > period.getMaxNumber()){
+                return new ResultInfo(false,"此时间段参加面试人数已满 ");
+            }
             int count = registrationInfoDao.insertInterviewRegistrationInfo(interviewPeriodId,registrationInfoId);
             if (count >= 1){
                 RegistrationInfo registrationInfo = new RegistrationInfo();
