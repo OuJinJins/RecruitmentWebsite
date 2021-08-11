@@ -2,6 +2,7 @@ package com.oujiajun.recruitment.dao;
 
 import com.oujiajun.recruitment.entity.po.InterviewPeriod;
 import com.oujiajun.recruitment.entity.po.RecruitmentInfo;
+import com.oujiajun.recruitment.entity.po.RegistrationInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -55,6 +56,13 @@ public interface RecruitmentInfoDao {
      * @return 招聘信息
      */
     RecruitmentInfo queryRecruitmentInfoById(int recruitmentInfoId);
+
+    /**
+     * 根据面试时间段id寻找招聘信息
+     * @param interviewPeriodId 面试时间段id
+     * @return 招聘信息
+     */
+    RegistrationInfo queryRecruitmentInfoByInterviewPeriodId(@Param("interviewPeriodId") int interviewPeriodId);
 
     /**
      * 通过招聘官id查询招聘信息

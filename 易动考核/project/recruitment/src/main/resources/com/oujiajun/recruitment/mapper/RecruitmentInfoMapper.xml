@@ -142,6 +142,23 @@
         where recruitment_info_id=#{RecruitmentInfoId}
     </select>
 
+    <select id="queryRecruitmentInfoByInterviewPeriodId" parameterType="Int" resultMap="RecruitmentInfoMap">
+        select ri.recruitment_info_id,
+               ri.user_id,
+               ri.occupation,
+               ri.monthly_pay,
+               ri.introduction,
+               ri.work_city,
+               ri.company,
+               ri.interview_date_begin,
+               ri.interview_date_end,
+               ri.interview_time_begin,
+               ri.interview_time_end,
+               ri.max_number
+        from recruitment.recruitment_info ri left join recruitment.interview_period ip on ri.recruitment_info_id = ip.recruitment_info_id
+        where ip.interview_period_id=#{interview_period_id}
+    </select>
+
     <select id="queryRecruitmentInfoByUid" parameterType="Int" resultMap="RecruitmentInfoMap">
         select recruitment_info_id,
                user_id,
