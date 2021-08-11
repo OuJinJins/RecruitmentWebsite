@@ -163,7 +163,7 @@
                 </a>
             </div>
             <div class="div-option">
-                <a th:href="@{/registrationInfo/lineUp/id/} + ${recruitmentInfo.recruitmentInfoId}" th:if="${registrationInfo?.isRegistrationPass} eq true">
+                <a th:href="@{/registrationInfo/lineUp/id/} + ${registrationInfo.registrationInfoId}" th:if="${registrationInfo?.isRegistrationPass} eq true">
                     <button id="lineUp" class="button-option">排队面试</button>
                 </a>
             </div>
