@@ -176,6 +176,28 @@
           and info.user_id=user.id
     </select>
 
+    <select id="queryUserRegistrationInfoByInterviewPeriodId" resultMap="UserRegistrationInfo">
+        select info.registration_info_id,
+               info.recruitment_info_id,
+               info.user_id,
+               info.is_registration_pass,
+               info.is_interview_pass,
+               info.interview_date,
+               info.interview_time_begin,
+               info.interview_time_end,
+               u.id,
+               u.email,
+               u.username,
+               u.password,
+               u.gender,
+               u.city,
+               u.brief_introduction,
+               u.age,
+               u.education
+        from recruitment.interview_period ip right join recruitment.recruitment_info ri on ri.recruitment_info_id = ip.recruitment_info_id right join recruitment.registration_info info on ri.recruitment_info_id = info.recruitment_info_id right join recruitment.user u on info.user_id = u.id
+        where ip.interview_period_id=#{interviewPeriodId}
+    </select>
+
     <select id="queryUserRegistrationInfoForInterviewer" resultMap="UserRegistrationInfo">
         select info.registration_info_id,
                info.recruitment_info_id,
