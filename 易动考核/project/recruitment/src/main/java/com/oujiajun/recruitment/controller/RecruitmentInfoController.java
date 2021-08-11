@@ -343,18 +343,33 @@ public class RecruitmentInfoController {
         }
         InterviewPeriod interviewPeriod = (InterviewPeriod) queryInterviewPeriodResult.getData();
         // 进行排队
+        Integer beforeLineUpNumber;
         UserRegistrationInfo userRegistrationInfo = new UserRegistrationInfo(registrationInfo,loginUser);
         List<UserRegistrationInfo> userRegistrationInfoList = interviewPeriodListMap.get(interviewPeriod.getInterviewPeriodId());
+
         if (userRegistrationInfoList == null){
             // 创建一个新的
             LinkedList<UserRegistrationInfo> userRegistrationInfos = new LinkedList<>();
             userRegistrationInfos.add(userRegistrationInfo);
             interviewPeriodListMap.put(interviewPeriod.getInterviewPeriodId(),userRegistrationInfos);
+            beforeLineUpNumber = 1;
         }else {
-            userRegistrationInfoList.add(userRegistrationInfo);
+            if (userRegistrationInfoList.stream().anyMatch(userRegistrationInfo::equals)) {
+                beforeLineUpNumber = 0;
+                for (UserRegistrationInfo info : userRegistrationInfoList) {
+                    if(!info.equals(userRegistrationInfo)){
+                        beforeLineUpNumber++;
+                    }else {
+                        break;
+                    }
+                }
+            }else {
+                userRegistrationInfoList.add(userRegistrationInfo);
+                beforeLineUpNumber = userRegistrationInfoList.size();
+            }
         }
         System.out.println(interviewPeriodListMap);
-        request.setAttribute("currentLineUpNumber",userRegistrationInfoList.size());
+        request.setAttribute("beforeLineUpNumber",beforeLineUpNumber);
         return "/lineUp";
     }
 }
