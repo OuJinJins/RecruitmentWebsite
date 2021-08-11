@@ -164,25 +164,22 @@ public class RegistrationInfoServiceImpl implements RegistrationInfoService {
     @Transactional
     public ResultInfo insertInterviewRegistrationInfo(int interviewPeriodId, int registrationInfoId) {
         InterviewPeriod period = recruitmentInfoDao.queryInterviewPeriodByInterviewPeriodId(interviewPeriodId);
-        if (period != null){
-            if (period.getCurrentNumber() > period.getMaxNumber()){
-                return new ResultInfo(false,"此时间段参加面试人数已满 ");
-            }
-            int count = registrationInfoDao.insertInterviewRegistrationInfo(interviewPeriodId,registrationInfoId);
-            if (count >= 1){
-                RegistrationInfo registrationInfo = new RegistrationInfo();
-                registrationInfo.setRegistrationInfoId(registrationInfoId);
-                registrationInfo.setInterviewDate(period.getInterviewDate());
-                registrationInfo.setInterviewTimeBegin(period.getInterviewTimeBegin());
-                registrationInfo.setInterviewTimeEnd(period.getInterviewTimeEnd());
-                count = registrationInfoDao.updateRegistrationInfo(registrationInfo);
-                if (count >= 1){
-                    return new ResultInfo(true);
-                }else {
-                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                }
-            }
+        if (period == null){
+            return new ResultInfo(false,"选择面试时间段失败");
         }
-        return new ResultInfo(false,"选择面试时间段失败");
+        if (period.getCurrentNumber() >= period.getMaxNumber()){
+            return new ResultInfo(false,"此时间段参加面试人数已满 ");
+        }
+        // 乐观锁
+        int count = recruitmentInfoDao.updateInterviewPeriod(interviewPeriodId,period.getVersion(),1);
+        if(count < 0){
+            return new ResultInfo(false,"选择面试时间段失败");
+        }
+        count = registrationInfoDao.insertInterviewRegistrationInfo(interviewPeriodId,registrationInfoId);
+        if (count < 0){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return new ResultInfo(false,"选择面试时间段失败");
+        }
+        return new ResultInfo(true);
     }
 }
