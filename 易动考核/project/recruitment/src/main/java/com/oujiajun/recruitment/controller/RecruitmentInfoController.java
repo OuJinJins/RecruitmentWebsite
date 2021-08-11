@@ -343,7 +343,7 @@ public class RecruitmentInfoController {
         }
         InterviewPeriod interviewPeriod = (InterviewPeriod) queryInterviewPeriodResult.getData();
         // 进行排队
-        Integer beforeLineUpNumber;
+        int beforeLineUpNumber;
         UserRegistrationInfo userRegistrationInfo = new UserRegistrationInfo(registrationInfo,loginUser);
         List<UserRegistrationInfo> userRegistrationInfoList = interviewPeriodListMap.get(interviewPeriod.getInterviewPeriodId());
 
