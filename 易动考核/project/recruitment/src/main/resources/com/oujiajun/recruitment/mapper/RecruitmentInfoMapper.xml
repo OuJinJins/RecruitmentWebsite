@@ -101,6 +101,9 @@
             <if test="numberGap != null">
                 ip.current_number = current_number + #{numberGap},
             </if>
+            <if test="version != null">
+                ip.version = version + 1,
+            </if>
         </set>
         where ip.interview_period_id=#{interviewPeriodId}
           and ip.version=#{version}
