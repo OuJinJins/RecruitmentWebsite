@@ -147,8 +147,13 @@
                 </a>
             </div>
             <div class="div-option">
-                <a th:href="@{/registrationInfo/show/allApplicants/id/} + ${myRecruitmentInfo.recruitmentInfoId}">
-                    <button id="cancelRegistration" class="button-option">查看面试</button>
+                <a th:href="@{/registrationInfo/start/interview/id/} + ${myRecruitmentInfo.recruitmentInfoId}">
+                    <button id="startInterview" class="button-option">开始面试</button>
+                </a>
+            </div>
+            <div class="div-option">
+                <a th:href="@{/registrationInfo/show/interview/id/} + ${myRecruitmentInfo.recruitmentInfoId}">
+                    <button id="showInterview" class="button-option">查看面试</button>
                 </a>
             </div>
         </div>
