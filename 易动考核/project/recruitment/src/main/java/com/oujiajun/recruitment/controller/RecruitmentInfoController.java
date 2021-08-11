@@ -355,7 +355,7 @@ public class RecruitmentInfoController {
             LinkedList<UserRegistrationInfo> userRegistrationInfos = new LinkedList<>();
             userRegistrationInfos.add(userRegistrationInfo);
             interviewPeriodListMap.put(interviewPeriod.getInterviewPeriodId(),userRegistrationInfos);
-            beforeLineUpNumber = 1;
+            beforeLineUpNumber = 0;
         }else {
             if (userRegistrationInfoList.stream().anyMatch(userRegistrationInfo::equals)) {
                 beforeLineUpNumber = 0;
@@ -367,8 +367,8 @@ public class RecruitmentInfoController {
                     }
                 }
             }else {
-                userRegistrationInfoList.add(userRegistrationInfo);
                 beforeLineUpNumber = userRegistrationInfoList.size();
+                userRegistrationInfoList.add(userRegistrationInfo);
             }
         }
         System.out.println(interviewPeriodListMap);
