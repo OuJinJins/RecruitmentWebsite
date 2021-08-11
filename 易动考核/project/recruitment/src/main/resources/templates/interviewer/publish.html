@@ -85,8 +85,12 @@
                 locale: moment.locale('zh-cn')
             });
             $('#datetimepicker2').datetimepicker({
-                format: 'YYYY-MM-DD hh:mm',
-                locale: moment.locale('zh-cn')
+                format: 'hh:mm',
+                locale: moment.locale('zh-cn'),
+            });
+            $('#datetimepicker4').datetimepicker({
+                format: 'hh:mm',
+                locale: moment.locale('zh-cn'),
             });
         });
     </script>
@@ -176,6 +180,10 @@
                 <label for="introduction">Introduction</label>
                 <textarea class="form-control form-textarea" rows="3" id="introduction" name="introduction"></textarea>
             </div>
+            <div class="form-group-publish">
+                <label for="maxNumber">maxNumber</label>
+                <input type="text" class="form-control form-input" id="maxNumber" name="maxNumber" placeholder="面试最大人数">
+            </div>
             <div class='col-sm-6 form-group-publish' >
                 <div class="form-group">
                     <!--指定 date标记-->
@@ -194,6 +202,30 @@
                     <label for="interviewDateEnd">选择面试结束日期</label>
                     <div class='input-group date' id='datetimepicker3'>
                         <input  id="interviewDateEnd" type='text' class="form-control form-input-date" name="interviewDateEnd" />
+                        <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                    </div>
+                </div>
+            </div>
+            <div class='col-sm-6 form-group-publish' >
+                <div class="form-group">
+                    <!--指定 date标记-->
+                    <label for="interviewTimeBegin">选择面试开始时间</label>
+                    <div class='input-group date' id='datetimepicker2'>
+                        <input  id="interviewTimeBegin" type='text' class="form-control form-input-date" name="interviewTimeBegin" />
+                        <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                    </div>
+                </div>
+            </div>
+            <div class='col-sm-6 form-group-publish' >
+                <div class="form-group">
+                    <!--指定 date标记-->
+                    <label for="interviewTimeEnd">选择面试结束时间</label>
+                    <div class='input-group date' id='datetimepicker4'>
+                        <input  id="interviewTimeEnd" type='text' class="form-control form-input-date" name="interviewTimeEnd" />
                         <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
