@@ -153,6 +153,13 @@ public class RegistrationInfoServiceImpl implements RegistrationInfoService {
     }
 
     //TODO 使用异常
+
+    /**
+     * 通过报名者参加某一时间段的面试
+     * @param interviewPeriodId 面试时间段id
+     * @param registrationInfoId 报名信息id
+     * @return 服务结果
+     */
     @Override
     @Transactional
     public ResultInfo insertInterviewRegistrationInfo(int interviewPeriodId, int registrationInfoId) {

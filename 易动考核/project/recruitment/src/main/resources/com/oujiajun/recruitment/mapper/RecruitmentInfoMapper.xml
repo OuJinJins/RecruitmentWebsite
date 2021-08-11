@@ -151,6 +151,7 @@
                interview_time_begin,
                interview_time_end,
                max_number,
+               current_number,
                version
         from recruitment.interview_period
         where recruitment_info_id=#{recruitment_info_id}
@@ -163,6 +164,7 @@
                interview_time_begin,
                interview_time_end,
                max_number,
+               current_number,
                version
         from recruitment.interview_period
         where interview_period_id=#{interview_period_id}

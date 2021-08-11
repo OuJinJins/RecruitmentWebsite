@@ -21,5 +21,6 @@ public class InterviewPeriod {
     LocalTime interviewTimeBegin;
     LocalTime interviewTimeEnd;
     Integer maxNumber;
+    Integer currentNumber;
     Integer version;
 }
