@@ -28,7 +28,7 @@
         from recruitment.interview_period ip left join recruitment.interview_registration ir
           on ip.interview_period_id = ir.interview_period_id left join recruitment.registration_info ri
               on ri.registration_info_id = ir.regiatration_info_id
-        where ri.registration_info_id=#{registrationInfoId n}
+        where ri.registration_info_id=#{registrationInfoId}
     </select>
 
 </mapper>

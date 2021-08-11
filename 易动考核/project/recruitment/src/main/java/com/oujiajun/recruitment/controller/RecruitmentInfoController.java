@@ -6,6 +6,7 @@ import com.oujiajun.recruitment.entity.po.RecruitmentInfo;
 import com.oujiajun.recruitment.entity.po.RegistrationInfo;
 import com.oujiajun.recruitment.entity.po.User;
 import com.oujiajun.recruitment.entity.vo.UserRegistrationInfo;
+import com.oujiajun.recruitment.service.InterviewPeriodService;
 import com.oujiajun.recruitment.service.RecruitmentInfoService;
 import com.oujiajun.recruitment.service.RegistrationInfoService;
 import com.oujiajun.recruitment.service.UserService;
@@ -35,6 +36,9 @@ public class RecruitmentInfoController {
 
     @Autowired
     RegistrationInfoService registrationInfoService;
+
+    @Autowired
+    InterviewPeriodService interviewPeriodService;
 
     @GetMapping({"", "/", "/index","/index.html"})
     public String index(HttpServletRequest request, HttpSession session) {
@@ -336,7 +340,7 @@ public class RecruitmentInfoController {
             return "redirect:/myRegistration";
         }
         RegistrationInfo registrationInfo = (RegistrationInfo) queryRegistrationInfoResult.getData();
-        ResultInfo queryInterviewPeriodResult = recruitmentInfoService.queryInterviewPeriodByRecruitmentInfoId(registrationInfo.getRecruitmentInfoId());
+        ResultInfo queryInterviewPeriodResult = interviewPeriodService.queryInterviewPeriodByRegistrationInfoId(registrationInfo.getRecruitmentInfoId());
         if (!queryInterviewPeriodResult.getSuccess()){
             session.setAttribute("errorMsg",queryInterviewPeriodResult.getData()+" 面试排队失败");
             return "redirect:/recruitment/detail/id/" + registrationInfo.getRecruitmentInfoId();
