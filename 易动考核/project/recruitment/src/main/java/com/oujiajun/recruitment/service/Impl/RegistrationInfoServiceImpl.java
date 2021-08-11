@@ -152,6 +152,16 @@ public class RegistrationInfoServiceImpl implements RegistrationInfoService {
         }
     }
 
+    @Override
+    public ResultInfo queryUserRegistrationInfoByInterviewPeriodId(int interviewPeriodId) {
+        List<UserRegistrationInfo> infoList = registrationInfoDao.queryUserRegistrationInfoByInterviewPeriodId(interviewPeriodId);
+        if (infoList != null){
+            return new ResultInfo(true,infoList);
+        }else {
+            return new ResultInfo(false,"查询报名信息错误");
+        }
+    }
+
     //TODO 使用异常
 
     /**
