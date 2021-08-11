@@ -162,12 +162,12 @@
         </div>
         <div class="div-interview-applicant" th:each="userRegistrationInfo:${userRegistrationInfoList}">
             <div class="div-interview-applicant-top">
-                <span class="span-city">姓名:</span><a class="a-occupation span-city" th:text="${userRegistrationInfo.user.username}"></a>
-                <span class="span-city">年龄:</span><span class="span-city" th:text="${userRegistrationInfo.user.age}"></span>
-                <span class="span-city">性别:</span><span class="span-city" th:text="${userRegistrationInfo.user.gender}"></span>
+                <span class="span-city">姓名:</span><a class="a-occupation span-city" th:text="${userRegistrationInfo?.user.username}"></a>
+                <span class="span-city">年龄:</span><span class="span-city" th:text="${userRegistrationInfo?.user.age}"></span>
+                <span class="span-city">性别:</span><span class="span-city" th:text="${userRegistrationInfo?.user.gender}"></span>
             </div>
             <div class="div-interview-applicant-bottom">
-                <span class="span-monthlyPay" th:text="${userRegistrationInfo.user.education}"></span>
+                <span class="span-monthlyPay" th:text="${userRegistrationInfo?.user.education}"></span>
             </div>
         </div>
     </div>
@@ -177,27 +177,27 @@
         </div>
         <div id="div-info-applicant">
             <div>
-                <span class="current">姓名:</span><a class="a-occupation span-city" th:text="${userRegistrationInfo.user.username}"></a>
+                <span class="current">姓名:</span><a class="a-occupation span-city" th:text="${currentUser?.username}"></a>
             </div>
             <div>
-                <span class="current">年龄:</span><span class="span-city" th:text="${userRegistrationInfo.user.age}"></span>
+                <span class="current">年龄:</span><span class="span-city" th:text="${currentUser?.age}"></span>
             </div>
             <div>
-                <span class="current">性别:</span><span class="span-city" th:text="${userRegistrationInfo.user.gender}"></span>
+                <span class="current">性别:</span><span class="span-city" th:text="${currentUser?.gender}"></span>
             </div>
             <div>
-                <span class="current">居住地:</span><a class="a-occupation span-city" th:text="${userRegistrationInfo.user.city}"></a>
+                <span class="current">居住地:</span><a class="a-occupation span-city" th:text="${currentUser?.city}"></a>
             </div>
             <div>
-                <span class="current">简介:</span><a class="a-occupation span-city" th:text="${userRegistrationInfo.user.briefIntroduction}"></a>
+                <span class="current">简介:</span><a class="a-occupation span-city" th:text="${currentUser?.briefIntroduction}"></a>
             </div>
         </div>
         <div id="div-button-option">
             <div>
-                <a th:href="@{/next/}+${userRegistrationInfo.registrationInfoId}">
+                <a th:href="@{/next/} + ${userRegistrationInfo?.registrationInfoId}">
                     <button class="button-option" id="button-completeInterview">完成面试</button>
                 </a>
-                <a th:href="@{/next/}+${userRegistrationInfo.registrationInfoId}">
+                <a th:href="@{/next/} + ${userRegistrationInfo?.registrationInfoId}">
                     <button class="button-option" id="button-next">迟到(下一位)</button>
                 </a>
             </div>

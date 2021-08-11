@@ -399,9 +399,24 @@ public class RecruitmentInfoController {
 
     @PostMapping("/interview/startInterview")
     public String startInterview(
-            @RequestParam("InterviewPeriodId") Integer InterviewPeriodId,
+            @RequestParam("InterviewPeriodId")int interviewPeriodId,
             HttpServletRequest request,
             HttpSession session){
-        return "redirect:/index";
+        User loginUser = (User)session.getAttribute("loginUser");
+        if (loginUser == null){
+            session.setAttribute("errorMsg","请登陆后进行该操作");
+            return "redirect:/login";
+        }
+        List<UserRegistrationInfo> userRegistrationInfoList = interviewPeriodListMap.get(interviewPeriodId);
+        if (userRegistrationInfoList == null) {
+            // 创建一个新的
+            LinkedList<UserRegistrationInfo> userRegistrationInfos = new LinkedList<>();
+            interviewPeriodListMap.put(interviewPeriodId,userRegistrationInfos);
+            request.setAttribute("userRegistrationInfoList",userRegistrationInfos);
+        }else {
+            request.setAttribute("userRegistrationInfoList",userRegistrationInfoList);
+            request.setAttribute("currentUser",userRegistrationInfoList.get(0));
+        }
+        return "/interviewer/interview";
     }
 }
