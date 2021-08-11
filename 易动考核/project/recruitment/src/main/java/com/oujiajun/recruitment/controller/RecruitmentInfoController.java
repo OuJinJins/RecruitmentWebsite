@@ -372,7 +372,36 @@ public class RecruitmentInfoController {
             }
         }
         request.setAttribute("beforeLineUpNumber",beforeLineUpNumber);
-        request.setAttribute("current", Objects.requireNonNull(userRegistrationInfoList).get(0));
         return "/lineUp";
+    }
+
+    @PostMapping("/registrationInfo/start/interview/id/{recruitmentInfoId}")
+    public String chooseInterviewPeriod(
+            @PathVariable("recruitmentInfoId") Integer recruitmentInfoId,
+            HttpServletRequest request,
+            HttpSession session){
+        User loginUser = (User)session.getAttribute("loginUser");
+        if (loginUser == null){
+            session.setAttribute("errorMsg","请登陆后进行该操作");
+            return "redirect:/login";
+        }
+        //查找招聘信息对应的面试时间段
+        ResultInfo resultInfo = recruitmentInfoService.queryInterviewPeriodByRecruitmentInfoId(recruitmentInfoId);
+        if (resultInfo.getSuccess()) {
+            List<InterviewPeriod> periodList = (List<InterviewPeriod>) resultInfo.getData();
+            request.setAttribute("periodList", periodList);
+            return "/interviewer/choosePeriod";
+        }else {
+            session.setAttribute("errorMsg",resultInfo.getMessage());
+            return "redirect:/interviewer/myRecruitment/detail/id/" + recruitmentInfoId;
+        }
+    }
+
+    @PostMapping("/interview/startInterview")
+    public String startInterview(
+            @RequestParam("InterviewPeriodId") Integer InterviewPeriodId,
+            HttpServletRequest request,
+            HttpSession session){
+        return "redirect:/index";
     }
 }
