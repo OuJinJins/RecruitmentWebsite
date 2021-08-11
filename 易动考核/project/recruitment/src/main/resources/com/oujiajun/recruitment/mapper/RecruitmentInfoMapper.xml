@@ -26,6 +26,7 @@
         <result property ="interviewTimeBegin"  column ="interview_time_begin"/>
         <result property ="interviewTimeEnd"  column ="interview_time_end"/>
         <result property="maxNumber" column="max_number"/>
+        <result property ="currentNumber"  column ="current_number"/>
         <result property="version" column="version"/>
     </resultMap>
 
