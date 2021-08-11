@@ -19,8 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author oujiajun
@@ -313,5 +312,49 @@ public class RecruitmentInfoController {
             session.setAttribute("errorMsg",resultInfo.getMessage());
             return "redirect:/myRegistration";
         }
+    }
+
+
+    /**
+     * 排队面试队伍
+     */
+    static Map<Integer,LinkedList<UserRegistrationInfo>> interviewPeriodListMap = new HashMap<Integer,LinkedList<UserRegistrationInfo>>();
+
+    @GetMapping("/registrationInfo/lineUp/id/{registrationInfoId}")
+    public String lineUp(
+            @PathVariable("registrationInfoId") Integer registrationInfoId,
+            HttpServletRequest request,
+             HttpSession session) {
+        User loginUser = (User)session.getAttribute("loginUser");
+        if (loginUser == null){
+            request.setAttribute("errorMsg","请登陆后进行该操作");
+            return "redirect:/login";
+        }
+        ResultInfo queryRegistrationInfoResult = registrationInfoService.queryRegistrationInfoById(registrationInfoId);
+        if (!queryRegistrationInfoResult.getSuccess()){
+            session.setAttribute("errorMsg",queryRegistrationInfoResult.getData()+" 面试排队失败");
+            return "redirect:/myRegistration";
+        }
+        RegistrationInfo registrationInfo = (RegistrationInfo) queryRegistrationInfoResult.getData();
+        ResultInfo queryInterviewPeriodResult = recruitmentInfoService.queryInterviewPeriodByRecruitmentInfoId(registrationInfo.getRecruitmentInfoId());
+        if (!queryInterviewPeriodResult.getSuccess()){
+            session.setAttribute("errorMsg",queryInterviewPeriodResult.getData()+" 面试排队失败");
+            return "redirect:/recruitment/detail/id/" + registrationInfo.getRecruitmentInfoId();
+        }
+        InterviewPeriod interviewPeriod = (InterviewPeriod) queryInterviewPeriodResult.getData();
+        // 进行排队
+        UserRegistrationInfo userRegistrationInfo = new UserRegistrationInfo(registrationInfo,loginUser);
+        List<UserRegistrationInfo> userRegistrationInfoList = interviewPeriodListMap.get(interviewPeriod.getInterviewPeriodId());
+        if (userRegistrationInfoList == null){
+            // 创建一个新的
+            LinkedList<UserRegistrationInfo> userRegistrationInfos = new LinkedList<>();
+            userRegistrationInfos.add(userRegistrationInfo);
+            interviewPeriodListMap.put(interviewPeriod.getInterviewPeriodId(),userRegistrationInfos);
+        }else {
+            userRegistrationInfoList.add(userRegistrationInfo);
+        }
+        System.out.println(interviewPeriodListMap);
+        request.setAttribute("currentLineUpNumber",userRegistrationInfoList.size());
+        return "/lineUp";
     }
 }

@@ -17,4 +17,9 @@ public class UserRegistrationInfo extends RegistrationInfo {
      * 报名信息中的用户信息
      */
     User user;
+
+    public UserRegistrationInfo(RegistrationInfo registrationInfo, User user) {
+        super(registrationInfo.getRegistrationInfoId(), registrationInfo.getRecruitmentInfoId(), registrationInfo.getUserId(), registrationInfo.getIsRegistrationPass(), registrationInfo.getIsInterviewPass(), registrationInfo.getInterviewDate(), registrationInfo.getInterviewTimeBegin(), registrationInfo.getInterviewTimeEnd());
+        this.user = user;
+    }
 }
