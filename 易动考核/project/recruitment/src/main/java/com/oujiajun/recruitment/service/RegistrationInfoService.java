@@ -102,6 +102,13 @@ public interface RegistrationInfoService {
      * @return 用户报名信息视图类
      */
     ResultInfo queryUserRegistrationInfoByInterviewPeriodId(@Param("interviewPeriodId") int interviewPeriodId);
+
+    /**
+     * 寻找用户报名信息
+     * @param registrationInfoId 报名信息id
+     * @return 用户报名信息视图类
+     */
+    ResultInfo queryUserRegistrationInfoByRegistrationInfoId(Integer registrationInfoId);
     /**
      * 插入面试时间报名信息
      * @param interviewPeriodId 面试时间段id

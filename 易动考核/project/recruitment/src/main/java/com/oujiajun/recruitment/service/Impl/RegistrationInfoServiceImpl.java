@@ -103,8 +103,8 @@ public class RegistrationInfoServiceImpl implements RegistrationInfoService {
     }
 
     @Override
-    public ResultInfo queryRegistrationInfoById(int recruitmentInfoId) {
-        RegistrationInfo info = registrationInfoDao.queryRegistrationInfoById(recruitmentInfoId);
+    public ResultInfo queryRegistrationInfoById(int registrationInfoId) {
+        RegistrationInfo info = registrationInfoDao.queryRegistrationInfoById(registrationInfoId);
         if (info != null){
             return new ResultInfo(true,info);
         }else {
@@ -162,8 +162,19 @@ public class RegistrationInfoServiceImpl implements RegistrationInfoService {
         }
     }
 
-    //TODO 使用异常
+    @Override
+    public ResultInfo queryUserRegistrationInfoByRegistrationInfoId(Integer registrationInfoId) {
+        RegistrationInfo registrationInfo = registrationInfoDao.queryRegistrationInfoById(registrationInfoId);
+        if (registrationInfo != null){
+            UserRegistrationInfo userRegistrationInfo = registrationInfoDao.queryUserRegistrationInfo(registrationInfo.getUserId(),registrationInfo.getRecruitmentInfoId());
+            if(userRegistrationInfo != null){
+                return new ResultInfo(true,userRegistrationInfo);
+            }
+        }
+        return new ResultInfo(false,"查询报名信息错误");
+    }
 
+    //TODO 使用异常
     /**
      * 通过报名者参加某一时间段的面试
      * @param interviewPeriodId 面试时间段id

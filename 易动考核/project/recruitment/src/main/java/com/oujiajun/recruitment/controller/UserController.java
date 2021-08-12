@@ -49,7 +49,9 @@ public class UserController {
         // 登陆
         ResultInfo resultInfo = userService.login(user);
         if(resultInfo.getSuccess()){
-            session.setAttribute("loginUser",(User)resultInfo.getData());
+            User activeUser = (User) resultInfo.getData();
+            activeUser.setPassword(null);
+            session.setAttribute("loginUser",activeUser);
             return "redirect:/index";
         }else {
             session.setAttribute("errorMsg",resultInfo.getMessage());

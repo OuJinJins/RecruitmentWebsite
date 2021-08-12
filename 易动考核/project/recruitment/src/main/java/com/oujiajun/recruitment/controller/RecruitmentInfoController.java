@@ -415,8 +415,60 @@ public class RecruitmentInfoController {
             request.setAttribute("userRegistrationInfoList",userRegistrationInfos);
         }else {
             request.setAttribute("userRegistrationInfoList",userRegistrationInfoList);
-            request.setAttribute("currentUser",userRegistrationInfoList.get(0));
+            if (userRegistrationInfoList.size() > 0){
+                request.setAttribute("currentUser",userRegistrationInfoList.get(0));
+            }
         }
         return "/interviewer/interview";
+    }
+
+    @GetMapping("/interview/startInterview/id/{interviewPeriodId}")
+    public String startInterview2(
+            @PathVariable("interviewPeriodId")int interviewPeriodId,
+            HttpServletRequest request,
+            HttpSession session){
+        User loginUser = (User)session.getAttribute("loginUser");
+        if (loginUser == null){
+            session.setAttribute("errorMsg","请登陆后进行该操作");
+            return "redirect:/login";
+        }
+        List<UserRegistrationInfo> userRegistrationInfoList = interviewPeriodListMap.get(interviewPeriodId);
+        if (userRegistrationInfoList == null) {
+            // 创建一个新的
+            LinkedList<UserRegistrationInfo> userRegistrationInfos = new LinkedList<>();
+            interviewPeriodListMap.put(interviewPeriodId,userRegistrationInfos);
+            request.setAttribute("userRegistrationInfoList",userRegistrationInfos);
+        }else {
+            request.setAttribute("userRegistrationInfoList",userRegistrationInfoList);
+            if (userRegistrationInfoList.size() > 0){
+                request.setAttribute("currentUser",userRegistrationInfoList.get(0));
+            }
+        }
+        return "/interviewer/interview";
+    }
+
+    @GetMapping("/next/{registrationInfoId}")
+    public String next(
+            @PathVariable("registrationInfoId") Integer registrationInfoId,
+            HttpServletRequest request,
+            HttpSession session
+            ){
+        ResultInfo queryUserRegistrationInfoResult = registrationInfoService.queryUserRegistrationInfoByRegistrationInfoId(registrationInfoId);
+        if (!queryUserRegistrationInfoResult.getSuccess()){
+            return "redirect:/index";
+        }
+        UserRegistrationInfo userRegistrationInfo = (UserRegistrationInfo) queryUserRegistrationInfoResult.getData();
+        ResultInfo queryInterviewPeriodResult = interviewPeriodService.queryInterviewPeriodByRegistrationInfoId(registrationInfoId);
+        if (!queryInterviewPeriodResult.getSuccess()){
+            session.setAttribute("errorMsg","步过失败");
+            return "redirect:/registrationInfo/start/interview/id/" + userRegistrationInfo.getRecruitmentInfoId();
+        }
+        InterviewPeriod interviewPeriod = (InterviewPeriod) queryInterviewPeriodResult.getData();
+        LinkedList<UserRegistrationInfo> userRegistrationInfoList = interviewPeriodListMap.get(interviewPeriod.getInterviewPeriodId());
+        System.out.println(userRegistrationInfo);
+        System.out.println("qian"+userRegistrationInfoList);
+        userRegistrationInfoList.remove(userRegistrationInfo);
+        System.out.println("hou"+userRegistrationInfoList);
+        return "redirect:/interview/startInterview/id/" + interviewPeriod.getInterviewPeriodId();
     }
 }
