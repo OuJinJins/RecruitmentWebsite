@@ -1,10 +1,12 @@
 package com.oujiajun.recruitment.controller;
 
+import com.oujiajun.recruitment.entity.dto.PageBean;
 import com.oujiajun.recruitment.entity.dto.ResultInfo;
 import com.oujiajun.recruitment.entity.po.InterviewPeriod;
 import com.oujiajun.recruitment.entity.po.RecruitmentInfo;
 import com.oujiajun.recruitment.entity.po.RegistrationInfo;
 import com.oujiajun.recruitment.entity.po.User;
+import com.oujiajun.recruitment.entity.vo.RecruitmentInfoPage;
 import com.oujiajun.recruitment.entity.vo.UserRegistrationInfo;
 import com.oujiajun.recruitment.service.InterviewPeriodService;
 import com.oujiajun.recruitment.service.RecruitmentInfoService;
@@ -470,5 +472,41 @@ public class RecruitmentInfoController {
         userRegistrationInfoList.remove(userRegistrationInfo);
         System.out.println("hou"+userRegistrationInfoList);
         return "redirect:/interview/startInterview/id/" + interviewPeriod.getInterviewPeriodId();
+    }
+
+    @GetMapping("/queryRecruitmentInfo")
+    public String queryRecruitmentInfoPageWithMultiCondition(
+            @RequestParam("currentPage")Integer currentPage,
+            @RequestParam("workCity")String workCity,
+            @RequestParam("company")String company,
+            @RequestParam("bigSalary")Integer bigSalary,
+            @RequestParam("smallSalary")Integer smallSalary,
+            HttpServletRequest request,
+            HttpSession session){
+        Map<String, Object> params = new HashMap<>();
+        if (currentPage != null){
+            params.put("currentPage",currentPage);
+        }
+        if (workCity != null){
+            params.put("workCity",workCity);
+        }
+        if (company != null){
+            params.put("company",company);
+        }
+        if (bigSalary != null){
+            params.put("bigSalary",bigSalary);
+        }
+        if (smallSalary != null){
+            params.put("smallSalary",smallSalary);
+        }
+        PageBean pageBean = new PageBean();
+        pageBean.setCurrentPage(currentPage);
+        ResultInfo queryResult = recruitmentInfoService.queryRecruitmentInfoForPage(pageBean,params);
+        if (!queryResult.getSuccess()){
+            session.setAttribute("errorMsg",queryResult.getMessage());
+        }
+        RecruitmentInfoPage recruitmentInfoPage = (RecruitmentInfoPage) queryResult.getData();
+        request.setAttribute("recruitmentInfoPage",recruitmentInfoPage);
+        return "/selectRecruitment";
     }
 }
