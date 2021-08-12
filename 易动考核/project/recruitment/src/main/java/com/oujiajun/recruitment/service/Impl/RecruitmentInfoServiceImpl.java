@@ -1,15 +1,18 @@
 package com.oujiajun.recruitment.service.Impl;
 
 import com.oujiajun.recruitment.dao.RecruitmentInfoDao;
+import com.oujiajun.recruitment.entity.dto.PageBean;
 import com.oujiajun.recruitment.entity.dto.ResultInfo;
 import com.oujiajun.recruitment.entity.po.InterviewPeriod;
 import com.oujiajun.recruitment.entity.po.RecruitmentInfo;
+import com.oujiajun.recruitment.entity.vo.RecruitmentInfoPage;
 import com.oujiajun.recruitment.service.RecruitmentInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author oujiajun
@@ -97,5 +100,21 @@ public class RecruitmentInfoServiceImpl implements RecruitmentInfoService {
         }else {
             return new ResultInfo(false,"查询面试时间段错误");
         }
+    }
+
+    @Override
+    public ResultInfo queryRecruitmentInfoForPage(PageBean pageBean, Map<String, Object> params) {
+
+        int startIndex = pageBean.getStartIndex();
+        int pageSize = pageBean.getPageSize();
+        params.put("startIndex",startIndex);
+        params.put("pageSize",pageSize);
+        List<RecruitmentInfo> recruitmentInfoList = recruitmentInfoDao.selectRecruitmentInfoForPage(params);
+        if (recruitmentInfoList == null){
+            return new ResultInfo(false,"查询招聘信息失败");
+        }
+        pageBean.setTotalCount(recruitmentInfoList.size());
+        RecruitmentInfoPage recruitmentInfoPage = new RecruitmentInfoPage(recruitmentInfoList,pageBean);
+        return new ResultInfo(true,recruitmentInfoPage);
     }
 }

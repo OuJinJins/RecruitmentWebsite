@@ -1,8 +1,11 @@
 package com.oujiajun.recruitment.service;
 
+import com.oujiajun.recruitment.entity.dto.PageBean;
 import com.oujiajun.recruitment.entity.dto.ResultInfo;
 import com.oujiajun.recruitment.entity.po.InterviewPeriod;
 import com.oujiajun.recruitment.entity.po.RecruitmentInfo;
+
+import java.util.Map;
 
 /**
  * @author oujiajun
@@ -63,4 +66,12 @@ public interface RecruitmentInfoService {
      * @return 服务结果集
      */
     ResultInfo queryInterviewPeriodByInterviewPeriodId(Integer interviewPeriodId);
+
+    /**
+     * 页数条件查询招聘信息
+     * @param pageBean page类
+     * @param params 查询条件
+     * @return 服务结果集
+     */
+    ResultInfo queryRecruitmentInfoForPage(PageBean pageBean, Map<String, Object> params);
 }
