@@ -375,7 +375,7 @@ public class RecruitmentInfoController {
         return "/lineUp";
     }
 
-    @PostMapping("/registrationInfo/start/interview/id/{recruitmentInfoId}")
+    @GetMapping("/registrationInfo/start/interview/id/{recruitmentInfoId}")
     public String chooseInterviewPeriod(
             @PathVariable("recruitmentInfoId") Integer recruitmentInfoId,
             HttpServletRequest request,
@@ -399,7 +399,7 @@ public class RecruitmentInfoController {
 
     @PostMapping("/interview/startInterview")
     public String startInterview(
-            @RequestParam("InterviewPeriodId")int interviewPeriodId,
+            @RequestParam("interviewPeriodId")int interviewPeriodId,
             HttpServletRequest request,
             HttpSession session){
         User loginUser = (User)session.getAttribute("loginUser");

@@ -177,19 +177,19 @@
         </div>
         <div id="div-info-applicant">
             <div>
-                <span class="current">姓名:</span><a class="a-occupation span-city" th:text="${currentUser?.username}"></a>
+                <span class="current">姓名:</span><a class="a-occupation span-city" th:text="${currentUser?.user.username}"></a>
             </div>
             <div>
-                <span class="current">年龄:</span><span class="span-city" th:text="${currentUser?.age}"></span>
+                <span class="current">年龄:</span><span class="span-city" th:text="${currentUser?.user.age}"></span>
             </div>
             <div>
-                <span class="current">性别:</span><span class="span-city" th:text="${currentUser?.gender}"></span>
+                <span class="current">性别:</span><span class="span-city" th:text="${currentUser?.user.gender}"></span>
             </div>
             <div>
-                <span class="current">居住地:</span><a class="a-occupation span-city" th:text="${currentUser?.city}"></a>
+                <span class="current">居住地:</span><a class="a-occupation span-city" th:text="${currentUser?.user.city}"></a>
             </div>
             <div>
-                <span class="current">简介:</span><a class="a-occupation span-city" th:text="${currentUser?.briefIntroduction}"></a>
+                <span class="current">简介:</span><a class="a-occupation span-city" th:text="${currentUser?.user.briefIntroduction}"></a>
             </div>
         </div>
         <div id="div-button-option">
