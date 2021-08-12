@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author oujiajun
@@ -84,4 +85,11 @@ public interface RecruitmentInfoDao {
      * @return 面试时间段
      */
     InterviewPeriod queryInterviewPeriodByInterviewPeriodId(Integer interviewPeriodId);
+
+    /**
+     * 分页条件查询招聘信息
+     * @param map 参数
+     * @return 招聘信息集合
+     */
+    List<RecruitmentInfo> selectRecruitmentInfoForPage(Map<String, Object> map);
 }

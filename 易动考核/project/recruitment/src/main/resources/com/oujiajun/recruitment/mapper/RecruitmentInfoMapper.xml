@@ -201,4 +201,20 @@
         from recruitment.interview_period
         where interview_period_id=#{interview_period_id}
     </select>
+
+    <select id="selectRecruitmentInfoForPage" resultType="RecruitmentInfo">
+        select * from recruitment.recruitment_info ri
+        <where>
+            <if test="workCity!=null">
+                ri.work_city=#{workCity}
+            </if>
+            <if test="company!=null">
+                AND ri.company=#{company}
+            </if>
+            <if test="bigSalary!=null and smallSalary!=null">
+                AND ri.monthly_pay &lt;=#{bigSalary} And ri.monthly_pay &gt;=#{smallSalary}
+            </if>
+        </where>
+        limit  #{startIndex},#{pageSize}
+    </select>
 </mapper>
