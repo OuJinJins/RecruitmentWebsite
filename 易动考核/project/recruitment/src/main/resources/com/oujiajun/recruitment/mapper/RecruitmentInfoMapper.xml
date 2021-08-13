@@ -202,8 +202,20 @@
         where interview_period_id=#{interview_period_id}
     </select>
 
-    <select id="selectRecruitmentInfoForPage" resultType="RecruitmentInfo">
-        select * from recruitment.recruitment_info ri
+    <select id="selectRecruitmentInfoForPage" resultMap="RecruitmentInfoMap">
+        select recruitment_info_id,
+                user_id,
+                occupation,
+                monthly_pay,
+                introduction,
+                work_city,
+                company,
+                interview_date_begin,
+                interview_date_end,
+                interview_time_begin,
+                interview_time_end,
+                max_number
+        from recruitment.recruitment_info ri
         <where>
             <if test="workCity!=null">
                 ri.work_city=#{workCity}
