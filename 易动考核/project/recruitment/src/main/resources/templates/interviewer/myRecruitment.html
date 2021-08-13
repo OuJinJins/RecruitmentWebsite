@@ -113,9 +113,9 @@
                 <div class="form-group">
                     <label for="input-search"></label><input type="text" class="form-control" placeholder="搜索招聘信息" id="input-search">
                 </div>
-                <button type="submit" class="btn btn-default" id="button-search">
+                <a class="btn btn-default" id="button-search" th:href="/select/page/1">
                     <span class="glyphicon glyphicon-search" aria-hidden="true" id="glyphicon-search"></span>
-                </button>
+                </a>
             </form>
             <ul class="nav navbar-nav navbar-right">
                 <li th:if="${not #strings.isEmpty(session.loginUser)}"><a href="#" th:text="${session.loginUser.username}"></a></li>
