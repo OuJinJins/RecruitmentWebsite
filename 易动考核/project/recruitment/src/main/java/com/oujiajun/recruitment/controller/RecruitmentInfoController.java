@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
@@ -474,30 +476,43 @@ public class RecruitmentInfoController {
         return "redirect:/interview/startInterview/id/" + interviewPeriod.getInterviewPeriodId();
     }
 
-    @GetMapping("/queryRecruitmentInfo")
+    @GetMapping(value = {
+            "/select/city/{city}/company/{company}/salary/{smallSalary}/{bigSalary}/page/{page}",
+            "/select/city/{city}/salary/{smallSalary}/{bigSalary}/page/{page}",
+            "/select/city/{city}/company/{company}/page/{page}",
+            "/select/company/{company}/salary/{smallSalary}/{bigSalary}/page/{page}",
+            "/select/city/{city}/page/{page}",
+            "/select/company/{company}/page/{page}",
+            "/select/salary/{smallSalary}/{bigSalary}/page/{page}",
+            "/select/page/{page}"},produces = "text/html;charset=UTF-8")
     public String queryRecruitmentInfoPageWithMultiCondition(
-            @RequestParam("currentPage")Integer currentPage,
-            @RequestParam("workCity")String workCity,
-            @RequestParam("company")String company,
-            @RequestParam("bigSalary")Integer bigSalary,
-            @RequestParam("smallSalary")Integer smallSalary,
+            @PathVariable(value = "company", required = false)String company,
+            @PathVariable(value = "city",required = false)String workCity,
+            @PathVariable(value = "page",required = false)Integer currentPage,
+            @PathVariable(value = "bigSalary", required = false)Integer bigSalary,
+            @PathVariable(value = "smallSalary",required = false)Integer smallSalary,
             HttpServletRequest request,
-            HttpSession session){
+            HttpSession session) throws UnsupportedEncodingException {
         Map<String, Object> params = new HashMap<>();
         if (currentPage != null){
             params.put("currentPage",currentPage);
+            request.setAttribute("currentPage", currentPage);
         }
         if (workCity != null){
             params.put("workCity",workCity);
+            request.setAttribute("workCity",workCity);
         }
         if (company != null){
             params.put("company",company);
+            request.setAttribute("company",company);
         }
         if (bigSalary != null){
             params.put("bigSalary",bigSalary);
+            request.setAttribute("bigSalary",bigSalary);
         }
         if (smallSalary != null){
             params.put("smallSalary",smallSalary);
+            request.setAttribute("smallSalary",smallSalary);
         }
         PageBean pageBean = new PageBean();
         pageBean.setCurrentPage(currentPage);

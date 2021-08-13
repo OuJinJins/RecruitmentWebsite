@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/css/bootstrap-theme.min.css" rel="stylesheet">
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!--BEGIN——程序执行脚本-->
+    <script>
+        function getRootPath(path){
+            var currentPagePath=location.href;
+            var pathName = window.document.location.pathname;
+            var pos = currentPagePath.indexOf(pathName);
+            var localhostPath = currentPagePath.substring(0,pos);
+            var projectName = pathName.substring(0,pathName.substr(1).indexOf("/")+1);
+            return localhostPath+projectName+"/servlet" + path;
+        }
+
+        function toPage(path){
+            var currentPagePath=location.href;
+            var pathName = window.document.location.pathname;
+            var pos = currentPagePath.indexOf(pathName);
+            var localhostPath = currentPagePath.substring(0,pos);
+            var projectName = pathName.substring(0,pathName.substr(1).indexOf("/")+1);
+            return localhostPath+projectName + path;
+        }
+    </script>
+    <!--END——程序执行脚本-->
+
+    <!--BEGIN——发送请求脚本-->
+    <script>
+        //post方法
+        function postRequest(url, request, callback) {
+            $.post(url, request, function (data,status) {
+                if (status.success === 'error') {
+                    alert("ERROR:发送请求失败");
+                }
+                if (data.message != null && data.message !== '') {
+                    alert("系统提示" + data.message);
+                }
+                callback(data);
+            },"json");
+        }
+
+        //ajax方法
+        function ajaxJsonRequest(url, data, callback) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: data,
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function (data) {
+                    if (data.message != null && data.message !== '') {
+                        alert("系统提示：" + data.message);
+                    }
+                    callback(data);
+                },
+                Error: function (xhr, error, exception) {
+                    alert("请求发送失败，请刷新浏览器重试或检查网络");
+                    alert(exception.toString());
+                    callback(data);
+                }
+            });
+        }
+    </script>
+    <!--END——发送请求脚本-->
+
+</head>
+<body>
+<nav class="navbar navbar-fixed-top" id="navbar">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header navbar-inverse">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">
+                <img src="../static/img/logo.jpg" alt="logo" id="logo">
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="/recruitment/index">首页</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">个人中心<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/recruitment/profile">个人信息</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/recruitment/myRegistration">我的报名</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">我的面试</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">招聘中心<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/recruitment/interviewer/myRecruitment">我的招聘/审核报名/进行面试/审核结果/修改</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/recruitment/interviewer/publish">发布招聘</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <form class="navbar-form navbar-left" id="search">
+                <div class="form-group">
+                    <label for="input-search"></label><input type="text" class="form-control" placeholder="搜索招聘信息" id="input-search">
+                </div>
+                <a class="btn btn-default" id="button-search" th:href="/select/page/1">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true" id="glyphicon-search"></span>
+                </a>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+                <li th:if="${not #strings.isEmpty(session.loginUser)}"><a href="#" th:text="${session.loginUser.username}"></a></li>
+                <li th:if="${#strings.isEmpty(session.loginUser)}"><a href="#">登录</a></li>
+                <li th:if="${#strings.isEmpty(session.loginUser)}"><a href="#">注册</a></li>
+                <li th:if="${not #strings.isEmpty(session.loginUser)}"><a href="#">注销</a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+    <div class="nav-bottom">
+        <div class="div-city">
+            <a class="a-city" id="全国" onclick="chooseCity(null)"><span>全国</span></a>
+            <span class="a-city">当前城市:</span>
+            <span th:if="${#strings.isEmpty(workCity)}" th:text="${workCity}" class="currentCity" ></span>
+            <span class="a-city">热门城市:</span>
+            <a class="a-city" id="北京" onclick="chooseCity('北京')"><span>北京</span></a>
+            <a class="a-city" id="上海" onclick="chooseCity('上海')"><span>上海</span></a>
+            <a class="a-city" id="广东" onclick="chooseCity('广东')"><span>广东</span></a>
+            <a class="a-city" id="深圳" onclick="chooseCity('深圳')"><span>深圳</span></a>
+            <a class="a-city" id="杭州" onclick="chooseCity('杭州')"><span>杭州</span></a>
+            <a class="a-city" id="天津" onclick="chooseCity('天津')"><span>天津</span></a>
+            <a class="a-city" id="重庆" onclick="chooseCity('重庆')" ><span>重庆</span></a>
+            <a class="a-city" id="厦门" onclick="chooseCity('厦门')" ><span>厦门</span></a>
+            <a class="a-city" id="武汉" onclick="chooseCity('武汉')"><span>武汉</span></a>
+            <a class="a-city" id="长沙" onclick="chooseCity('长沙')"><span>长沙</span></a>
+            <a class="a-city" id="成都" onclick="chooseCity('成都')"><span>成都</span></a>
+            <a class="a-city" id="郑州" onclick="chooseCity('郑州')"><span>郑州</span></a>
+            <a class="a-city" id="西安" onclick="chooseCity('西安')"><span>西安</span></a>
+            <a class="a-city" id="苏州" onclick="chooseCity('苏州')"><span>苏州</span></a>
+        </div>
+        <hr class="select-hr">
+        <div class="div-select">
+            <ul class="nav navbar-nav ul-dropdown">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">薪资需求<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a id="nullSalary" onclick="chooseSalary(null,null)">不限</a></li>
+                        <li><a id="3k" onclick="chooseSalary(0,3)">3k以下</a></li>
+                        <li><a id="3-5k" onclick="chooseSalary(3,5)">3-5k</a></li>
+                        <li><a id="5-10k" onclick="chooseSalary(5,10)">5-10k</a></li>
+                        <li><a id="10-15k" onclick="chooseSalary(10,15)">10-15k</a></li>
+                        <li><a id="15-20k" onclick="chooseSalary(15,20)">15-20k</a></li>
+                        <li><a id="20-25k" onclick="chooseSalary(20,25)">20-25k</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav ul-dropdown">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">公司<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a id="不限" onclick="chooseCompany(null)">不限</a></li>
+                        <li><a id="阿里" onclick="chooseCompany('阿里')">阿里</a></li>
+                        <li><a id="字节跳动" onclick="chooseCompany('字节跳动')">字节跳动</a></li>
+                        <li><a id="百度" onclick="chooseCompany('百度')">百度</a></li>
+                        <li><a id="腾讯" onclick="chooseCompany('腾讯')">腾讯</a></li>
+                        <li><a id="宇宙中芯" onclick="chooseCompany('宇宙中芯')">宇宙中芯</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <input th:if="${not #strings.isEmpty(workCity)}" th:value="${workCity}" type="hidden" id="workCity" value="null"/>
+        <input th:if="${not #strings.isEmpty(company)}" th:value="${company}" type="hidden" id="company" value="null"/>
+        <input th:if="${not #strings.isEmpty(bigSalary)}" th:value="${bigSalary}" type="hidden" id="bigSalary" value="null"/>
+        <input th:if="${not #strings.isEmpty(smallSalary)}" th:value="${smallSalary}" type="hidden" id="smallSalary" value="null"/>
+        <input th:if="${not #strings.isEmpty(currentPage)}" th:value="${currentPage}" type="hidden" id="page" value="null"/>
+
+    </div>
+</nav>
+<div id="bg">
+    <div th:if="${not #strings.isEmpty(session.errorMsg)}" class="alert alert-info alert-dismissible" id="alert" role="alert" >
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <p th:text="${session.errorMsg}"></p>
+    </div>
+    <div id="div-recruitmentInfos">
+        <div class="div-recruitmentInfo" th:each="info:${recruitmentInfoPage.recruitmentInfoList}">
+            <div class="div-info">
+                <div class="div-info-top">
+                    <div class="div-recruitmentInfo-left">
+                        <a class="a-occupation" th:text="${info.occupation}" th:href="@{/recruitment/detail/id/} + ${info.recruitmentInfoId}"></a>
+                        <span class="span-city" th:text="${info.workCity}"></span>
+                    </div>
+                    <div class="div-recruitmentInfo-right">
+                        <span class="span-monthlyPay" th:text="${info.monthlyPay} + K"></span>
+                    </div>
+                </div>
+                <hr class="hr-info">
+                <div class="div-info-bottom">
+                    <div class="div-info-bottomleft">
+                        <span class="span-company" th:text="${info.company}"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="div-page">
+        <nav aria-label="Page navigation">
+            <ul class="pagination pagination-lg">
+                <li>
+                    <a id="pre" onclick="choosePage(page-1)" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li><a id="1" onclick="choosePage(1)">1</a></li>
+                <li><a id="2" onclick="choosePage(2)">2</a></li>
+                <li><a id="3" onclick="choosePage(3)">3</a></li>
+                <li><a id="4" onclick="choosePage(4)">4</a></li>
+                <li><a id="5" onclick="choosePage(5)">5</a></li>
+                <li>
+                    <a id="next" onclick="choosePage(page+1)" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+</body>
+<script  th:inline ="javascript" >
+
+
+
+    let cityPath;
+    let companyPath;
+    let salaryPath;
+    let pagePath;
+    let pathname = window.location.pathname;
+    let host = window.location.host;
+
+    let workCity = $("#workCity").val();
+    let company = $("#company").val();
+    let bigSalary = $("#bigSalary").val();
+    let smallSalary = $("#smallSalary").val();
+    let page = $("#page").val();
+
+    cityPath = '/city/' + workCity;
+    companyPath = '/company/' + company;
+    salaryPath = '/salary/' + smallSalary + '/' + bigSalary;
+    pagePath = '/page/' + page;
+
+    function chooseCity(city){
+        cityPath = '/city/' + city;
+        if(city == null){
+            workCity = undefined;
+        }
+        pathname = '';
+        if(workCity!==undefined || city != null){
+            pathname+=cityPath;
+        }
+        if(company!==undefined){
+            pathname+=companyPath;
+        }
+        if(smallSalary!==undefined && bigSalary!==undefined){
+            pathname+=salaryPath;
+        }
+        if(pagePath!==undefined){
+            pathname+=pagePath;
+        }
+        window.location.href='/recruitment/select' + pathname;
+    }
+
+    function chooseCompany(company1){
+        companyPath = '/company/' + company1;
+        if(company1 == null){
+            company = undefined;
+        }
+        pathname = '';
+        if(workCity!==undefined){
+            pathname+=cityPath;
+        }
+        if(company!==undefined || company1 != null){
+            pathname+=companyPath;
+        }
+        if(smallSalary!==undefined && bigSalary!==undefined){
+            pathname+=salaryPath;
+        }
+        if(pagePath!==undefined){
+            pathname+=pagePath;
+        }
+        window.location.href='/recruitment/select' + pathname;
+    }
+
+    function chooseSalary(smallSalary1,bigSalary1){
+        salaryPath = '/salary/' + smallSalary1 + '/' + bigSalary1;
+        if (smallSalary1 == null && bigSalary1 == null){
+            smallSalary = undefined;
+            bigSalary = undefined;
+        }
+        pathname = '';
+        if(workCity!==undefined){
+            pathname+=cityPath;
+        }
+        if(company!==undefined){
+            pathname+=companyPath;
+        }
+        if((smallSalary!==undefined && bigSalary!==undefined) || (smallSalary1 != null && bigSalary1 != null)){
+            pathname+=salaryPath;
+        }
+        if(pagePath!==undefined){
+            pathname+=pagePath;
+        }
+        window.location.href='/recruitment/select' + pathname;
+    }
+
+    function choosePage(page1){
+        if (page1<=0 || page1 >=6){
+            return;
+        }
+        pagePath = '/page/' + page1;
+        if(page1 == null){
+            page = undefined;
+        }
+        pathname = '';
+        if(workCity!==undefined){
+            pathname+=cityPath;
+        }
+        if(company!==undefined){
+            pathname+=companyPath;
+        }
+        if(smallSalary!==undefined && bigSalary!==undefined){
+            pathname+=salaryPath;
+        }
+        if(pagePath!==undefined || page1 != null){
+            pathname+=pagePath;
+        }
+        window.location.href='/recruitment/select' + pathname;
+    }
+
+</script>
+<style>
+    #div-page{
+        padding-left: 460px;
+    }
+
+    .select-hr{
+        margin-top: 10px;
+    }
+
+    .ul-dropdown{
+        margin-top: -16px;
+    }
+
+    .div-city{
+        padding-top: 12px;
+        padding-left: 12px;
+    }
+
+    .a-city{
+        padding: 12px 11px;
+        font-weight: lighter;
+        color: #414a60;
+        font-size: 13px;
+    }
+
+    #bg{
+        padding-top: 90px;
+        height: 1000px;
+    }
+
+    .nav-bottom{
+        background-color: #ffffff;
+        width: 100%;
+        height: 100px;
+    }
+
+    .a-occupation{
+        float: top;
+    }
+
+
+    .span-city{
+        float: top;
+        font-size: 13px;
+        color: #61687c;
+    }
+
+    .div-info-bottomleft{
+        color: #61687c;
+        font-size: 13px;
+        padding-top: 15px;
+        float: left;
+    }
+
+    .span-monthlyPay{
+        font-size: 15px;
+        color: #FD7240;
+    }
+
+    .a-occupation{
+        font-size: 15px;
+        color: #414a60;
+    }
+
+    .div-recruitmentInfos{
+        margin-top: 20px;
+    }
+
+    .hr-info{
+        width: 100%;
+        margin: auto auto auto auto;
+        float: top;
+    }
+
+    .div-info-top{
+        float: top;
+        width: 100%;
+        height: 50%;
+    }
+
+    .div-recruitmentInfo-left{
+        float: left;
+    }
+
+    .div-recruitmentInfo-right{
+        float: right;
+    }
+
+    .div-info{
+        margin: auto auto auto auto;
+        width: 88%;
+        height: 90%;
+        padding-top: 18px;
+    }
+
+    .div-recruitmentInfo{
+        float: left;
+        margin-top: 18px;
+        margin-left: 18px;
+        width: 384px;
+        height: 130px;
+        background-color: #ffffff;
+    }
+
+
+    #div-recruitmentInfos{
+        margin: auto auto auto auto;
+        width: 100%;
+        height: 100%;
+    }
+
+    body {
+        background-color: #f5f5f5;
+        padding-top: 80px;
+    }
+
+    #navbar{
+        font-weight: bold;
+        font-size: 17px;
+        background-color: #ffffff;
+        height: 80px;
+        padding-top: 15px;
+    }
+
+    #logo{
+        width: 24px;
+        height: 24px;
+    }
+
+    #glyphicon-search{
+        margin-left: -2px;
+    }
+
+    #button-search{
+        width: 36px;
+        height: 36px;
+        border-radius: 1000px;
+    }
+
+    #input-search{
+        width: 500px;
+        border: #333333;
+        border-radius: 10px;
+    }
+
+    #search{
+        margin-left: 40px;
+    }
+
+    #input-search{
+        background-color: #f5f5f5;
+        border: #ffffff;
+    }
+</style>
+</html>
