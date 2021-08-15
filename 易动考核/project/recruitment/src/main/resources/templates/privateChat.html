@@ -265,8 +265,8 @@
             //获取输入的内容
             var data = $("#input_text").val();
             $("#input_text").val("");
-            var json = {"room": toRoom ,
-                        "messageStr": data
+            var json = {"roomId": toRoom.roomId ,
+                        "message": data
             };
             //将数据展示在聊天区
             var str =

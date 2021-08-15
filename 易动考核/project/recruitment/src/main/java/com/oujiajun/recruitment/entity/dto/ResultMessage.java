@@ -1,7 +1,7 @@
 package com.oujiajun.recruitment.entity.dto;
 
-import com.oujiajun.recruitment.entity.po.Message;
 import com.oujiajun.recruitment.entity.po.Room;
+import com.oujiajun.recruitment.entity.vo.MessageVo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,5 +14,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ResultMessage {
     private Room room;
-    private Message message;
+    private MessageVo message;
 }

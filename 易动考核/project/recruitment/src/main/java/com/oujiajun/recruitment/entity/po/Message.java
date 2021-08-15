@@ -22,7 +22,7 @@ public class Message {
     /**
      * 信息
      */
-    private String message;
+    private Object message;
     /**
      * 发送消息的用户id
      */

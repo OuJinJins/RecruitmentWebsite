@@ -90,7 +90,7 @@ public class ChatEndpoint {
     }
 
     /**
-     * 收到消息时被调用
+     * 收到客户端发送的消息时被调用
      * @param message message
      * @param session session
      */
@@ -101,10 +101,13 @@ public class ChatEndpoint {
             ObjectMapper mapper =new ObjectMapper();
             Message mess = mapper.readValue(message, Message.class);
             Integer toRoomId = mess.getToRoomId();
-            String data = mess.getMessage();
-            String username = (String) httpSession.getAttribute("user");
-            String resultMessage = MessageUtils.getMessage(false, username, data);
-            //发送数据
+            Object data = mess.getMessage();
+            User loginUser = (User) httpSession.getAttribute("loginUser");
+            String resultMessage = MessageUtils.getMessage(false, loginUser, data);
+            // 发送数据
+            // 遍历房间对应的用户id
+            // TODO 遍历房间对应的用户id 除了自己
+            // 发送数据到客户端
             onlineUsers.get(toRoomId).session.getBasicRemote().sendText(resultMessage);
         } catch (Exception e) {
             e.printStackTrace();
