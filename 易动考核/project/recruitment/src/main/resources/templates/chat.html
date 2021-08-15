@@ -205,12 +205,12 @@
     }
 
 
-    var username;
+    let roomList;
     $(function(){
         $.ajax({
-            url:"getUsername",
+            url:"room/getUserRoom",
             success:function(res){
-                username=res;
+                roomList=res;
                 //$("#username").html();
             },
             async :false

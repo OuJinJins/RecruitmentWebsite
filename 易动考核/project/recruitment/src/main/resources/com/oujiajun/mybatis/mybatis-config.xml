@@ -8,6 +8,7 @@
         <typeAlias alias="RegistrationInfo" type="com.oujiajun.recruitment.entity.po.RegistrationInfo" />
         <typeAlias alias="UserRegistrationInfo" type="com.oujiajun.recruitment.entity.vo.UserRegistrationInfo" />
         <typeAlias alias="InterviewPeriod" type="com.oujiajun.recruitment.entity.po.InterviewPeriod" />
+        <typeAlias alias="Room" type="com.oujiajun.recruitment.entity.po.Room" />
     </typeAliases>
 
 </configuration>

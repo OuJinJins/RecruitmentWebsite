@@ -1,5 +1,6 @@
 package com.oujiajun.recruitment.dao;
 
+import com.oujiajun.recruitment.entity.po.Room;
 import com.oujiajun.recruitment.entity.po.User;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -16,4 +17,11 @@ public interface RoomDao {
      * @return 用户集合
      */
     List<User> queryRoomUser(int roomId);
+
+    /**
+     * 通過用戶id拆綫呢用戶加入的聊天室
+     * @param userId 用戶id
+     * @return 聊天室集合
+     */
+    List<Room> queryRoomByUserId(int userId);
 }
