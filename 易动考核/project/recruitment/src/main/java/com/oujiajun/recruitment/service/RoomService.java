@@ -12,4 +12,11 @@ public interface RoomService {
      * @return 结果集
      */
     ResultInfo queryRoomUser(int roomId);
+
+    /**
+     * 通過用戶id拆綫呢用戶加入的聊天室
+     * @param userId 用戶id
+     * @return 结果集
+     */
+    ResultInfo queryRoomVoByUserId(int userId);
 }
