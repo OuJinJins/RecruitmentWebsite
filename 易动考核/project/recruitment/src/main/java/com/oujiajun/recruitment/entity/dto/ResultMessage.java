@@ -1,5 +1,7 @@
 package com.oujiajun.recruitment.entity.dto;
 
+import com.oujiajun.recruitment.entity.po.Message;
+import com.oujiajun.recruitment.entity.po.Room;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,8 +13,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResultMessage {
-    private boolean isSystem;
-    private String fromName;
-    private String toName;
-    private Object message;
+    private Room room;
+    private Message message;
 }

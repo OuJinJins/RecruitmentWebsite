@@ -11,6 +11,20 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Message {
-    private String toName;
+    /**
+     * 信息id
+     */
+    private Integer messageId;
+    /**
+     * 接受信息的聊天室id
+     */
+    private Integer toRoomId;
+    /**
+     * 信息
+     */
     private String message;
+    /**
+     * 发送消息的用户id
+     */
+    private Integer fromUserId;
 }
