@@ -27,4 +27,8 @@ public class Message {
      * 发送消息的用户id
      */
     private Integer fromUserId;
+    /**
+     * 是否为系统消息
+     */
+    private Boolean isSystem;
 }

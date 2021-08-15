@@ -13,7 +13,7 @@ public class MessageUtils {
         try {
             // 设置结果信息
             ResultMessage result = new ResultMessage();
-            result.getRoom().setIsPrivateChat(isSystemMessage);
+            result.getMessage().setIsSystem(isSystemMessage);
             result.getMessage().setMessage(message);
             if (fromUser!=null){
                 result.getMessage().setFromUser(fromUser);

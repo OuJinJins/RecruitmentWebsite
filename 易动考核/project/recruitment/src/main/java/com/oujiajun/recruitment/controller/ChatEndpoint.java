@@ -123,6 +123,7 @@ public class ChatEndpoint {
                     }
                 }
             }
+            // TODO 失败
         } catch (Exception e) {
             e.printStackTrace();
         }

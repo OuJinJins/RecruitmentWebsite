@@ -183,6 +183,7 @@
 </body>
 <script  th:inline ="javascript" >
     let toRoom;
+    let onlineUserDataMap = new Map();
 
     // 获取登陆用户
     function getLoginUser(){
@@ -203,6 +204,7 @@
 
     }
 
+
     var username;
     $(function(){
         $.ajax({
@@ -214,9 +216,7 @@
             async :false
         })
 
-        var ws = new WebSocket("ws://localhost/recruitment/");
-
-        let onlineUserDataMap = new Map();
+        var ws = new WebSocket("ws://localhost/recruitment/chat");
 
         // 绑定事件
         ws.onopen = function(){
@@ -228,9 +228,10 @@
             var dataStr = ev.data;
             var res = JSON.parse(dataStr);
             //判断是否是系统消息
-            if(res.system){
+            if(res.message.isSystem){
                 //好友列表
                 //系统广播
+                /*
                 var names = res.message;
                 var userListStr = "";
                 var broadcastListStr = "";
@@ -242,17 +243,30 @@
                 }
                 $("#hylist").html(userListStr);
                 $("#xtlist").html(broadcastListStr);
-
+                 */
             }else {
                 //不是系统消息
-                var str = "<span id='mes_left'>"+ res.message +"</span></br>";
-                if (toName == res.fromName)
-                    $("#content").append(str);
-                var chatdata = sessionStorage.getItem(res.fromName);
-                if (chatdata != null){
-                    str = chatdata + str;
+                var str = '<div class="message">\n' +
+                    '                        <div class="message-left">\n' +
+                    '                            <a>\n' +
+                    '                                <img class="a-profile-left">\n' +
+                    '                            </a>\n' +
+                    '                            <div class="message-right">\n' +
+                    '                                <span class="name-left">'+res.message.fromUser.username+'</span>\n' +
+                    '                                <div class="span-message">\n' +
+                    '                                    '+res.message.message+'\n' +
+                    '                                </div>\n' +
+                    '                            </div>\n' +
+                    '                        </div>\n' +
+                    '                    </div>';
+                if (toRoom.roomId === res.room.roomId){
+                    $("#chat-left-top").append(str);
                 }
-                sessionStorage.setItem(res.fromName,str);
+                let chatData = sessionStorage.getItem(toRoom.roomId);
+                if (chatData != null){
+                    str = chatData + str;
+                }
+                sessionStorage.setItem(toRoom.roomId,str);
             }
         }
 
