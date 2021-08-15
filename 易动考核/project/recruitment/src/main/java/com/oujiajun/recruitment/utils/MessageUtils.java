@@ -14,14 +14,23 @@ public class MessageUtils {
         try {
             // 设置结果信息
             ResultMessage result = new ResultMessage();
-            result.setMessage(new MessageVo());
-            result.getMessage().setIsSystem(isSystemMessage);
-            result.getMessage().setMessage(message);
+            // 系统消息
+            if (isSystemMessage){
+                result.setMessage(new MessageVo());
+                result.getMessage().setIsSystem(true);
+                result.getMessage().setMessage(((MessageVo)message).getMessage());
+            }else {
+                // 非系统消息
+                result.setMessage((MessageVo)message);
+                result.getMessage().setIsSystem(false);
+            }
             if (fromUser!=null){
                 result.getMessage().setFromUser(fromUser);
             }
+            System.out.println(":"+result.getMessage().getToRoomId());
             // 把字符串转成json格式的字符串
             ObjectMapper mapper = new ObjectMapper();
+            System.out.println(mapper.writeValueAsString(result));
             return mapper.writeValueAsString(result);
         }catch (JsonProcessingException e){
             e.printStackTrace();

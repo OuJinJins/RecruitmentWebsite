@@ -4,16 +4,16 @@ import com.oujiajun.recruitment.entity.po.Message;
 import com.oujiajun.recruitment.entity.po.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
  * @author oujiajun
  */
-@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class MessageVo extends Message {
     User fromUser;
 }

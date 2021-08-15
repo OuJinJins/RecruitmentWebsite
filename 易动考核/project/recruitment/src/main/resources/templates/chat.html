@@ -267,7 +267,7 @@
                     '                            </div>\n' +
                     '                        </div>\n' +
                     '                    </div>';
-                if (toRoom.roomId === res.room.roomId){
+                if (toRoom.roomId === res.message.toRoomId){
                     $("#chat-left-top").append(str);
                 }
                 let chatData = sessionStorage.getItem(toRoom.roomId);

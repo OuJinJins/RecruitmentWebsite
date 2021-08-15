@@ -1,10 +1,12 @@
 package com.oujiajun.recruitment.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oujiajun.recruitment.config.GetHttpSessionConfigurator;
 import com.oujiajun.recruitment.entity.dto.ResultInfo;
 import com.oujiajun.recruitment.entity.po.Message;
 import com.oujiajun.recruitment.entity.po.User;
+import com.oujiajun.recruitment.entity.vo.MessageVo;
 import com.oujiajun.recruitment.service.Impl.RoomServiceImpl;
 import com.oujiajun.recruitment.service.RoomService;
 import com.oujiajun.recruitment.utils.MessageUtils;
@@ -56,14 +58,13 @@ public class ChatEndpoint {
         this.httpSession = httpSession;
         //存储登陆的对象
         User loginUser = (User)httpSession.getAttribute("loginUser");
-
         onlineUsers.put(loginUser.getId(),this);
 
         //将当前在线用户的用户名推送给所有的客户端
         //1 获取消息
-        String message = MessageUtils.getMessage(true, null, getAllIds());
+        //String message = MessageUtils.getMessage(true, null, getAllIds());
         //2 调用方法进行系统消息的推送
-        broadcastAllUsers(message);
+        //broadcastAllUsers(message);
     }
 
     private void broadcastAllUsers(String message){
@@ -107,12 +108,14 @@ public class ChatEndpoint {
     public void onMessage(String message,Session session){
         //将数据转换成对象
         try {
-            ObjectMapper mapper =new ObjectMapper();
-            Message mess = mapper.readValue(message, Message.class);
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            MessageVo mess = new MessageVo();
+            int room = (Integer) jsonObject.get("toRoomId");
+            mess.setToRoomId(room);
+            mess.setMessage(jsonObject.get("message"));
             int toRoomId = mess.getToRoomId();
-            Object data = mess.getMessage();
             User loginUser = (User) httpSession.getAttribute("loginUser");
-            String resultMessage = MessageUtils.getMessage(false, loginUser, data);
+            String resultMessage = MessageUtils.getMessage(false, loginUser, mess);
             // 发送数据
             // 遍历房间对应的用户id 除了自己
             // 发送数据到客户端
@@ -147,6 +150,5 @@ public class ChatEndpoint {
         //从容器中删除指定的用户
         int userId = loginUser.getId();
         onlineUsers.remove(userId);
-        MessageUtils.getMessage(true,null,getAllIds());
     }
 }
