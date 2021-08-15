@@ -5,11 +5,16 @@ import com.oujiajun.recruitment.config.GetHttpSessionConfigurator;
 import com.oujiajun.recruitment.entity.dto.ResultInfo;
 import com.oujiajun.recruitment.entity.po.Message;
 import com.oujiajun.recruitment.entity.po.User;
+import com.oujiajun.recruitment.service.Impl.RoomServiceImpl;
 import com.oujiajun.recruitment.service.RoomService;
 import com.oujiajun.recruitment.utils.MessageUtils;
+import com.oujiajun.recruitment.utils.SpringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
@@ -24,9 +29,6 @@ import java.util.concurrent.ConcurrentHashMap;
 @ServerEndpoint(value = "/chat",configurator = GetHttpSessionConfigurator.class)
 @Component
 public class ChatEndpoint {
-    @Autowired
-    RoomService roomService;
-
     /**
      * 用来存储每个用户客户端对象的ChatEndpoint对象
      */
@@ -107,19 +109,20 @@ public class ChatEndpoint {
         try {
             ObjectMapper mapper =new ObjectMapper();
             Message mess = mapper.readValue(message, Message.class);
-            Integer toRoomId = mess.getToRoomId();
+            int toRoomId = mess.getToRoomId();
             Object data = mess.getMessage();
             User loginUser = (User) httpSession.getAttribute("loginUser");
             String resultMessage = MessageUtils.getMessage(false, loginUser, data);
             // 发送数据
             // 遍历房间对应的用户id 除了自己
             // 发送数据到客户端
+            RoomService roomService =  SpringUtils.getBean(RoomServiceImpl.class);
             ResultInfo resultInfo = roomService.queryRoomUser(toRoomId);
             if(resultInfo.getSuccess()){
                 List<User> userList = (List<User>) resultInfo.getData();
                 for (User user : userList) {
                     if (!user.getId().equals(loginUser.getId())){
-                        onlineUsers.get(toRoomId).session.getBasicRemote().sendText(resultMessage);
+                        onlineUsers.get(user.getId()).session.getBasicRemote().sendText(resultMessage);
                     }
                 }
             }
@@ -136,8 +139,9 @@ public class ChatEndpoint {
      */
     @OnClose
     public void onClose(Session session) {
-        Integer userId = (Integer) httpSession.getAttribute("loginUser");
+        User loginUser = (User) httpSession.getAttribute("loginUser");
         //从容器中删除指定的用户
+        int userId = loginUser.getId();
         onlineUsers.remove(userId);
         MessageUtils.getMessage(true,null,getAllIds());
     }

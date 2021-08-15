@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oujiajun.recruitment.entity.dto.ResultMessage;
 import com.oujiajun.recruitment.entity.po.User;
+import com.oujiajun.recruitment.entity.vo.MessageVo;
 
 /**
  * @author oujiajun
@@ -13,6 +14,7 @@ public class MessageUtils {
         try {
             // 设置结果信息
             ResultMessage result = new ResultMessage();
+            result.setMessage(new MessageVo());
             result.getMessage().setIsSystem(isSystemMessage);
             result.getMessage().setMessage(message);
             if (fromUser!=null){
