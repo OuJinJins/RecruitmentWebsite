@@ -2,14 +2,18 @@ package com.oujiajun.recruitment.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oujiajun.recruitment.config.GetHttpSessionConfigurator;
+import com.oujiajun.recruitment.entity.dto.ResultInfo;
 import com.oujiajun.recruitment.entity.po.Message;
 import com.oujiajun.recruitment.entity.po.User;
+import com.oujiajun.recruitment.service.RoomService;
 import com.oujiajun.recruitment.utils.MessageUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpSession;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -20,6 +24,9 @@ import java.util.concurrent.ConcurrentHashMap;
 @ServerEndpoint(value = "/chat",configurator = GetHttpSessionConfigurator.class)
 @Component
 public class ChatEndpoint {
+    @Autowired
+    RoomService roomService;
+
     /**
      * 用来存储每个用户客户端对象的ChatEndpoint对象
      */
@@ -105,10 +112,17 @@ public class ChatEndpoint {
             User loginUser = (User) httpSession.getAttribute("loginUser");
             String resultMessage = MessageUtils.getMessage(false, loginUser, data);
             // 发送数据
-            // 遍历房间对应的用户id
-            // TODO 遍历房间对应的用户id 除了自己
+            // 遍历房间对应的用户id 除了自己
             // 发送数据到客户端
-            onlineUsers.get(toRoomId).session.getBasicRemote().sendText(resultMessage);
+            ResultInfo resultInfo = roomService.queryRoomUser(toRoomId);
+            if(resultInfo.getSuccess()){
+                List<User> userList = (List<User>) resultInfo.getData();
+                for (User user : userList) {
+                    if (!user.getId().equals(loginUser.getId())){
+                        onlineUsers.get(toRoomId).session.getBasicRemote().sendText(resultMessage);
+                    }
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
