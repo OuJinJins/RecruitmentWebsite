@@ -27,5 +27,5 @@ public class Room {
     /**
      * 聊天室对应招聘信息id
      */
-    private Integer recruitmentId;
+    private Integer recruitmentInfoId;
 }

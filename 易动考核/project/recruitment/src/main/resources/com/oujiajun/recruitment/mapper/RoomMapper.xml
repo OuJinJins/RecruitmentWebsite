@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.oujiajun.recruitment.dao.RoomDao">
+
+    <resultMap id ="RoomMap" type="com.oujiajun.recruitment.entity.po.Room">
+        <id property ="roomId" column="room_id"/>
+        <result property ="isPrivateChat"  column ="is_private_chat"/>
+        <result property ="creatorId"  column ="creator_id"/>
+        <result property ="recruitmentInfoId"  column ="recruitment_info_id"/>
+    </resultMap>
+
+    <resultMap id="UserMap" type="User">
+        <result property="id" column="id"/>
+        <result property="email" column="email"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="gender" column="gender"/>
+        <result property="city" column="city"/>
+        <result property="briefIntroduction" column="brief_introduction"/>
+        <result property="age" column="age"/>
+        <result property="education" column="education"/>
+    </resultMap>
+
+    <select id="queryRoomUser" parameterType="Int" resultMap="UserMap">
+        select user.id,
+               email,
+               username,
+               gender,
+               city,
+               brief_introduction,
+               age,
+               education
+        from recruitment.room room
+            left join recruitment.room_user ru on room.room_id = ru.room_id
+            left join recruitment.user user on ru.user_id = user.id
+        where room.room_id=#{roomId}
+    </select>
+
+</mapper>
