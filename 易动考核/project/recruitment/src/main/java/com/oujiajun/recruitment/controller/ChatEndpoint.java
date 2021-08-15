@@ -122,7 +122,11 @@ public class ChatEndpoint {
                 List<User> userList = (List<User>) resultInfo.getData();
                 for (User user : userList) {
                     if (!user.getId().equals(loginUser.getId())){
-                        onlineUsers.get(user.getId()).session.getBasicRemote().sendText(resultMessage);
+                        if (onlineUsers.get(user.getId())==null){
+                            break;
+                        }else {
+                            onlineUsers.get(user.getId()).session.getBasicRemote().sendText(resultMessage);
+                        }
                     }
                 }
             }
