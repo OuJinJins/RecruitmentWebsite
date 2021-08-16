@@ -18,7 +18,7 @@ public class MessageController {
     @Autowired
     MessageService messageService;
 
-    @RequestMapping("/chat/getHistoryMessage")
+    @RequestMapping({"/chat/getHistoryMessage","/chat/chat/getHistoryMessage"})
     @ResponseBody
     public Object getHistoryMessage(HttpSession session){
         User loginUser = (User) session.getAttribute("loginUser");
@@ -33,7 +33,7 @@ public class MessageController {
         return info.getData();
     }
 
-    @RequestMapping("/chat/getMe")
+    @RequestMapping({"/chat/getMe","/chat/chat/getMe"})
     @ResponseBody
     public Object getMe(HttpSession session){
         User loginUser = (User) session.getAttribute("loginUser");

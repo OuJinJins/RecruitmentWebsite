@@ -25,4 +25,11 @@ public interface RoomService {
      * @return 结果集
      */
     ResultInfo queryRoomVoByUserId(int userId);
+
+    /**
+     * 查询聊天室
+     * @param recruitmentInfoId 招聘信息id
+     * @return 结果集
+     */
+    ResultInfo queryRoomByRecruitmentInfoId(int recruitmentInfoId);
 }

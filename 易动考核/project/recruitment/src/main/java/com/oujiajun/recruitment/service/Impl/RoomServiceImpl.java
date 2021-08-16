@@ -61,6 +61,8 @@ public class RoomServiceImpl implements RoomService {
         }
         // 遍历插入
         registrationInfoList.forEach(e->roomDao.insertRoomUser(createdRoom.getRoomId(),e.getUserId()));
+        // 面试官插入
+        roomDao.insertRoomUser(createdRoom.getRoomId(),recruitmentInfo.getUserId());
         return new ResultInfo(true);
     }
 
@@ -99,4 +101,12 @@ public class RoomServiceImpl implements RoomService {
         return new ResultInfo(true, roomVos);
     }
 
+    @Override
+    public ResultInfo queryRoomByRecruitmentInfoId(int recruitmentInfoId) {
+        Room room = roomDao.queryRoomByRecruitmentInfoId(recruitmentInfoId);
+        if(room == null){
+            return new ResultInfo(false);
+        }
+        return new ResultInfo(true);
+    }
 }

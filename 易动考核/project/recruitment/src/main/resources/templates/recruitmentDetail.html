@@ -167,6 +167,11 @@
                     <button id="lineUp" class="button-option">排队面试</button>
                 </a>
             </div>
+            <div class="div-option">
+                <a th:if="${registrationInfo?.isRegistrationPass} eq true" th:href="@{/chat/} + ${recruitmentInfo?.recruitmentInfoId}">
+                    <button id="joinChat" class="button-option">进入群聊</button>
+                </a>
+            </div>
         </div>
     </div>
     <div id="text-interviewer">
@@ -175,12 +180,12 @@
         </div>
         <div id="div-introduction">
             <h4 id="span-introduction">职位描述:</h4>
-            <div id="text-introduction" th:text="${recruitmentInfo.introduction}">
+            <div id="text-introduction" th:text="${recruitmentInfo?.introduction}">
             </div>
         </div>
         <div id="div-company">
             <h4 id="span-company">工商信息:</h4>
-            <div id="text-company" th:text="${recruitmentInfo.company}">
+            <div id="text-company" th:text="${recruitmentInfo?.company}">
             </div>
         </div>
     </div>

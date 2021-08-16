@@ -36,12 +36,25 @@ public class RoomController {
         }
     }
 
+    @GetMapping("/chat/{recruitmentInfoId}")
+    public String toRecruitmentChat(
+            @PathVariable("recruitmentInfoId") Integer recruitmentInfoId,
+            HttpSession session){
+        ResultInfo queryRoomResult = roomService.queryRoomByRecruitmentInfoId(recruitmentInfoId);
+        if (queryRoomResult.getSuccess()){
+            return "/chat";
+        }else {
+            session.setAttribute("errorMsg","群聊未建立");
+            return "redirect:/recruitment/detail/id/"+recruitmentInfoId;
+        }
+    }
+
     @GetMapping({"/chat.html","/chat"})
     public String toChat(){
         return "/chat";
     }
 
-    @RequestMapping("/room/getRoom")
+    @RequestMapping({"/room/getRoom","/chat/room/getRoom"})
     @ResponseBody
     public Object getRoom(HttpSession session){
         User loginUser = (User) session.getAttribute("loginUser");

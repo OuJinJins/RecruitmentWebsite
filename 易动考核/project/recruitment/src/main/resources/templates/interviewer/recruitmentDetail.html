@@ -156,6 +156,16 @@
                     <button id="showInterview" class="button-option">查看面试</button>
                 </a>
             </div>
+            <div class="div-option">
+                <a th:href="@{/room/create/id/} + ${myRecruitmentInfo.recruitmentInfoId}">
+                    <button id="createChat" class="button-option">建立群聊</button>
+                </a>
+            </div>
+            <div class="div-option">
+                <a th:if="${registrationInfo?.isRegistrationPass} eq true"  th:href="@{/chat/} + ${myRecruitmentInfo.recruitmentInfoId}">
+                    <button id="joinChat" class="button-option">进入群聊</button>
+                </a>
+            </div>
         </div>
     </div>
     <div id="text-interviewer">
