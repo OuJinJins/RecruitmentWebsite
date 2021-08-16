@@ -37,6 +37,11 @@ public class RoomServiceImpl implements RoomService {
     @Override
     @Transactional
     public ResultInfo createInterviewRoom(int recruitmentInfoId) {
+        // 若该招聘消息的群聊已经创建则返回
+        Room beforeRoom = roomDao.queryRoomByRecruitmentInfoId(recruitmentInfoId);
+        if (beforeRoom != null){
+            new ResultInfo(false,"该群聊已创建");
+        }
         RecruitmentInfo recruitmentInfo = recruitmentInfoDao.queryRecruitmentInfoById(recruitmentInfoId);
         if (recruitmentInfo == null){
             return new ResultInfo(false,"查询招聘信息失败");

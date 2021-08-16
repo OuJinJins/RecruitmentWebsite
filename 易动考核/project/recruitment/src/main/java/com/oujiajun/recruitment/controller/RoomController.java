@@ -6,6 +6,8 @@ import com.oujiajun.recruitment.entity.vo.RoomVo;
 import com.oujiajun.recruitment.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -20,6 +22,24 @@ public class RoomController {
 
     @Autowired
     RoomService roomService;
+
+    @GetMapping("/room/create/id/{recruitmentInfoId}")
+    public String createInterviewRoom(
+            @PathVariable("recruitmentInfoId") Integer recruitmentInfoId,
+            HttpSession session){
+        ResultInfo resultInfo = roomService.createInterviewRoom(recruitmentInfoId);
+        if (!resultInfo.getSuccess()){
+            session.setAttribute("errorMsg",resultInfo.getMessage());
+            return "redirect:/interviewer/myRecruitment/detail/id/" + recruitmentInfoId;
+        }else{
+            return "redirect:/chat";
+        }
+    }
+
+    @GetMapping({"/chat.html","/chat"})
+    public String toChat(){
+        return "/chat";
+    }
 
     @RequestMapping("/room/getRoom")
     @ResponseBody
