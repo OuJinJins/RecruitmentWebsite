@@ -25,6 +25,7 @@ public class MessageUtils {
                 result.getMessage().setIsSystem(false);
             }
             if (fromUser!=null){
+                result.getMessage().setFromUserId(fromUser.getId());
                 result.getMessage().setFromUser(fromUser);
             }
             System.out.println(":"+result.getMessage().getToRoomId());

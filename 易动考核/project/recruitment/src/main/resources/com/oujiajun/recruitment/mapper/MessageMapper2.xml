@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.oujiajun.recruitment.dao.MessageDao">
+
+    <resultMap id ="RoomMap" type="Room">
+        <id property ="roomId" column="room_id"/>
+        <result property ="roomName" column="room_name"/>
+        <result property ="isPrivateChat"  column ="is_private_chat"/>
+        <result property ="creatorId"  column ="creator_id"/>
+        <result property ="recruitmentInfoId"  column ="recruitment_info_id"/>
+    </resultMap>
+
+    <resultMap id="MessageMap" type="Message">
+        <id property="messageId" column="message_id"/>
+        <result property="toRoomId" column="to_room_id"/>
+        <result property="message" column="message"/>
+        <result property="fromUserId" column="from_user_id"/>
+        <result property="isSystem" column="is_system"/>
+    </resultMap>
+
+    <insert id="insertMessage" parameterType="Message">
+        insert into recruitment.message
+        values(#{messageId},
+               #{fromUserId},
+               #{toRoomId},
+               #{message},
+               #{isSystem}
+              )
+    </insert>
+
+    <select id="queryMessageOfRoom" parameterType="Int" resultMap="MessageMap">
+        select message_id,
+               from_user_id,
+               to_room_id,
+               message,
+               is_system
+        from recruitment.message mess
+        where mess.to_room_id=#{roomId}
+    </select>
+
+</mapper>
