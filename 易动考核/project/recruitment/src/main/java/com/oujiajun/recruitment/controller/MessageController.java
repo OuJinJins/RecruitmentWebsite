@@ -32,4 +32,12 @@ public class MessageController {
         }
         return info.getData();
     }
+
+    @RequestMapping("/chat/getMe")
+    @ResponseBody
+    public Object getMe(HttpSession session){
+        User loginUser = (User) session.getAttribute("loginUser");
+        return loginUser;
+    }
+
 }

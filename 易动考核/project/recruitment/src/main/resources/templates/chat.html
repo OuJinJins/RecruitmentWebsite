@@ -195,9 +195,18 @@
         }
     }
 
-
+    let loginUser;
     let roomList;
     $(function(){
+
+        $.ajax({
+            url:"chat/getMe",
+            success:function(res){
+                loginUser=res;
+            },
+            async :false
+        })
+
         $.ajax({
             url:"room/getRoom",
             success:function(res){
@@ -208,6 +217,56 @@
                         '            <a onclick=showRoom('+ JSON.stringify(room) +')>'+ room.roomName +'</a>\n' +
                         '        </div>';
                     $("#div-room-bottom").append(str);
+                }
+            },
+            async :false
+        })
+
+        $.ajax({
+            url:"chat/getHistoryMessage",
+            success:function(res){
+                sessionStorage.clear();
+                let messageVoList=res;
+                for(let messageVo of messageVoList){
+                    if (messageVo.fromUserId == loginUser.id){
+                        var str =
+                            '                    <div class="message">\n' +
+                            '                        <div class="message-right">\n' +
+                            '                            <a>\n' +
+                            '                                <img class="a-profile-right">\n' +
+                            '                            </a>\n' +
+                            '                            <div class="message-left">\n' +
+                            '                                <div class="span-message">\n' +
+                            '                                    ' + messageVo.message + '\n' +
+                            '                                </div>\n' +
+                            '                            </div>\n' +
+                            '                        </div>\n' +
+                            '                    </div>';
+                        let chatData = sessionStorage.getItem(messageVo.toRoomId);
+                        if (chatData != null){
+                            str = chatData + str;
+                        }
+                        sessionStorage.setItem(messageVo.toRoomId,str);
+                    }else {
+                        var str = '             <div class="message">\n' +
+                            '                        <div class="message-left">\n' +
+                            '                            <a>\n' +
+                            '                                <img class="a-profile-left">\n' +
+                            '                            </a>\n' +
+                            '                            <div class="message-right">\n' +
+                            '                                <span class="name-left">'+messageVo.fromUser.username+'</span>\n' +
+                            '                                <div class="span-message">\n' +
+                            '                                    '+messageVo.message+'\n' +
+                            '                                </div>\n' +
+                            '                            </div>\n' +
+                            '                        </div>\n' +
+                            '                    </div>';
+                        let chatData = sessionStorage.getItem(messageVo.toRoomId);
+                        if (chatData != null){
+                            str = chatData + str;
+                        }
+                        sessionStorage.setItem(messageVo.toRoomId,str);
+                    }
                 }
             },
             async :false
