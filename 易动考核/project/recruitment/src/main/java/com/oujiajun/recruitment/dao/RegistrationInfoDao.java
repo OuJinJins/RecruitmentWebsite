@@ -56,6 +56,14 @@ public interface RegistrationInfoDao {
      */
     RegistrationInfo queryRegistrationInfoById(Integer registrationInfoId);
 
+
+    /**
+     * 根据招聘信息查询报名信息
+     * @param recruitmentInfoId 招聘信息id
+     * @return 报名信息
+     */
+    List<RegistrationInfo> queryRegistrationInfoByRecruitmentInfoId(int recruitmentInfoId);
+
     /**
      * 通过报名者id查询报名信息
      * @param userId 报名用户id

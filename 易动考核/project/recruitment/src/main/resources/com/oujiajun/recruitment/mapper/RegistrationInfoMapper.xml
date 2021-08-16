@@ -138,6 +138,20 @@
         where user_id=#{userId}
     </select>
 
+    <select id="queryRegistrationInfoByRecruitmentInfoId" resultMap="RegistrationInfoMap">
+        select registration_info_id,
+               recruitment_info_id,
+               user_id,
+               is_registration_pass,
+               is_interview_pass,
+               interview_date,
+               interview_time_begin,
+               interview_time_end
+        from recruitment.registration_info
+        where recruitment_info_id=#{recruitmentInfoId}
+    </select>
+
+
     <select id="queryRegistrationInfoByUidAndRid" resultMap="RegistrationInfoMap">
         select registration_info_id,
                recruitment_info_id,
