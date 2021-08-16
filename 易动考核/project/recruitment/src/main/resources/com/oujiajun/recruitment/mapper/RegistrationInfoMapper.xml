@@ -126,7 +126,7 @@
     </select>
 
     <select id="queryRegistrationInfoByUid" resultMap="RegistrationInfoMap">
-        select registration_info_id,
+        select recruitment.registration_info.registration_info_id,
                recruitment_info_id,
                user_id,
                is_registration_pass,
