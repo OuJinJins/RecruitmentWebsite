@@ -1,22 +1,19 @@
 package com.oujiajun.recruitment.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oujiajun.recruitment.config.GetHttpSessionConfigurator;
 import com.oujiajun.recruitment.entity.dto.ResultInfo;
 import com.oujiajun.recruitment.entity.po.Message;
 import com.oujiajun.recruitment.entity.po.User;
 import com.oujiajun.recruitment.entity.vo.MessageVo;
+import com.oujiajun.recruitment.service.Impl.MessageServiceImpl;
 import com.oujiajun.recruitment.service.Impl.RoomServiceImpl;
+import com.oujiajun.recruitment.service.MessageService;
 import com.oujiajun.recruitment.service.RoomService;
 import com.oujiajun.recruitment.utils.MessageUtils;
 import com.oujiajun.recruitment.utils.SpringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
@@ -34,7 +31,7 @@ public class ChatEndpoint {
     /**
      * 用来存储每个用户客户端对象的ChatEndpoint对象
      */
-    private static Map<Integer,ChatEndpoint> onlineUsers = new ConcurrentHashMap<>();
+    private static final Map<Integer,ChatEndpoint> onlineUsers = new ConcurrentHashMap<>();
 
     /**
      * 声明session对象，通过对象可以发送消息给指定的用户
@@ -109,16 +106,26 @@ public class ChatEndpoint {
         //将数据转换成对象
         try {
             JSONObject jsonObject = JSONObject.parseObject(message);
+            // 消息视图类
             MessageVo mess = new MessageVo();
-            int room = (Integer) jsonObject.get("toRoomId");
-            mess.setToRoomId(room);
+            mess.setToRoomId((Integer)jsonObject.get("toRoomId"));
             mess.setMessage(jsonObject.get("message"));
             int toRoomId = mess.getToRoomId();
             User loginUser = (User) httpSession.getAttribute("loginUser");
+            // TODO null
+            // 获取messageService将消息保存在数据库
+            MessageService messageService =  SpringUtils.getBean(MessageServiceImpl.class);
+            Message insertedMessage = new Message(null,toRoomId,jsonObject.get("message"),loginUser.getId(),false);
+            ResultInfo insertMessageResult = messageService.insertMessage(insertedMessage);
+            if (!insertMessageResult.getSuccess()){
+                return;
+                // TODO 失败
+            }
             String resultMessage = MessageUtils.getMessage(false, loginUser, mess);
             // 发送数据
-            // 遍历房间对应的用户id 除了自己
-            // 发送数据到客户端
+            // 遍历自己所在的所有聊天房间内存在的在线用户id 除了自己
+            // 发送数据到这些用户的客户端
+            // 获取roomService
             RoomService roomService =  SpringUtils.getBean(RoomServiceImpl.class);
             ResultInfo resultInfo = roomService.queryRoomUser(toRoomId);
             if(resultInfo.getSuccess()){

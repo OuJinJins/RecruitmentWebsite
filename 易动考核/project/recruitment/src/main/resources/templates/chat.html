@@ -222,9 +222,11 @@
             async :false
         })
 
+        // 获取历史消息
         $.ajax({
             url:"chat/getHistoryMessage",
             success:function(res){
+                // 清楚session储存
                 sessionStorage.clear();
                 let messageVoList=res;
                 for(let messageVo of messageVoList){
