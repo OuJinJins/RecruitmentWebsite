@@ -48,6 +48,7 @@ public class RoomServiceImpl implements RoomService {
             }
             RoomVo roomVo = new RoomVo();
             roomVo.setRoomId(room.getRoomId());
+            roomVo.setRoomName(room.getRoomName());
             roomVo.setCreatorId(room.getCreatorId());
             roomVo.setIsPrivateChat(room.getIsPrivateChat());
             roomVo.setRecruitmentInfoId(room.getRecruitmentInfoId());

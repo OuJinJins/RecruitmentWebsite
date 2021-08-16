@@ -16,4 +16,12 @@ import java.util.List;
 @NoArgsConstructor
 public class RoomVo extends Room {
     private List<User> userList;
+
+    @Override
+    public String toString() {
+        return "RoomVo{" +
+                "room" + super.toString() +
+                "userList=" + userList +
+                '}';
+    }
 }

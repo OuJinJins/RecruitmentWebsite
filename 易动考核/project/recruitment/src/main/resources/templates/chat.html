@@ -132,41 +132,16 @@
             <div id="room-title">聊天列表</div>
         </div>
         <div id="div-room-bottom">
-            <a class="room" onclick="showRoom()">ououou</a>
+
         </div>
     </div>
     <div id="div-chat">
         <div id="chat-top">
-            <div id="chat-top-title">正在与...聊天</div>
+            <div id="chat-top-title"></div>
         </div>
         <div id="chat-bottom">
             <div class="chat-left">
                 <div id="chat-left-top">
-                    <div class="message">
-                        <div class="message-left">
-                            <a>
-                                <img class="a-profile-left">
-                            </a>
-                            <div class="message-right">
-                                <span class="name-left">hhhhh</span>
-                                <div class="span-message">
-                                    wwwwwww
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="message">
-                        <div class="message-right">
-                            <a>
-                                <img class="a-profile-right">
-                            </a>
-                            <div class="message-left">
-                                <div class="span-message">
-                                    wwwwwww
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <div id="chat-left-bottom">
                     <textarea id="input_text"></textarea>
@@ -176,7 +151,7 @@
                 </div>
             </div>
             <div id="chat-right">
-                <a class="member-name">oujinjin</a>
+                <span>聊天室成员:</span>
             </div>
         </div>
     </div>
@@ -203,10 +178,14 @@
 
     function showRoom(room){
         for (let user of room.userList){
-            let str = '<a class="member-name">'+user.username+'</a>';
+            let str =
+                '                <div class="div-member">\n' +
+                '                    <a class="member-name">'+user.username+'</a>\n' +
+                '                </div>';
             $("#chat-right").append(str);
         }
         toRoom=room;
+        $("#chat-top-title").html("正在与"+ room.roomName +"聊天");
     }
 
 
@@ -217,7 +196,11 @@
             success:function(res){
                 roomList=res;
                 for(let room of roomList){
-                    let str = '<a class="room" onclick=showRoom('+ JSON.stringify(room) +')>'+ room.roomId +'</a>\n'
+                    alert(JSON.stringify(room));
+                    let str =
+                        '        <div class="room">\n' +
+                        '            <a onclick=showRoom('+ JSON.stringify(room) +')>'+ room.roomId +'</a>\n' +
+                        '        </div>';
                     $("#div-room-bottom").append(str);
                 }
             },
@@ -319,6 +302,11 @@
 
 </script>
 <style>
+
+    .div-member{
+        float: top;
+    }
+
 
     #chat-right{
         float: left;

@@ -7,6 +7,7 @@
 
     <resultMap id ="RoomMap" type="Room">
         <id property ="roomId" column="room_id"/>
+        <result property ="roomName" column="room_name"/>
         <result property ="isPrivateChat"  column ="is_private_chat"/>
         <result property ="creatorId"  column ="creator_id"/>
         <result property ="recruitmentInfoId"  column ="recruitment_info_id"/>
@@ -41,6 +42,7 @@
 
     <select id="queryRoomByUserId" parameterType="Int" resultMap="RoomMap">
         select room.room_id,
+               room.room_name,
                creator_id,
                recruitment_info_id,
                is_private_chat

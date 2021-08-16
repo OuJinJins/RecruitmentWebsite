@@ -17,6 +17,10 @@ public class Room {
      */
     private Integer roomId;
     /**
+     * 聊天室名称
+     */
+    private String roomName;
+    /**
      * 是否为私人聊天
      */
     private Boolean isPrivateChat;
@@ -28,4 +32,15 @@ public class Room {
      * 聊天室对应招聘信息id
      */
     private Integer recruitmentInfoId;
+
+    @Override
+    public String toString() {
+        return "Room{" +
+                "roomId=" + roomId +
+                ", roomName='" + roomName + '\'' +
+                ", isPrivateChat=" + isPrivateChat +
+                ", creatorId=" + creatorId +
+                ", recruitmentInfoId=" + recruitmentInfoId +
+                '}';
+    }
 }
