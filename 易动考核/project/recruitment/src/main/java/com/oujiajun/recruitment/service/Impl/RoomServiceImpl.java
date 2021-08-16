@@ -51,7 +51,11 @@ public class RoomServiceImpl implements RoomService {
             return new ResultInfo(Boolean.FALSE,"创建聊天室失败");
         }
         List<RegistrationInfo> registrationInfoList = registrationInfoDao.queryPassRegistrationInfoByRecruitmentInfoId(recruitmentInfoId);
-
+        if (registrationInfoList == null){
+            return new ResultInfo(Boolean.FALSE,"创建聊天室失败");
+        }
+        // 遍历插入
+        registrationInfoList.forEach(e->roomDao.insertRoomUser(createdRoom.getRoomId(),e.getUserId()));
         return new ResultInfo(true);
     }
 
