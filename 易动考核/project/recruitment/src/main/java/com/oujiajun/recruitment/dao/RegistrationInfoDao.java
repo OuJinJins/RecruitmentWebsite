@@ -62,7 +62,7 @@ public interface RegistrationInfoDao {
      * @param recruitmentInfoId 招聘信息id
      * @return 报名信息
      */
-    List<RegistrationInfo> queryRegistrationInfoByRecruitmentInfoId(int recruitmentInfoId);
+    List<RegistrationInfo> queryPassRegistrationInfoByRecruitmentInfoId(int recruitmentInfoId);
 
     /**
      * 通过报名者id查询报名信息
