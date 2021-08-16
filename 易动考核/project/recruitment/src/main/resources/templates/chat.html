@@ -191,7 +191,7 @@
         // 先清空后取出
         $("#chat-left-top").html("");
         if (chatData != null){
-            $("#chat-left-top").html(chatData);
+            $("#chat-left-top").append(chatData);
         }
     }
 
@@ -243,7 +243,7 @@
                  */
             }else {
                 //不是系统消息
-                var str = '<div class="message">\n' +
+                var str = '             <div class="message">\n' +
                     '                        <div class="message-left">\n' +
                     '                            <a>\n' +
                     '                                <img class="a-profile-left">\n' +
@@ -259,11 +259,11 @@
                 if (toRoom.roomId === res.message.toRoomId){
                     $("#chat-left-top").append(str);
                 }
-                let chatData = sessionStorage.getItem(toRoom.roomId);
+                let chatData = sessionStorage.getItem(res.message.toRoomId);
                 if (chatData != null){
                     str = chatData + str;
                 }
-                sessionStorage.setItem(toRoom.roomId,str);
+                sessionStorage.setItem(res.message.toRoomId,str);
             }
         }
 
@@ -294,7 +294,6 @@
                 '                        </div>\n' +
                 '                    </div>';
             $("#chat-left-top").append(str);
-
             let chatData = sessionStorage.getItem(toRoom.roomId);
             if (chatData != null){
                 str = chatData + str;
@@ -366,7 +365,8 @@
 
     .message{
         margin-top: 5px;
-        height: 50px;
+        padding-top: 30px;
+        padding-bottom: 30px;
         width: 100%;
         float: top;
     }
