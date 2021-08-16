@@ -21,10 +21,6 @@ public class Room {
      */
     private String roomName;
     /**
-     * 是否为私人聊天
-     */
-    private Boolean isPrivateChat;
-    /**
      * 创建聊天室用户id
      */
     private Integer creatorId;
@@ -32,6 +28,14 @@ public class Room {
      * 聊天室对应招聘信息id
      */
     private Integer recruitmentInfoId;
+    /**
+     * 是否为私人聊天
+     */
+    private Boolean isPrivateChat;
+    /**
+     * 私人聊天另一方用户id
+     */
+    private Integer receivedUserId;
 
     @Override
     public String toString() {

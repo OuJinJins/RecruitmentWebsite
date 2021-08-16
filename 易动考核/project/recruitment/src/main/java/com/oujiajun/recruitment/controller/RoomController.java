@@ -36,6 +36,22 @@ public class RoomController {
         }
     }
 
+    @GetMapping("/room/create/private/id/{userId}")
+    public String createPrivateRoom(
+            @PathVariable("userId") Integer userId,
+            HttpSession session){
+        User loginUser = (User)session.getAttribute("loginUser");
+        if (loginUser == null){
+            session.setAttribute("errorMsg","请在登陆后执行此操作");
+            return "redirect:/login";
+        }
+        ResultInfo resultInfo = roomService.createPrivateRoom(userId, loginUser.getId());
+        if (!resultInfo.getSuccess()){
+            session.setAttribute("errorMsg",resultInfo.getMessage());
+        }
+        return "redirect:/chat";
+    }
+
     @GetMapping("/chat/{recruitmentInfoId}")
     public String toRecruitmentChat(
             @PathVariable("recruitmentInfoId") Integer recruitmentInfoId,

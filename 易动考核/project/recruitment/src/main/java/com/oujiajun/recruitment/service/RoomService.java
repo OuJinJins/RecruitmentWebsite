@@ -12,6 +12,16 @@ public interface RoomService {
      * @return 服务结果
      */
     ResultInfo createInterviewRoom(int recruitmentInfoId);
+
+    /**
+     * 创建面试成员聊天室
+     * @param userId 用户id
+     * @param loginUserId 用户id
+     * @return 服务结果
+     */
+    ResultInfo createPrivateRoom(int userId,int loginUserId);
+
+
     /**
      * 查询聊天室内的用户
      * @param roomId 聊天室id

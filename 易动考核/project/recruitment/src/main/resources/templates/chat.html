@@ -181,7 +181,7 @@
         for (let user of room.userList){
             let str =
                 '                <div class="div-member">\n' +
-                '                    <a class="member-name">'+user.username+'</a>\n' +
+                '                    <a class="member-name" href=/recruitment/room/create/private/id/'+ user.id +'>'+user.username+'</a>\n' +
                 '                </div>';
             $("#chat-right").append(str);
         }
@@ -212,6 +212,24 @@
             success:function(res){
                 roomList=res;
                 for(let room of roomList){
+                    //如果是私人聊天
+                    if(room.isPrivateChat){
+                        let userList = room.userList;
+                        let chatName;
+                        for (let user of userList){
+                            if(user.username !== loginUser.username){
+                                chatName = user.username;
+                                room.roomName = chatName;
+                                break;
+                            }
+                        }
+                        let str =
+                            '        <div class="room">\n' +
+                            '            <a onclick=showRoom('+ JSON.stringify(room) +')>'+ chatName +'</a>\n' +
+                            '        </div>';
+                        $("#div-room-bottom").append(str);
+                        continue;
+                    }
                     let str =
                         '        <div class="room">\n' +
                         '            <a onclick=showRoom('+ JSON.stringify(room) +')>'+ room.roomName +'</a>\n' +

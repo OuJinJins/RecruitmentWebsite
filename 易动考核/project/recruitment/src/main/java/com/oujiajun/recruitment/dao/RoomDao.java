@@ -49,4 +49,12 @@ public interface RoomDao {
      * @return 聊天室集合
      */
     List<Room> queryRoomByUserId(int userId);
+
+    /**
+     * 查询私人聊天
+     * @param creatorId 发起者id
+     * @param receivedUserId 接受者id
+     * @return 聊天室
+     */
+    Room queryRoomByTwoUser(@Param("creatorId") int creatorId,@Param("receivedUserId") int receivedUserId);
 }

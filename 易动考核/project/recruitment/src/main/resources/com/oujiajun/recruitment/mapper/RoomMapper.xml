@@ -11,6 +11,7 @@
         <result property ="isPrivateChat"  column ="is_private_chat"/>
         <result property ="creatorId"  column ="creator_id"/>
         <result property ="recruitmentInfoId"  column ="recruitment_info_id"/>
+        <result property="receivedUserId" column="received_user_id"/>
     </resultMap>
 
     <resultMap id="UserMap" type="User">
@@ -38,16 +39,31 @@
                #{roomName},
                #{creatorId},
                #{recruitmentInfoId},
-               #{isPrivateChat}
+               #{isPrivateChat},
+               #{receivedUserId}
               )
     </insert>
+
+    <select id="queryRoomByTwoUser" resultMap="RoomMap">
+        select room_id,
+               room_name,
+               creator_id,
+               recruitment_info_id,
+               is_private_chat,
+               received_user_id
+        from recruitment.room
+        where room.creator_id=#{creatorId}
+          and room.received_user_id=#{receivedUserId}
+          and room.is_private_chat=true
+    </select>
 
     <select id="queryRoomByRecruitmentInfoId" resultMap="RoomMap">
         select room_id,
                room_name,
                creator_id,
                recruitment_info_id,
-               is_private_chat
+               is_private_chat,
+               received_user_id
         from recruitment.room
         where room.recruitment_info_id=#{recruitmentInfoId}
     </select>
