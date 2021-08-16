@@ -177,6 +177,7 @@
     }
 
     function showRoom(room){
+        $("#chat-right").html("");
         for (let user of room.userList){
             let str =
                 '                <div class="div-member">\n' +
@@ -186,6 +187,12 @@
         }
         toRoom=room;
         $("#chat-top-title").html("正在与"+ room.roomName +"聊天");
+        var chatData = sessionStorage.getItem(room.roomId);
+        // 先清空后取出
+        $("#chat-left-top").html("");
+        if (chatData != null){
+            $("#chat-left-top").html(chatData);
+        }
     }
 
 
@@ -196,7 +203,6 @@
             success:function(res){
                 roomList=res;
                 for(let room of roomList){
-                    alert(JSON.stringify(room));
                     let str =
                         '        <div class="room">\n' +
                         '            <a onclick=showRoom('+ JSON.stringify(room) +')>'+ room.roomName +'</a>\n' +

@@ -34,7 +34,6 @@ public class RoomController {
             //TODO
             return null;
         }
-        System.out.println((List<RoomVo>)info.getData());
         return (List<RoomVo>)info.getData();
     }
 
