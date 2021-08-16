@@ -25,6 +25,16 @@
         <result property="education" column="education"/>
     </resultMap>
 
+    <insert id="createRoom" parameterType="Room ">
+        insert into recruitment.room
+        values(#{roomId},
+               #{roomName},
+               #{creatorId},
+               #{recruitmentInfoId},
+               #{isPrivateChat}
+              )
+    </insert>
+
     <select id="queryRoomUser" parameterType="Int" resultMap="UserMap">
         select user.id,
                email,

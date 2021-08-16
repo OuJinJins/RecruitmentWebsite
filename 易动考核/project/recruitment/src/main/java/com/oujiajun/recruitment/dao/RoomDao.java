@@ -11,6 +11,15 @@ import java.util.List;
  */
 @Mapper
 public interface RoomDao {
+
+
+    /**
+     * 创建聊天室
+     * @param room 聊天室
+     * @return
+     */
+    int createRoom(Room room);
+
     /**
      * 查询聊天室内的用户
      * @param roomId 聊天室id
