@@ -3,6 +3,7 @@ package com.oujiajun.recruitment.dao;
 import com.oujiajun.recruitment.entity.po.Room;
 import com.oujiajun.recruitment.entity.po.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public interface RoomDao {
      * @param userId 用户id
      * @return 改变行数
      */
-    int insertRoomUser(int roomId,int userId);
+    int insertRoomUser(@Param("roomId") int roomId, @Param("userId") int userId);
 
     /**
      * 创建聊天室
