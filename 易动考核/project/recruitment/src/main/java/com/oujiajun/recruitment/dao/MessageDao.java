@@ -1,6 +1,7 @@
 package com.oujiajun.recruitment.dao;
 
 import com.oujiajun.recruitment.entity.po.Message;
+import com.oujiajun.recruitment.entity.vo.MessageVo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -22,5 +23,5 @@ public interface MessageDao {
      * @param roomId 聊天室id
      * @return 信息集合
      */
-    List<Message> queryMessageOfRoom(int roomId);
+    List<MessageVo> queryMessageVoOfRoom(int roomId);
 }

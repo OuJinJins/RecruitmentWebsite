@@ -1,6 +1,7 @@
 package com.oujiajun.recruitment.dao;
 
 import com.oujiajun.recruitment.entity.po.Message;
+import com.oujiajun.recruitment.entity.vo.MessageVo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,7 +25,7 @@ class MessageDaoTest {
 
     @Test
     void queryMessageOfRoom() {
-        List<Message> messages = messageDao.queryMessageOfRoom(1);
+        List<MessageVo> messages = messageDao.queryMessageVoOfRoom(1);
         System.out.println(messages);
         assert messages.size() > 0;
     }

@@ -5,20 +5,30 @@
 
 <mapper namespace="com.oujiajun.recruitment.dao.MessageDao">
 
-    <resultMap id ="RoomMap" type="Room">
-        <id property ="roomId" column="room_id"/>
-        <result property ="roomName" column="room_name"/>
-        <result property ="isPrivateChat"  column ="is_private_chat"/>
-        <result property ="creatorId"  column ="creator_id"/>
-        <result property ="recruitmentInfoId"  column ="recruitment_info_id"/>
-    </resultMap>
-
     <resultMap id="MessageMap" type="Message">
         <id property="messageId" column="message_id"/>
         <result property="toRoomId" column="to_room_id"/>
         <result property="message" column="message"/>
         <result property="fromUserId" column="from_user_id"/>
         <result property="isSystem" column="is_system"/>
+    </resultMap>
+
+    <resultMap id="MessageVoMap" type="MessageVo">
+        <id property="messageId" column="message_id"/>
+        <result property="toRoomId" column="to_room_id"/>
+        <result property="message" column="message"/>
+        <result property="fromUserId" column="from_user_id"/>
+        <result property="isSystem" column="is_system"/>
+        <association property="fromUser" javaType="User">
+            <result property="id" column="id"/>
+            <result property="email" column="email"/>
+            <result property="username" column="username"/>
+            <result property="gender" column="gender"/>
+            <result property="city" column="city"/>
+            <result property="briefIntroduction" column="brief_introduction"/>
+            <result property="age" column="age"/>
+            <result property="education" column="education"/>
+        </association>
     </resultMap>
 
     <insert id="insertMessage" parameterType="Message">
@@ -31,13 +41,22 @@
               )
     </insert>
 
-    <select id="queryMessageOfRoom" parameterType="Int" resultMap="MessageMap">
-        select message_id,
+    <select id="queryMessageVoOfRoom" parameterType="Int" resultMap="MessageVoMap">
+        select mess.message_id,
                from_user_id,
                to_room_id,
                message,
-               is_system
-        from recruitment.message mess
+               is_system,
+               u.id,
+               email,
+               username,
+               password,
+               gender,
+               city,
+               brief_introduction,
+               age,
+               education
+        from recruitment.message mess left join recruitment.user u on mess.from_user_id = u.id
         where mess.to_room_id=#{roomId}
     </select>
 

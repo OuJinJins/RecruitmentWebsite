@@ -10,6 +10,7 @@
         <typeAlias alias="InterviewPeriod" type="com.oujiajun.recruitment.entity.po.InterviewPeriod" />
         <typeAlias alias="Room" type="com.oujiajun.recruitment.entity.po.Room" />
         <typeAlias alias="Message" type="com.oujiajun.recruitment.entity.po.Message"/>
+        <typeAlias alias="MessageVo" type="com.oujiajun.recruitment.entity.vo.MessageVo"/>
     </typeAliases>
 
 </configuration>
