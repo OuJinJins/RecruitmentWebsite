@@ -7,6 +7,12 @@ import com.oujiajun.recruitment.entity.dto.ResultInfo;
  */
 public interface RoomService {
     /**
+     * 创建面试成员聊天室
+     * @param recruitmentInfoId 招聘信息id
+     * @return 服务结果
+     */
+    ResultInfo createInterviewRoom(int recruitmentInfoId);
+    /**
      * 查询聊天室内的用户
      * @param roomId 聊天室id
      * @return 结果集

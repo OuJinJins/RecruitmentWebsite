@@ -16,9 +16,16 @@ public interface RoomDao {
     /**
      * 创建聊天室
      * @param room 聊天室
-     * @return
+     * @return 改变行数
      */
     int createRoom(Room room);
+
+    /**
+     * 查询招聘信息对应的聊天室
+     * @param recruitmentInfoId 招聘信息id
+     * @return 聊天室
+     */
+    Room queryRoomByRecruitmentInfoId(int recruitmentInfoId);
 
     /**
      * 查询聊天室内的用户

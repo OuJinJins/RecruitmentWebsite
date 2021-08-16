@@ -35,6 +35,16 @@
               )
     </insert>
 
+    <select id="queryRoomByRecruitmentInfoId" resultMap="RoomMap">
+        select room_id,
+               room_name,
+               creator_id,
+               recruitment_info_id,
+               is_private_chat
+        from recruitment.room
+        where room.recruitment_info_id=#{recruitmentInfoId}
+    </select>
+
     <select id="queryRoomUser" parameterType="Int" resultMap="UserMap">
         select user.id,
                email,
