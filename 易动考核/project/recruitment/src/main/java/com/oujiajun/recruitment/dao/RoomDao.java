@@ -14,6 +14,14 @@ public interface RoomDao {
 
 
     /**
+     * 插入room_user中间表
+     * @param roomId 聊天室id
+     * @param userId 用户id
+     * @return 改变行数
+     */
+    int insertRoomUser(int roomId,int userId);
+
+    /**
      * 创建聊天室
      * @param room 聊天室
      * @return 改变行数

@@ -25,7 +25,14 @@
         <result property="education" column="education"/>
     </resultMap>
 
-    <insert id="createRoom" parameterType="Room ">
+    <insert id="insertRoomUser" parameterType="int">
+        insert into recruitment.room_user
+        values(#{roomId},
+               #{userId}
+              )
+    </insert>
+
+    <insert id="createRoom" parameterType="Room">
         insert into recruitment.room
         values(#{roomId},
                #{roomName},

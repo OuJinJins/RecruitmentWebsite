@@ -1,6 +1,7 @@
 package com.oujiajun.recruitment.service.Impl;
 
 import com.oujiajun.recruitment.dao.RecruitmentInfoDao;
+import com.oujiajun.recruitment.dao.RegistrationInfoDao;
 import com.oujiajun.recruitment.dao.RoomDao;
 import com.oujiajun.recruitment.entity.dto.ResultInfo;
 import com.oujiajun.recruitment.entity.po.RecruitmentInfo;
@@ -30,7 +31,7 @@ public class RoomServiceImpl implements RoomService {
     RecruitmentInfoDao recruitmentInfoDao;
 
     @Autowired
-    RegistrationInfoService registrationInfoService;
+    RegistrationInfoDao registrationInfoDao;
 
     // TODO 事务抛异常
     @Override
@@ -49,6 +50,7 @@ public class RoomServiceImpl implements RoomService {
         if (createdRoom == null){
             return new ResultInfo(Boolean.FALSE,"创建聊天室失败");
         }
+        List<RegistrationInfo> registrationInfoList = registrationInfoDao.queryPassRegistrationInfoByRecruitmentInfoId(recruitmentInfoId);
 
         return new ResultInfo(true);
     }
