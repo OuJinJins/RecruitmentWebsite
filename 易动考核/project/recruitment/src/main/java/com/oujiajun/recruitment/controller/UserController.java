@@ -30,13 +30,13 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping("/user/register")
+    @PostMapping("/user/register")
     public String register(User user,HttpSession session){
         // 注册
         ResultInfo resultInfo = userService.register(user);
         if(resultInfo.getSuccess()){
             session.setAttribute("loginUser",(User)resultInfo.getData());
-            return "redirect:/index";
+            return "redirect:/login";
         }else {
             session.setAttribute("errorMsg",resultInfo.getMessage());
             return "register";
@@ -63,15 +63,15 @@ public class UserController {
         try {
             //用户登录
             subject.login(token);
-            return "index";
+            return "redirect:/index";
         } catch (UnknownAccountException uae) {
             //如果用户名不存在
             session.setAttribute("errorMsg", "用户名不存在");
-            return "login";
+            return "redirect:/login.html";
         } catch (IncorrectCredentialsException ice) {
             //如果密码错误
             session.setAttribute("errorMsg", "密码错误");
-            return "login";
+            return "redirect:/login.html";
         }
     }
 

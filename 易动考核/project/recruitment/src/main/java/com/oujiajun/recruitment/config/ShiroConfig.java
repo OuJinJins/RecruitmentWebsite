@@ -55,16 +55,13 @@ public class ShiroConfig {
         // 设置 /user/addUser 这个请求,只有认证过才能访问
         // map.put("/user/addUser","authc");
         // map.put("/user/deleteUser","authc");
-        // 设置 /user/ 下面的所有请求,只有认证过才能访问
-        map.put("/user/*","authc");
-        map.put("/interviewer/*","role:interviewer");
         // 静态资源
         map.put("/images/**","anon");
         map.put("/js/**","anon");
         map.put("/css/**","anon");
         subject.setFilterChainDefinitionMap(map);
         // 设置登录的请求
-        subject.setLoginUrl("/login");
+        subject.setLoginUrl("/user/login");
         //============================================
         return subject;
     }
