@@ -30,6 +30,14 @@ public interface RoomDao {
     int createRoom(Room room);
 
     /**
+     * 将用户从聊天室中删除
+     * @param roomId 聊天室id
+     * @param userId 用户id
+     * @return 改变行数
+     */
+    int deleteRoomUser(@Param("roomId") int roomId, @Param("userId") int userId);
+
+    /**
      * 查询招聘信息对应的聊天室
      * @param recruitmentInfoId 招聘信息id
      * @return 聊天室

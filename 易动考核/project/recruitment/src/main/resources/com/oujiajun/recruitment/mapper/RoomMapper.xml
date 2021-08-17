@@ -44,6 +44,13 @@
               )
     </insert>
 
+    <delete id="deleteRoomUser">
+        delete
+        from recruitment.room_user
+        where room_id=#{roomId}
+          and user_id=#{userId};
+    </delete>
+
     <select id="queryRoomByTwoUser" resultMap="RoomMap">
         select room_id,
                room_name,
