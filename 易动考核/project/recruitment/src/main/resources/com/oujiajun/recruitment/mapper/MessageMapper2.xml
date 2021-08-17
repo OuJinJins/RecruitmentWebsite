@@ -28,6 +28,7 @@
             <result property="briefIntroduction" column="brief_introduction"/>
             <result property="age" column="age"/>
             <result property="education" column="education"/>
+            <result property="profile" column="profile"/>
         </association>
     </resultMap>
 
@@ -55,7 +56,8 @@
                city,
                brief_introduction,
                age,
-               education
+               education,
+               profile
         from recruitment.message mess left join recruitment.user u on mess.from_user_id = u.id
         where mess.to_room_id=#{roomId}
     </select>

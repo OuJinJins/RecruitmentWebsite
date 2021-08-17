@@ -58,6 +58,8 @@ public class FileController {
         if (loginUser == null){
             return null;
         }
+        loginUser.setProfile(fileName);
+        // 更新用户
         User updatedUser = new User();
         updatedUser.setId(loginUser.getId());
         updatedUser.setProfile(fileName);
