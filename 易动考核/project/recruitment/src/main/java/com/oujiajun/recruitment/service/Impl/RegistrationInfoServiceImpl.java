@@ -2,9 +2,11 @@ package com.oujiajun.recruitment.service.Impl;
 
 import com.oujiajun.recruitment.dao.RecruitmentInfoDao;
 import com.oujiajun.recruitment.dao.RegistrationInfoDao;
+import com.oujiajun.recruitment.dao.RoomDao;
 import com.oujiajun.recruitment.entity.dto.ResultInfo;
 import com.oujiajun.recruitment.entity.po.InterviewPeriod;
 import com.oujiajun.recruitment.entity.po.RegistrationInfo;
+import com.oujiajun.recruitment.entity.po.Room;
 import com.oujiajun.recruitment.entity.vo.UserRegistrationInfo;
 import com.oujiajun.recruitment.service.RegistrationInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,8 @@ public class RegistrationInfoServiceImpl implements RegistrationInfoService {
     @Autowired
     RecruitmentInfoDao recruitmentInfoDao;
 
+    @Autowired
+    RoomDao roomDao;
     @Override
     public ResultInfo insertRegistrationInfo(RegistrationInfo recruitmentInfo) {
         int count = registrationInfoDao.insertRegistrationInfo(recruitmentInfo);
@@ -68,15 +72,30 @@ public class RegistrationInfoServiceImpl implements RegistrationInfoService {
 
     @Override
     public ResultInfo passRegistration(Integer registrationInfoId) {
+        // 查询报名信息
+        RegistrationInfo info = registrationInfoDao.queryRegistrationInfoById(registrationInfoId);
+        if(info == null){
+            return new ResultInfo(false,"更新报名信息失败");
+
+        }
+        // 更新信息
         RegistrationInfo registrationInfo = new RegistrationInfo();
         registrationInfo.setRegistrationInfoId(registrationInfoId);
         registrationInfo.setIsRegistrationPass(true);
         int count = registrationInfoDao.updateRegistrationInfo(registrationInfo);
-        if (count >= 1){
-            return new ResultInfo(true);
-        }else {
+        if (count < 1){
             return new ResultInfo(false,"更新报名信息失败");
+
         }
+        // 如果已经有聊天室则加入聊天
+        Room room = roomDao.queryRoomByRecruitmentInfoId(registrationInfo.getRecruitmentInfoId());
+        if(room != null){
+            count = roomDao.insertRoomUser(room.getRoomId(),registrationInfo.getUserId());
+            if (count < 1){
+                return new ResultInfo(false,"加入该招聘群聊失败");
+            }
+        }
+        return new ResultInfo(true);
     }
 
     @Override
