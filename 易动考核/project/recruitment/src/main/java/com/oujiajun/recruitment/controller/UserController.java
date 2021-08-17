@@ -75,6 +75,17 @@ public class UserController {
         }
     }
 
+    @RequestMapping("/logout")
+    public String logout(HttpSession session){
+        User user = (User)session.getAttribute("loginUser");
+        if (user == null){
+            return "redirect:/login";
+        }
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
+        return "redirect:/login";
+    }
+
     @RequestMapping("/user/updateUser")
     @ResponseBody
     public String updateUser(User user,HttpSession session){
