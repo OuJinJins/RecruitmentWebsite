@@ -1,6 +1,7 @@
 package com.oujiajun.recruitment.dao;
 
 import com.oujiajun.recruitment.entity.po.Role;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.List;
 /**
  * @author oujiajun
  */
+@Mapper
 public interface RoleDao {
 
     /**
