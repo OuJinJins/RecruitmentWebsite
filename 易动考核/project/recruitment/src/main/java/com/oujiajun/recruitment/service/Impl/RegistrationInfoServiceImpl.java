@@ -76,8 +76,8 @@ public class RegistrationInfoServiceImpl implements RegistrationInfoService {
         RegistrationInfo info = registrationInfoDao.queryRegistrationInfoById(registrationInfoId);
         if(info == null){
             return new ResultInfo(false,"更新报名信息失败");
-
         }
+
         // 更新信息
         RegistrationInfo registrationInfo = new RegistrationInfo();
         registrationInfo.setRegistrationInfoId(registrationInfoId);
@@ -100,15 +100,29 @@ public class RegistrationInfoServiceImpl implements RegistrationInfoService {
 
     @Override
     public ResultInfo passOutRegistration(Integer registrationInfoId) {
+        // 查询报名信息
+        RegistrationInfo info = registrationInfoDao.queryRegistrationInfoById(registrationInfoId);
+        if(info == null){
+            return new ResultInfo(false,"更新报名信息失败");
+        }
+
+        // 更新信息
         RegistrationInfo registrationInfo = new RegistrationInfo();
         registrationInfo.setRegistrationInfoId(registrationInfoId);
         registrationInfo.setIsRegistrationPass(false);
         int count = registrationInfoDao.updateRegistrationInfo(registrationInfo);
-        if (count >= 1){
-            return new ResultInfo(true);
-        }else {
+        if (count < 1){
             return new ResultInfo(false,"更新报名信息失败");
         }
+        // 如果已经有聊天室则删除聊天
+        Room room = roomDao.queryRoomByRecruitmentInfoId(registrationInfo.getRecruitmentInfoId());
+        if(room != null){
+            count = roomDao.deleteRoomUser(room.getRoomId(),registrationInfo.getUserId());
+            if (count < 1){
+                return new ResultInfo(false,"从聊天室中删除失败");
+            }
+        }
+        return new ResultInfo(true);
     }
 
     @Override
