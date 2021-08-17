@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.oujiajun.recruitment.dao.RoleDao">
+
+    <resultMap id ="RoleMap" type="com.oujiajun.recruitment.entity.po.Role">
+        <id property ="roleId" column="role_id"/>
+        <result property ="roleName"  column ="role_name"/>
+    </resultMap>
+
+
+    <insert id="insertRoleUser">
+        insert into recruitment.room_user
+        values(
+               #{roleId},
+               #{userId}
+              )
+    </insert>
+
+    <select id="queryRoleByUserId" parameterType="Int" resultMap="RoleMap">
+        select r.role_id,
+               r.role_name
+        from recruitment.role r left join recruitment.role_user ru
+          on r.role_id = ru.role_id
+       where ru.user_id =#{userId}
+    </select>
+
+</mapper>

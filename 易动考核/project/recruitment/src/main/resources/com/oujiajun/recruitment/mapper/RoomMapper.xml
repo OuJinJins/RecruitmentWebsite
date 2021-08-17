@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.oujiajun.recruitment.dao.RoomDao">
+
+    <resultMap id ="RoomMap" type="Room">
+        <id property ="roomId" column="room_id"/>
+        <result property ="roomName" column="room_name"/>
+        <result property ="isPrivateChat"  column ="is_private_chat"/>
+        <result property ="creatorId"  column ="creator_id"/>
+        <result property ="recruitmentInfoId"  column ="recruitment_info_id"/>
+        <result property="receivedUserId" column="received_user_id"/>
+    </resultMap>
+
+    <resultMap id="UserMap" type="User">
+        <result property="id" column="id"/>
+        <result property="email" column="email"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="gender" column="gender"/>
+        <result property="city" column="city"/>
+        <result property="briefIntroduction" column="brief_introduction"/>
+        <result property="age" column="age"/>
+        <result property="education" column="education"/>
+    </resultMap>
+
+    <insert id="insertRoomUser" parameterType="int">
+        insert into recruitment.room_user
+        values(#{roomId},
+               #{userId}
+              )
+    </insert>
+
+    <insert id="createRoom" parameterType="Room">
+        insert into recruitment.room
+        values(#{roomId},
+               #{roomName},
+               #{creatorId},
+               #{recruitmentInfoId},
+               #{isPrivateChat},
+               #{receivedUserId}
+              )
+    </insert>
+
+    <delete id="deleteRoomUser">
+        delete
+        from recruitment.room_user
+        where room_id=#{roomId}
+          and user_id=#{userId};
+    </delete>
+
+    <select id="queryRoomByTwoUser" resultMap="RoomMap">
+        select room_id,
+               room_name,
+               creator_id,
+               recruitment_info_id,
+               is_private_chat,
+               received_user_id
+        from recruitment.room
+        where room.creator_id=#{creatorId}
+          and room.received_user_id=#{receivedUserId}
+          and room.is_private_chat=true
+    </select>
+
+    <select id="queryRoomByRecruitmentInfoId" resultMap="RoomMap">
+        select room_id,
+               room_name,
+               creator_id,
+               recruitment_info_id,
+               is_private_chat,
+               received_user_id
+        from recruitment.room
+        where room.recruitment_info_id=#{recruitmentInfoId}
+    </select>
+
+    <select id="queryRoomUser" parameterType="Int" resultMap="UserMap">
+        select user.id,
+               email,
+               username,
+               gender,
+               city,
+               brief_introduction,
+               age,
+               education
+        from recruitment.room room
+            left join recruitment.room_user ru on room.room_id = ru.room_id
+            left join recruitment.user user on ru.user_id = user.id
+        where room.room_id=#{roomId}
+    </select>
+
+    <select id="queryRoomByUserId" parameterType="Int" resultMap="RoomMap">
+        select room.room_id,
+               room.room_name,
+               creator_id,
+               recruitment_info_id,
+               is_private_chat
+        from recruitment.user user
+        left join recruitment.room_user ru on user.id = ru.user_id
+        left join recruitment.room room on ru.room_id = room.room_id
+        where user.id=#{userId}
+    </select>
+
+</mapper>

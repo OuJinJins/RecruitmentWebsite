@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oujiajun.recruitment.dao.RegistrationInfoDao">
+    <resultMap id ="RegistrationInfoMap" type="com.oujiajun.recruitment.entity.po.RegistrationInfo">
+        <id property ="registrationInfoId" column="registration_info_id"/>
+        <result property="recruitmentInfoId" column="recruitment_info_id"/>
+        <result property ="userId"  column ="user_id"/>
+        <result property ="isRegistrationPass"  column ="is_registration_pass"/>
+        <result property ="isInterviewPass"  column ="is_interview_pass"/>
+        <result property ="interviewDate"  column ="interview_date"/>
+        <result property="interviewTimeBegin" column="interviewer_time_begin"/>
+        <result property="interviewTimeEnd" column="interviewer_time_end"/>
+    </resultMap>
+
+    <resultMap id="UserRegistrationInfo" type="UserRegistrationInfo">
+        <result property="registrationInfoId" column="registration_info_id"/>
+        <result property="recruitmentInfoId" column="recruitment_info_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="isRegistrationPass" column="is_registration_pass"/>
+        <result property="isInterviewPass" column="is_interview_pass"/>
+        <result property="interviewDate" column="interview_date"/>
+        <result property="interviewTimeBegin" column="interview_time_begin"/>
+        <result property="interviewTimeEnd" column="interview_time_end"/>
+        <association property="user" javaType="User">
+            <result property="id" column="id"/>
+            <result property="email" column="email"/>
+            <result property="username" column="username"/>
+            <result property="gender" column="gender"/>
+            <result property="city" column="city"/>
+            <result property="briefIntroduction" column="brief_introduction"/>
+            <result property="age" column="age"/>
+            <result property="education" column="education"/>
+        </association>
+    </resultMap>
+
+    <insert id="insertRegistrationInfo" parameterType="RegistrationInfo">
+        insert into recruitment.registration_info
+        values(#{registrationInfoId},
+               #{recruitmentInfoId},
+               #{userId},
+               #{isRegistrationPass},
+               #{isInterviewPass},
+               #{interviewDate},
+               #{interviewTimeBegin},
+               #{interviewTimeEnd}
+               )
+    </insert>
+
+    <insert id="insertInterviewRegistrationInfo">
+        insert into recruitment.interview_registration
+        values(null,
+               #{interviewPeriodId},
+               #{registrationInfoId}
+              )
+    </insert>
+
+    <delete id="deleteRegistrationInfo" parameterType="int">
+        delete
+        from recruitment.registration_info
+        where registration_info_id=#{registrationInfoId}
+    </delete>
+
+    <delete id="deleteRegistrationInfoByUidAndRid">
+        delete
+        from recruitment.registration_info
+        where user_id=#{userId}
+          and recruitment_info_id=#{recruitmentInfoId}
+    </delete>
+
+    <update id="updateRegistrationInfo" parameterType="RegistrationInfo">
+        update recruitment.registration_info
+        <set>
+            <if test="registrationInfoId != null">
+                registration_info_id=#{registrationInfoId},
+            </if>
+            <if test="recruitmentInfoId != null">
+                recruitment_info_id=#{recruitmentInfoId},
+            </if>
+            <if test="userId != null">
+                user_id=#{userId},
+            </if>
+            <if test="isRegistrationPass != null">
+                is_registration_pass=#{isRegistrationPass},
+            </if>
+            <if test="isInterviewPass != null">
+                is_interview_pass=#{isInterviewPass},
+            </if>
+            <if test="interviewDate != null">
+                interview_date=#{interviewDate},
+            </if>
+            <if test="interviewTimeBegin != null">
+                interview_time_begin=#{interviewTimeBegin},
+            </if>
+            <if test="interviewTimeEnd != null">
+                interview_time_end=#{interviewTimeEnd},
+            </if>
+        </set>
+        where registration_info_id=#{registrationInfoId}
+    </update>
+
+    <select id="queryAllRegistrationInfo" resultMap="RegistrationInfoMap">
+        select registration_info_id,
+               recruitment_info_id,
+               user_id,
+               is_registration_pass,
+               is_interview_pass,
+               interview_date,
+               interview_time_begin,
+               interview_time_end
+        from recruitment.registration_info
+    </select>
+
+    <select id="queryRegistrationInfoById" resultMap="RegistrationInfoMap">
+        select registration_info_id,
+               recruitment_info_id,
+               user_id,
+               is_registration_pass,
+               is_interview_pass,
+               interview_date,
+               interview_time_begin,
+               interview_time_end
+        from recruitment.registration_info
+        where registration_info_id=#{registrationInfoId}
+    </select>
+
+    <select id="queryRegistrationInfoByUid" resultMap="RegistrationInfoMap">
+        select recruitment.registration_info.registration_info_id,
+               recruitment_info_id,
+               user_id,
+               is_registration_pass,
+               is_interview_pass,
+               interview_date,
+               interview_time_begin,
+               interview_time_end
+        from recruitment.registration_info
+        where user_id=#{userId}
+    </select>
+
+    <select id="queryPassRegistrationInfoByRecruitmentInfoId" resultMap="RegistrationInfoMap">
+        select registration_info_id,
+               recruitment_info_id,
+               user_id,
+               is_registration_pass,
+               is_interview_pass,
+               interview_date,
+               interview_time_begin,
+               interview_time_end
+        from recruitment.registration_info
+        where recruitment_info_id=#{recruitmentInfoId}
+          and recruitment.registration_info.is_registration_pass = true
+    </select>
+
+
+    <select id="queryRegistrationInfoByUidAndRid" resultMap="RegistrationInfoMap">
+        select registration_info_id,
+               recruitment_info_id,
+               user_id,
+               is_registration_pass,
+               is_interview_pass,
+               interview_date,
+               interview_time_begin,
+               interview_time_end
+        from recruitment.registration_info
+        where user_id=#{userId}
+          and recruitment_info_id=#{recruitmentInfoId}
+    </select>
+
+    <select id="queryUserRegistrationInfo" resultMap="UserRegistrationInfo">
+        select info.registration_info_id,
+               info.recruitment_info_id,
+               info.user_id,
+               info.is_registration_pass,
+               info.is_interview_pass,
+               info.interview_date,
+               info.interview_time_begin,
+               info.interview_time_end,
+               user.id,
+               user.email,
+               user.username,
+               user.password,
+               user.gender,
+               user.city,
+               user.brief_introduction,
+               user.age,
+               user.education
+        from recruitment.registration_info info,recruitment.user user
+        where info.user_id=#{userId}
+          and recruitment_info_id=#{recruitmentInfoId}
+          and info.user_id=user.id
+    </select>
+
+    <select id="queryUserRegistrationInfoByInterviewPeriodId" resultMap="UserRegistrationInfo">
+        select info.registration_info_id,
+               info.recruitment_info_id,
+               info.user_id,
+               info.is_registration_pass,
+               info.is_interview_pass,
+               info.interview_date,
+               info.interview_time_begin,
+               info.interview_time_end,
+               u.id,
+               u.email,
+               u.username,
+               u.password,
+               u.gender,
+               u.city,
+               u.brief_introduction,
+               u.age,
+               u.education
+        from recruitment.interview_period ip right join recruitment.recruitment_info ri on ri.recruitment_info_id = ip.recruitment_info_id right join recruitment.registration_info info on ri.recruitment_info_id = info.recruitment_info_id right join recruitment.user u on info.user_id = u.id
+        where ip.interview_period_id=#{interviewPeriodId}
+    </select>
+
+    <select id="queryUserRegistrationInfoForInterviewer" resultMap="UserRegistrationInfo">
+        select info.registration_info_id,
+               info.recruitment_info_id,
+               info.user_id,
+               info.is_registration_pass,
+               info.is_interview_pass,
+               info.interview_date,
+               info.interview_time_begin,
+               info.interview_time_end,
+               user.id,
+               user.email,
+               user.username,
+               user.password,
+               user.gender,
+               user.city,
+               user.brief_introduction,
+               user.age,
+               user.education
+        from recruitment.registration_info info,recruitment.user user
+        where recruitment_info_id=#{recruitmentInfoId}
+          and info.user_id=user.id
+    </select>
+
+
+</mapper>

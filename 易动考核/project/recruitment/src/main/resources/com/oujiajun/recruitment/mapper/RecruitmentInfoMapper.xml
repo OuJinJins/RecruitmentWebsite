@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oujiajun.recruitment.dao.RecruitmentInfoDao">
+
+    <resultMap id ="RecruitmentInfoMap" type="com.oujiajun.recruitment.entity.po.RecruitmentInfo">
+        <id property ="recruitmentInfoId" column="recruitment_info_id"/>
+        <result property ="userId"  column ="user_id"/>
+        <result property ="occupation"  column ="occupation"/>
+        <result property ="monthlyPay"  column ="monthly_pay"/>
+        <result property ="introduction"  column ="introduction"/>
+        <result property="workCity" column="work_city"/>
+        <result property="company" column="company"/>
+        <result property ="interviewDateBegin"  column ="interview_date_begin"/>
+        <result property ="interviewDateEnd"  column ="interview_date_end"/>
+        <result property ="interviewTimeBegin"  column ="interview_time_begin"/>
+        <result property ="interviewTimeEnd"  column ="interview_time_end"/>
+        <result property ="maxNumber"  column ="max_number"/>
+    </resultMap>
+
+    <resultMap id ="InterviewPeriodMap" type="com.oujiajun.recruitment.entity.po.InterviewPeriod">
+        <id property ="interviewPeriodId" column="interview_period_id"/>
+        <result property ="recruitmentInfoId"  column ="recruitment_info_id"/>
+        <result property ="interviewDate"  column ="interview_date"/>
+        <result property ="interviewTimeBegin"  column ="interview_time_begin"/>
+        <result property ="interviewTimeEnd"  column ="interview_time_end"/>
+        <result property="maxNumber" column="max_number"/>
+        <result property ="currentNumber"  column ="current_number"/>
+        <result property="version" column="version"/>
+    </resultMap>
+
+    <insert id="insertRecruitmentInfo" parameterType="RecruitmentInfo">
+        insert into recruitment.recruitment_info
+        values(#{recruitmentInfoId},
+               #{userId},
+               #{occupation},
+               #{monthlyPay},
+               #{introduction},
+               #{workCity},
+               #{company},
+               #{interviewDateBegin},
+               #{interviewDateEnd},
+               #{interviewTimeBegin},
+               #{interviewTimeEnd},
+               #{maxNumber})
+    </insert>
+
+    <delete id="deleteRecruitmentInfo" parameterType="int">
+        delete
+        from recruitment.recruitment_info
+        where recruitment_info_id=#{recruitment_info_id}
+    </delete>
+
+    <update id="updateRecruitmentInfo" parameterType="RecruitmentInfo">
+        update recruitment.recruitment_info
+        <set>
+            <if test="recruitmentInfoId != null">
+                recruitment_info_id=#{recruitmentInfoId},
+            </if>
+            <if test="userId != null">
+                user_id=#{userId},
+            </if>
+            <if test="occupation != null">
+                occupation=#{occupation},
+            </if>
+            <if test="monthlyPay != null">
+                monthly_pay=#{monthlyPay},
+            </if>
+            <if test="introduction != null">
+                introduction=#{introduction},
+            </if>
+            <if test="workCity != null">
+                work_city=#{workCity},
+            </if>
+            <if test="company != null">
+                company=#{company},
+            </if>
+            <if test="interviewDateBegin != null">
+                interview_date_begin=#{interviewDateBegin},
+            </if>
+            <if test="interviewDateEnd != null">
+                interview_date_end=#{interviewDateEnd},
+            </if>
+            <if test="interviewTimeBegin != null">
+                interview_time_begin=#{interviewTimeBegin},
+            </if>
+            <if test="interviewTimeEnd != null">
+                interview_time_end=#{interviewTimeEnd},
+            </if>
+            <if test="maxNumber != null">
+                max_number=#{maxNumber},
+            </if>
+        </set>
+        where recruitment_info_id=#{recruitmentInfoId}
+    </update>
+
+    <update id="updateInterviewPeriod">
+        update recruitment.interview_period ip
+        <set>
+            <if test="numberGap != null">
+                ip.current_number = current_number + #{numberGap},
+            </if>
+            <if test="version != null">
+                ip.version = version + 1,
+            </if>
+        </set>
+        where ip.interview_period_id=#{interviewPeriodId}
+          and ip.version=#{version}
+    </update>
+
+    <select id="queryAllRecruitmentInfo" resultMap="RecruitmentInfoMap">
+        select recruitment_info_id,
+               user_id,
+               occupation,
+               monthly_pay,
+               introduction,
+               work_city,
+               company,
+               interview_date_begin,
+               interview_date_end,
+               interview_time_begin,
+               interview_time_end,
+               max_number
+        from recruitment.recruitment_info
+    </select>
+
+    <select id="queryRecruitmentInfoById" parameterType="Int" resultMap="RecruitmentInfoMap">
+        select recruitment_info_id,
+               user_id,
+               occupation,
+               monthly_pay,
+               introduction,
+               work_city,
+               company,
+               interview_date_begin,
+               interview_date_end,
+               interview_time_begin,
+               interview_time_end,
+               max_number
+        from recruitment.recruitment_info
+        where recruitment_info_id=#{RecruitmentInfoId}
+    </select>
+
+    <select id="queryRecruitmentInfoByInterviewPeriodId" parameterType="Int" resultMap="RecruitmentInfoMap">
+        select ri.recruitment_info_id,
+               ri.user_id,
+               ri.occupation,
+               ri.monthly_pay,
+               ri.introduction,
+               ri.work_city,
+               ri.company,
+               ri.interview_date_begin,
+               ri.interview_date_end,
+               ri.interview_time_begin,
+               ri.interview_time_end,
+               ri.max_number
+        from recruitment.recruitment_info ri left join recruitment.interview_period ip on ri.recruitment_info_id = ip.recruitment_info_id
+        where ip.interview_period_id=#{interview_period_id}
+    </select>
+
+    <select id="queryRecruitmentInfoByUid" parameterType="Int" resultMap="RecruitmentInfoMap">
+        select recruitment_info_id,
+               user_id,
+               occupation,
+               monthly_pay,
+               introduction,
+               work_city,
+               company,
+               interview_date_begin,
+               interview_date_end,
+               interview_time_begin,
+               interview_time_end,
+               max_number
+        from recruitment.recruitment_info
+        where user_id=#{userId}
+    </select>
+
+    <select id="queryInterviewPeriodByRecruitmentInfoId" parameterType="int" resultMap="InterviewPeriodMap">
+        select interview_period_id,
+               recruitment_info_id,
+               interview_date,
+               interview_time_begin,
+               interview_time_end,
+               max_number,
+               current_number,
+               version
+        from recruitment.interview_period
+        where recruitment_info_id=#{recruitment_info_id}
+    </select>
+
+    <select id="queryInterviewPeriodByInterviewPeriodId" parameterType="int" resultMap="InterviewPeriodMap">
+        select interview_period_id,
+               recruitment_info_id,
+               interview_date,
+               interview_time_begin,
+               interview_time_end,
+               max_number,
+               current_number,
+               version
+        from recruitment.interview_period
+        where interview_period_id=#{interview_period_id}
+    </select>
+
+    <select id="selectRecruitmentInfoForPage" resultMap="RecruitmentInfoMap">
+        select recruitment_info_id,
+                user_id,
+                occupation,
+                monthly_pay,
+                introduction,
+                work_city,
+                company,
+                interview_date_begin,
+                interview_date_end,
+                interview_time_begin,
+                interview_time_end,
+                max_number
+        from recruitment.recruitment_info ri
+        <where>
+            <if test="workCity!=null">
+                ri.work_city=#{workCity}
+            </if>
+            <if test="company!=null">
+                AND ri.company=#{company}
+            </if>
+            <if test="bigSalary!=null and smallSalary!=null">
+                AND ri.monthly_pay &lt;=#{bigSalary} And ri.monthly_pay &gt;=#{smallSalary}
+            </if>
+        </where>
+        limit  #{startIndex},#{pageSize}
+    </select>
+</mapper>

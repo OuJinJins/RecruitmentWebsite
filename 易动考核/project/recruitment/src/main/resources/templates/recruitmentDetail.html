@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/css/bootstrap-theme.min.css" rel="stylesheet">
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!--BEGIN——程序执行脚本-->
+    <script>
+        function getRootPath(path){
+            var currentPagePath=location.href;
+            var pathName = window.document.location.pathname;
+            var pos = currentPagePath.indexOf(pathName);
+            var localhostPath = currentPagePath.substring(0,pos);
+            var projectName = pathName.substring(0,pathName.substr(1).indexOf("/")+1);
+            return localhostPath+projectName+"/servlet" + path;
+        }
+
+        function toPage(path){
+            var currentPagePath=location.href;
+            var pathName = window.document.location.pathname;
+            var pos = currentPagePath.indexOf(pathName);
+            var localhostPath = currentPagePath.substring(0,pos);
+            var projectName = pathName.substring(0,pathName.substr(1).indexOf("/")+1);
+            return localhostPath+projectName + path;
+        }
+    </script>
+    <!--END——程序执行脚本-->
+
+    <!--BEGIN——发送请求脚本-->
+    <script>
+        //post方法
+        function postRequest(url, request, callback) {
+            $.post(url, request, function (data,status) {
+                if (status.success === 'error') {
+                    alert("ERROR:发送请求失败");
+                }
+                if (data.message != null && data.message !== '') {
+                    alert("系统提示" + data.message);
+                }
+                callback(data);
+            },"json");
+        }
+
+        //ajax方法
+        function ajaxJsonRequest(url, data, callback) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: data,
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function (data) {
+                    if (data.message != null && data.message !== '') {
+                        alert("系统提示：" + data.message);
+                    }
+                    callback(data);
+                },
+                Error: function (xhr, error, exception) {
+                    alert("请求发送失败，请刷新浏览器重试或检查网络");
+                    alert(exception.toString());
+                    callback(data);
+                }
+            });
+        }
+    </script>
+    <!--END——发送请求脚本-->
+
+</head>
+<body>
+<nav class="navbar navbar-fixed-top" id="navbar">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header navbar-inverse">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">
+                <img src="../../static/img/logo.jpg" alt="logo" id="logo">
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="/recruitment/index">首页</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">个人中心<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/recruitment/profile">个人信息</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/recruitment/myRegistration">我的报名</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">我的面试</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">招聘中心<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/recruitment/interviewer/myRecruitment">我的招聘/审核报名/进行面试/审核结果/修改</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/recruitment/interviewer/publish">发布招聘</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <form class="navbar-form navbar-left" id="search">
+                <div class="form-group">
+                    <label for="input-search"></label><input type="text" class="form-control" placeholder="搜索招聘信息" id="input-search">
+                </div>
+                <a class="btn btn-default" id="button-search" href="/recruitment/select/page/1">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true" id="glyphicon-search"></span>
+                </a>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+                <li th:if="${not #strings.isEmpty(session.loginUser)}"><a href="#" th:text="${session.loginUser.username}"></a></li>
+                <li th:if="${#strings.isEmpty(session.loginUser)}"><a href="#">登录</a></li>
+                <li th:if="${#strings.isEmpty(session.loginUser)}"><a href="#">注册</a></li>
+                <li th:if="${not #strings.isEmpty(session.loginUser)}"><a href="#">注销</a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<div id="bg">
+    <div th:if="${not #strings.isEmpty(session.errorMsg)}" class="alert alert-info alert-dismissible" id="alert" role="alert" >
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <p th:text="${session.errorMsg}"></p>
+    </div>
+    <div id="job-banner">
+        <div id="div-job-banner">
+            <div id="job-status">
+                <span id="span-status" th:if="${#strings.isEmpty(registrationInfo)}" >未报名</span>
+                <span id="span-status" th:if="${not #strings.isEmpty(registrationInfo) && registrationInfo?.isRegistrationPass eq null}" >报名审核中</span>
+                <span id="span-status" th:if="${registrationInfo?.isRegistrationPass} eq true" >通过报名</span>
+                <span id="span-status" th:if="${registrationInfo?.isRegistrationPass} eq false" >报名未通过</span>
+                <span id="span-status" th:if="${registrationInfo?.isRegistrationPass eq true && registrationInfo?.isInterviewPass eq null}" >面试审核中</span>
+                <span id="span-status" th:if="${registrationInfo?.isRegistrationPass eq true && registrationInfo?.isInterviewPass eq true}" >通过面试</span>
+                <span id="span-status" th:if="${registrationInfo?.isRegistrationPass eq true && registrationInfo?.isInterviewPass eq false}" >面试未通过</span>
+            </div>
+            <div id="div-name">
+                <span id="job-name" th:text="${recruitmentInfo.occupation}"></span>
+                <span id="job-salary" th:text="${recruitmentInfo.monthlyPay} + K"></span><span id="job-salary-after">每月</span>
+            </div>
+            <p id="p-city" th:text="${recruitmentInfo.workCity}"></p>
+            <div class="div-option">
+                <a th:href="@{/registrationInfo/signUp/id/} + ${recruitmentInfo.recruitmentInfoId}"  th:if="${#strings.isEmpty(registrationInfo)}">
+                    <button id="signUp" class="button-option">报名面试</button>
+                </a>
+            </div>
+            <div class="div-option">
+                <a th:href="@{/registrationInfo/cancel/id/} + ${recruitmentInfo.recruitmentInfoId}"  th:if="${not #strings.isEmpty(registrationInfo)}">
+                    <button id="cancelRegistration" class="button-option">取消报名</button>
+                </a>
+            </div>
+            <div class="div-option">
+                <a th:href="@{/registrationInfo/chooseDate/id/} + ${recruitmentInfo.recruitmentInfoId}" th:if="${registrationInfo?.isRegistrationPass} eq true">
+                    <button id="chooseDate" class="button-option">选择面试日期</button>
+                </a>
+            </div>
+            <div class="div-option">
+                <a th:href="@{/registrationInfo/lineUp/id/} + ${registrationInfo.registrationInfoId}" th:if="${registrationInfo?.isRegistrationPass} eq true">
+                    <button id="lineUp" class="button-option">排队面试</button>
+                </a>
+            </div>
+            <div class="div-option">
+                <a th:if="${registrationInfo?.isRegistrationPass} eq true" th:href="@{/chat/} + ${recruitmentInfo?.recruitmentInfoId}">
+                    <button id="joinChat" class="button-option">进入群聊</button>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div id="text-interviewer">
+        <div id="interviewer">
+            <h3 class="span-interviewer-name">招聘官:</h3><h3 class="span-interviewer-name" th:text="${interviewer.username}">欧先生</h3>
+        </div>
+        <div id="div-introduction">
+            <h4 id="span-introduction">职位描述:</h4>
+            <div id="text-introduction" th:text="${recruitmentInfo?.introduction}">
+            </div>
+        </div>
+        <div id="div-company">
+            <h4 id="span-company">工商信息:</h4>
+            <div id="text-company" th:text="${recruitmentInfo?.company}">
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script  th:inline ="javascript" >
+
+    var loginUser = [[${session.loginUser}]];
+
+    window.onload = function(){
+
+    }
+
+    // 获取登陆用户
+    function getLoginUser(){
+        var url = getRootPath("/user");
+        var request = {
+            method:"get_login_user",
+        }
+        postRequest(url,request,function(resultInfo){
+            var success = resultInfo.success;
+            var user = resultInfo.data;
+            if (success){
+                loginUser = user;
+            }
+        })
+    }
+
+</script>
+<style>
+
+
+    .div-option{
+        margin-right: 12px;
+        float: left;
+    }
+
+    .button-option{
+        color: #ffffff;
+        font-size: 16px;
+        border: #5dd5c8;
+        background: #5dd5c8;
+        width: 130px;
+        height: 45px;
+        border-radius: 0px;
+    }
+
+    #text-company{
+        margin-top: 20px;
+        color: #61687c;
+    }
+
+    .span-interviewer-name{
+        float: left;
+    }
+
+    #text-introduction{
+        margin-top: 20px;
+        color: #61687c;
+    }
+
+    #interviewer{
+        height: 60px;
+        width: 100%;
+        float: top;
+        color: #424a51;
+    }
+
+    #text-interviewer{
+        padding-left: 15px;
+    }
+
+    #p-city{
+        float: top;
+        font-size: 14px;
+        color: #ffffffb3;
+        margin-bottom: 22px;
+    }
+
+    #job-salary-after{
+        font-weight: bold;
+        float: left;
+        font-size: 30px;
+        color: #fa6a43;
+    }
+
+    #job-salary{
+        font-weight: bold;
+        float: left;
+        font-size: 30px;
+        color: #fa6a43;
+    }
+
+    #job-name{
+        float: left;
+        margin-right: 30px;
+        font-size: 32px;
+        color: #ffffff;
+    }
+
+    #div-name{
+        height: 63.38px;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        float: top;
+    }
+
+    #job-status{
+        float: top;
+        color: #ffffffb3;
+        font-size: 14px;
+    }
+
+    #div-job-banner{
+        padding-left: 15px;
+        padding-top: 25px;
+        width: 100%;
+        height: 172px;
+    }
+
+    #job-banner{
+        width: 100%;
+        height: 218px;
+        background-color: #444C60;
+    }
+
+    body {
+        background-color: #f5f5f5;
+        padding-top: 80px;
+    }
+
+    #navbar{
+        font-weight: bold;
+        font-size: 17px;
+        background-color: #ffffff;
+        height: 80px;
+        padding-top: 15px;
+    }
+
+    #logo{
+        width: 24px;
+        height: 24px;
+    }
+
+    #glyphicon-search{
+        margin-left: -2px;
+    }
+
+    #button-search{
+        width: 36px;
+        height: 36px;
+        border-radius: 1000px;
+    }
+
+    #input-search{
+        width: 500px;
+        border: #333333;
+        border-radius: 10px;
+    }
+
+    #search{
+        margin-left: 40px;
+    }
+
+    #input-search{
+        background-color: #f5f5f5;
+        border: #ffffff;
+    }
+
+</style>
+</html>

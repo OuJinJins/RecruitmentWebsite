@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>聊天</title>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/css/bootstrap-theme.min.css" rel="stylesheet">
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!--BEGIN——程序执行脚本-->
+    <script>
+        function getRootPath(path){
+            var currentPagePath=location.href;
+            var pathName = window.document.location.pathname;
+            var pos = currentPagePath.indexOf(pathName);
+            var localhostPath = currentPagePath.substring(0,pos);
+            var projectName = pathName.substring(0,pathName.substr(1).indexOf("/")+1);
+            return localhostPath+projectName+"/servlet" + path;
+        }
+
+        function toPage(path){
+            var currentPagePath=location.href;
+            var pathName = window.document.location.pathname;
+            var pos = currentPagePath.indexOf(pathName);
+            var localhostPath = currentPagePath.substring(0,pos);
+            var projectName = pathName.substring(0,pathName.substr(1).indexOf("/")+1);
+            return localhostPath+projectName + path;
+        }
+    </script>
+    <!--END——程序执行脚本-->
+
+    <!--BEGIN——发送请求脚本-->
+    <script>
+        //post方法
+        function postRequest(url, request, callback) {
+            $.post(url, request, function (data,status) {
+                if (status.success === 'error') {
+                    alert("ERROR:发送请求失败");
+                }
+                if (data.message != null && data.message !== '') {
+                    alert("系统提示" + data.message);
+                }
+                callback(data);
+            },"json");
+        }
+
+        //ajax方法
+        function ajaxJsonRequest(url, data, callback) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: data,
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function (data) {
+                    if (data.message != null && data.message !== '') {
+                        alert("系统提示：" + data.message);
+                    }
+                    callback(data);
+                },
+                Error: function (xhr, error, exception) {
+                    alert("请求发送失败，请刷新浏览器重试或检查网络");
+                    alert(exception.toString());
+                    callback(data);
+                }
+            });
+        }
+    </script>
+    <!--END——发送请求脚本-->
+
+</head>
+<body>
+<nav class="navbar navbar-fixed-top" id="navbar">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header navbar-inverse">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">
+                <img src="../static/img/logo.jpg" alt="logo" id="logo">
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="/recruitment/index">首页</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">个人中心<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/recruitment/profile">个人信息</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/recruitment/myRegistration">我的报名</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">我的面试</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">招聘中心<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/recruitment/interviewer/myRecruitment">我的招聘/审核报名/进行面试/审核结果/修改</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/recruitment/interviewer/publish">发布招聘</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <form class="navbar-form navbar-left" id="search">
+                <div class="form-group">
+                    <label for="input-search"></label><input type="text" class="form-control" placeholder="搜索招聘信息" id="input-search">
+                </div>
+                <a class="btn btn-default" id="button-search" href="/recruitment/select/page/1">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true" id="glyphicon-search"></span>
+                </a>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+                <li th:if="${not #strings.isEmpty(session.loginUser)}"><a href="#" th:text="${session.loginUser.username}"></a></li>
+                <li th:if="${#strings.isEmpty(session.loginUser)}"><a href="#">登录</a></li>
+                <li th:if="${#strings.isEmpty(session.loginUser)}"><a href="#">注册</a></li>
+                <li th:if="${not #strings.isEmpty(session.loginUser)}"><a href="#">注销</a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<div id="bg">
+    <div id="div-chat-room">
+        <div id="div-room-top">
+            <div id="room-title">聊天列表</div>
+        </div>
+        <div id="div-room-bottom">
+
+        </div>
+    </div>
+    <div id="div-chat">
+        <div id="chat-top">
+            <div id="chat-top-title"></div>
+        </div>
+        <div id="chat-bottom">
+            <div class="chat-left">
+                <div id="chat-left-top">
+                </div>
+                <div id="chat-left-bottom">
+                    <textarea id="input_text"></textarea>
+                    <button id="submit" class="btn btn-group">
+                        发送
+                    </button>
+                </div>
+            </div>
+            <div id="chat-right">
+                <span>聊天室成员:</span>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script  th:inline ="javascript" >
+    let toRoom;
+    let onlineUserDataMap = new Map();
+
+    // 获取登陆用户
+    function getLoginUser(){
+        var url = getRootPath("/user");
+        var request = {
+            method:"get_login_user",
+        }
+        postRequest(url,request,function(resultInfo){
+            var success = resultInfo.success;
+            var user = resultInfo.data;
+            if (success) {
+                loginUser = user;
+            }
+        })
+    }
+
+    function showRoom(room){
+        $("#chat-right").html("");
+        for (let user of room.userList){
+            let str =
+                '                <div class="div-member">\n' +
+                '                    <a class="member-name" href=/recruitment/room/create/private/id/'+ user.id +'>'+user.username+'</a>\n' +
+                '                </div>';
+            $("#chat-right").append(str);
+        }
+        toRoom=room;
+        $("#chat-top-title").html("正在与"+ room.roomName +"聊天");
+        var chatData = sessionStorage.getItem(room.roomId);
+        // 先清空后取出
+        $("#chat-left-top").html("");
+        if (chatData != null){
+            $("#chat-left-top").append(chatData);
+        }
+    }
+
+    let loginUser;
+    let roomList;
+    $(function(){
+
+        $.ajax({
+            url:"chat/getMe",
+            success:function(res){
+                loginUser=res;
+            },
+            async :false
+        })
+
+        $.ajax({
+            url:"room/getRoom",
+            success:function(res){
+                roomList=res;
+                for(let room of roomList){
+                    //如果是私人聊天
+                    if(room.isPrivateChat){
+                        let userList = room.userList;
+                        let chatName;
+                        for (let user of userList){
+                            if(user.username !== loginUser.username){
+                                chatName = user.username;
+                                room.roomName = chatName;
+                                break;
+                            }
+                        }
+                        let str =
+                            '        <div class="room">\n' +
+                            '            <a onclick=showRoom('+ JSON.stringify(room) +')>'+ chatName +'</a>\n' +
+                            '        </div>';
+                        $("#div-room-bottom").append(str);
+                        continue;
+                    }
+                    let str =
+                        '        <div class="room">\n' +
+                        '            <a onclick=showRoom('+ JSON.stringify(room) +')>'+ room.roomName +'</a>\n' +
+                        '        </div>';
+                    $("#div-room-bottom").append(str);
+                }
+            },
+            async :false
+        })
+
+        // 获取历史消息
+        $.ajax({
+            url:"chat/getHistoryMessage",
+            success:function(res){
+                // 清楚session储存
+                sessionStorage.clear();
+                let messageVoList=res;
+                for(let messageVo of messageVoList){
+                    if (messageVo.fromUserId == loginUser.id){
+                        var str =
+                            '                    <div class="message">\n' +
+                            '                        <div class="message-right">\n' +
+                            '                            <a>\n' +
+                            '                                <img class="a-profile-right" src=' + "/recruitment/temp/" + messageVo.fromUser.profile + '>\n' +
+                            '                            </a>\n' +
+                            '                            <div class="message-left">\n' +
+                            '                                <div class="span-message">\n' +
+                            '                                    ' + messageVo.message + '\n' +
+                            '                                </div>\n' +
+                            '                            </div>\n' +
+                            '                        </div>\n' +
+                            '                    </div>';
+                        let chatData = sessionStorage.getItem(messageVo.toRoomId);
+                        if (chatData != null){
+                            str = chatData + str;
+                        }
+                        sessionStorage.setItem(messageVo.toRoomId,str);
+                    }else {
+                        var str = '             <div class="message">\n' +
+                            '                        <div class="message-left">\n' +
+                            '                            <a>\n' +
+                            '                                <img class="a-profile-left" src=' + "/recruitment/temp/" +   messageVo.fromUser.profile + '>\n' +
+                            '                            </a>\n' +
+                            '                            <div class="message-right">\n' +
+                            '                                <span class="name-left">'+messageVo.fromUser.username+'</span>\n' +
+                            '                                <div class="span-message">\n' +
+                            '                                    '+messageVo.message+'\n' +
+                            '                                </div>\n' +
+                            '                            </div>\n' +
+                            '                        </div>\n' +
+                            '                    </div>';
+                        let chatData = sessionStorage.getItem(messageVo.toRoomId);
+                        if (chatData != null){
+                            str = chatData + str;
+                        }
+                        sessionStorage.setItem(messageVo.toRoomId,str);
+                    }
+                }
+            },
+            async :false
+        })
+
+        var ws = new WebSocket("ws://localhost:8080/recruitment/chat");
+
+        // 绑定事件
+        ws.onopen = function(){
+            alert("状态:在线")
+        }
+
+        //接受消息
+        ws.onmessage = function (ev) {
+            var dataStr = ev.data;
+            var res = JSON.parse(dataStr);
+            //判断是否是系统消息
+            if(res.message.isSystem){
+                //好友列表
+                //系统广播
+                /*
+                var names = res.message;
+                var userListStr = "";
+                var broadcastListStr = "";
+                for (var name of names){
+                    if (name != username){
+                        userListStr += "<a οnclick='showChat(\""+name+"\")'>"+ name +"</a></br>";
+                        broadcastListStr += "<p>"+ name +"上线了</p>";
+                    }
+                }
+                $("#hylist").html(userListStr);
+                $("#xtlist").html(broadcastListStr);
+                 */
+            }else {
+                //不是系统消息
+                var str = '             <div class="message">\n' +
+                    '                        <div class="message-left">\n' +
+                    '                            <a>\n' +
+                    '                                <img class="a-profile-left" src='+"/recruitment/temp/"+ res.message.fromUser.profile + '>\n' +
+                    '                            </a>\n' +
+                    '                            <div class="message-right">\n' +
+                    '                                <span class="name-left">'+res.message.fromUser.username+'</span>\n' +
+                    '                                <div class="span-message">\n' +
+                    '                                    '+res.message.message+'\n' +
+                    '                                </div>\n' +
+                    '                            </div>\n' +
+                    '                        </div>\n' +
+                    '                    </div>';
+                if (toRoom.roomId === res.message.toRoomId){
+                    $("#chat-left-top").append(str);
+                }
+                let chatData = sessionStorage.getItem(res.message.toRoomId);
+                if (chatData != null){
+                    str = chatData + str;
+                }
+                sessionStorage.setItem(res.message.toRoomId,str);
+            }
+        }
+
+        // 绑定事件
+        ws.onclose = function(){
+            alert("状态:离线")
+        }
+
+        $("#submit").click(function () {
+            //获取输入的内容
+            var data = $("#input_text").val();
+            $("#input_text").val("");
+            var json = {"toRoomId": toRoom.roomId ,
+                        "message": data
+            };
+            //将数据展示在聊天区
+            var str =
+                '                    <div class="message">\n' +
+                '                        <div class="message-right">\n' +
+                '                            <a>\n' +
+                '                                <img class="a-profile-right" src='+"/recruitment/temp/"+loginUser.profile+'>\n' +
+                '                            </a>\n' +
+                '                            <div class="message-left">\n' +
+                '                                <div class="span-message">\n' +
+                '                                    ' + data + '\n' +
+                '                                </div>\n' +
+                '                            </div>\n' +
+                '                        </div>\n' +
+                '                    </div>';
+            $("#chat-left-top").append(str);
+            let chatData = sessionStorage.getItem(toRoom.roomId);
+            if (chatData != null){
+                str = chatData + str;
+            }
+            sessionStorage.setItem(toRoom.roomId,str);
+            //发送数据
+            ws.send(JSON.stringify(json));
+        })
+
+    })
+
+</script>
+<style>
+
+    .div-member{
+        float: top;
+    }
+
+
+    #chat-right{
+        float: left;
+        width: 200px;
+        height: 100%;
+    }
+
+    .room{
+        width: 100%;
+        float: top;
+        font-size: 15px;
+        margin: auto auto 10px 10px;
+    }
+
+    #room-title{
+        color: #ffffff;
+        font-size: 16px;
+        margin-left: 66px;
+        padding-top: 20px;
+    }
+
+    #div-room-top{
+        border-radius: 10px 10px 0px 0px;
+        background-color: #555555;
+        float: top;
+        width: 200px;
+        height: 65px;
+    }
+
+    #div-room-bottom{
+        background-color: #ffffff;
+        float: top;
+        width: 200px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    #div-chat-room{
+        margin-left: 20px;
+        float: left;
+        margin-top: 20px;
+        width: 200px;
+        background-color: #ffffff;
+    }
+
+    #chat-top-title{
+        font-size: 17px;
+        padding-top: 20px;
+        margin-left: 12px;
+    }
+
+    .message{
+        margin-top: 5px;
+        padding-top: 30px;
+        padding-bottom: 30px;
+        width: 100%;
+        float: top;
+    }
+
+    #chat-left-top{
+        width: 100%;
+        height: 250px;
+    }
+
+    .message-right{
+        float: right;
+    }
+
+    .message-left{
+        float: left;
+    }
+
+    .a-profile-right{
+        float: right;
+        margin-right: 10px;
+        width: 30px;
+        height: 30px;
+    }
+
+    .a-profile-left{
+        float: left;
+        margin-left: 10px;
+        width: 30px;
+        height: 30px;
+    }
+
+    .name-right{
+        margin-right: 1px;
+        float: top;
+    }
+
+    .name-left{
+        margin-left: 1px;
+        float: top;
+    }
+
+    .message-right{
+        margin-left: 10px;
+        float: right;
+    }
+
+    .span-message{
+        float: top;
+        margin-right: 10px;
+        border-radius: 5px;
+        background-color: #86e9fd;
+        padding: 7px 7px 10px 10px;
+    }
+
+    #submit{
+        width: 65px;
+        margin-right: 5px;
+        float: right;
+    }
+
+    #input_text{
+        outline: none;
+        border: #ffffff;
+        resize: none;
+        width: 100%;
+        height: 105px;
+    }
+
+    #chat-left-bottom{
+        float: left;
+        width: 100%;
+        height: 150px;
+        border-top: solid 1.5px;
+        border-top-color: #e5e5e5;
+    }
+
+    .chat-left{
+        float: left;
+        border-right: solid 1.5px;
+        border-right-color: #e5e5e5;
+        width: 600px;
+        height: 100%;
+    }
+
+    #div-chat{
+        margin-left: 20px;
+        float: left;
+        margin-top: 20px;
+    }
+
+    #chat-top{
+        border-radius: 10px 10px 0px 0px;
+        width: 800px;
+        background-color: #555555;
+        height: 65px;
+    }
+
+    #chat-bottom{
+        border-radius: 0px 0px 10px 10px;
+        width: 800px;
+        background-color: #fdfdfd;
+        height: 400px;
+    }
+
+    .a-occupation{
+        float: top;
+    }
+
+
+    .span-city{
+        float: top;
+        font-size: 13px;
+        color: #61687c;
+    }
+
+    .div-info-bottomleft{
+        color: #61687c;
+        font-size: 13px;
+        padding-top: 15px;
+        float: left;
+    }
+
+    .span-monthlyPay{
+        font-size: 15px;
+        color: #FD7240;
+    }
+
+    .a-occupation{
+        font-size: 15px;
+        color: #414a60;
+    }
+
+    .div-recruitmentInfos{
+        margin-top: 20px;
+    }
+
+    .hr-info{
+        width: 100%;
+        margin: auto auto auto auto;
+        float: top;
+    }
+
+    .div-info-top{
+        float: top;
+        width: 100%;
+        height: 50%;
+    }
+
+    .div-recruitmentInfo-left{
+        float: left;
+    }
+
+    .div-recruitmentInfo-right{
+        float: right;
+    }
+
+    .div-info{
+        margin: auto auto auto auto;
+        width: 88%;
+        height: 90%;
+        padding-top: 18px;
+    }
+
+    .div-recruitmentInfo{
+        float: left;
+        margin-top: 18px;
+        margin-left: 18px;
+        width: 384px;
+        height: 130px;
+        background-color: #ffffff;
+    }
+
+
+    #div-recruitmentInfos{
+        margin: auto auto auto auto;
+        width: 100%;
+        height: 100%;
+    }
+
+    body {
+        background-color: #f5f5f5;
+        padding-top: 80px;
+    }
+
+    #navbar{
+        font-weight: bold;
+        font-size: 17px;
+        background-color: #ffffff;
+        height: 80px;
+        padding-top: 15px;
+    }
+
+    #logo{
+        width: 24px;
+        height: 24px;
+    }
+
+    #glyphicon-search{
+        margin-left: -2px;
+    }
+
+    #button-search{
+        width: 36px;
+        height: 36px;
+        border-radius: 1000px;
+    }
+
+    #input-search{
+        width: 500px;
+        border: #333333;
+        border-radius: 10px;
+    }
+
+    #search{
+        margin-left: 40px;
+    }
+
+    #input-search{
+        background-color: #f5f5f5;
+        border: #ffffff;
+    }
+</style>
+</html>

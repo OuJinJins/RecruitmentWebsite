@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.oujiajun.recruitment.dao.UserDao">
+
+    <resultMap id="UserMap" type="User">
+        <result property="id" column="id"/>
+        <result property="email" column="email"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="gender" column="gender"/>
+        <result property="city" column="city"/>
+        <result property="briefIntroduction" column="brief_introduction"/>
+        <result property="age" column="age"/>
+        <result property="education" column="education"/>
+        <result property="profile" column="profile"/>
+    </resultMap>
+
+    <insert id="insertUser" parameterType="User">
+        insert into recruitment.user
+        values(#{id},
+               #{email},
+               #{username},
+               #{password},
+               #{gender},
+               #{city},
+               #{briefIntroduction},
+               #{age},
+               #{education},
+               #{profile}
+       )
+    </insert>
+
+
+    <update id="updateUserById" parameterType="User">
+        update recruitment.user
+        <set>
+            <if test="username != null">
+                username=#{username},
+            </if>
+            <if test="gender != null">
+                gender=#{gender},
+            </if>
+            <if test="city != null">
+                city=#{city},
+            </if>
+            <if test="briefIntroduction != null">
+                brief_introduction=#{briefIntroduction},
+            </if>
+            <if test="age != null">
+                age=#{age},
+            </if>
+            <if test="education != null">
+                education=#{education},
+            </if>
+            <if test="profile != null">
+                profile=#{profile},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <select id="queryUserByUsernameAndPassword" parameterType="User" resultMap="UserMap">
+        select id,
+               username,
+               password,
+               gender,
+               city,
+               brief_introduction,
+               age,
+               education,
+               profile
+        from recruitment.user
+        where username=#{username}
+          And password=#{password}
+    </select>
+
+    <select id="queryUserById" parameterType="Int" resultMap="UserMap">
+        select id,
+               username,
+               password,
+               gender,
+               city,
+               brief_introduction,
+               age,
+               education,
+               profile
+        from recruitment.user
+        where id=#{id}
+    </select>
+
+    <select id="queryUserByUsername" parameterType="String" resultMap="UserMap">
+        select id,
+               username,
+               password,
+               gender,
+               city,
+               brief_introduction,
+               age,
+               education,
+               profile
+        from recruitment.user
+        where username=#{username}
+    </select>
+
+
+</mapper>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.oujiajun.recruitment.dao.PermissionDao">
+
+    <resultMap id ="PermissionMap" type="com.oujiajun.recruitment.entity.po.Permission">
+        <id property ="permissionId" column="permission_id"/>
+        <result property ="permissionName"  column ="permission_name"/>
+    </resultMap>
+
+    <select id="queryPermissionByUserId" parameterType="Int" resultMap="PermissionMap">
+        select p.permission_id,
+               p.permission_name
+        from recruitment.permission p
+            left join recruitment.permission_role pr on p.permission_id = pr.permission_id
+            left join recruitment.role r on pr.role_id = r.role_id
+            left join recruitment.role_user ru on r.role_id = ru.role_id
+        where ru.user_id =#{userId}
+    </select>
+
+</mapper>

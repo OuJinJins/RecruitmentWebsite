@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <typeAliases>
+        <typeAlias alias="User" type="com.oujiajun.recruitment.entity.po.User" />
+        <typeAlias alias="RecruitmentInfo" type="com.oujiajun.recruitment.entity.po.RecruitmentInfo" />
+        <typeAlias alias="RegistrationInfo" type="com.oujiajun.recruitment.entity.po.RegistrationInfo" />
+        <typeAlias alias="UserRegistrationInfo" type="com.oujiajun.recruitment.entity.vo.UserRegistrationInfo" />
+        <typeAlias alias="InterviewPeriod" type="com.oujiajun.recruitment.entity.po.InterviewPeriod" />
+        <typeAlias alias="Room" type="com.oujiajun.recruitment.entity.po.Room" />
+        <typeAlias alias="Message" type="com.oujiajun.recruitment.entity.po.Message"/>
+        <typeAlias alias="MessageVo" type="com.oujiajun.recruitment.entity.vo.MessageVo"/>
+    </typeAliases>
+
+</configuration>
