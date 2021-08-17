@@ -52,9 +52,18 @@ public class ShiroConfig {
             role : 拥有某个角色权限才能访问
          */
         Map<String, String> map = new LinkedHashMap<>();
-        // 设置 /user/addUser 这个请求,只有认证过才能访问
-        // map.put("/user/addUser","authc");
-        // map.put("/user/deleteUser","authc");
+        // 身份过滤
+        map.put("/interviewer/**","roles[interviewer]");
+        map.put("/admin/**","roles[admin]");
+        // 权限过滤
+        
+        // 认证过滤
+        map.put("/chat/*","authc");
+        map.put("/chooseDate/*","authc");
+        map.put("/myRegistration/*","authc");
+        map.put("/selectRecruitment/*","authc");
+        map.put("/lineUp/*","authc");
+        map.put("/profile/*","authc");
         // 静态资源
         map.put("/images/**","anon");
         map.put("/js/**","anon");
