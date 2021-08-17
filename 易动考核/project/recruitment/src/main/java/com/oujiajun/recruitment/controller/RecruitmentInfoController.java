@@ -8,10 +8,7 @@ import com.oujiajun.recruitment.entity.po.RegistrationInfo;
 import com.oujiajun.recruitment.entity.po.User;
 import com.oujiajun.recruitment.entity.vo.RecruitmentInfoPage;
 import com.oujiajun.recruitment.entity.vo.UserRegistrationInfo;
-import com.oujiajun.recruitment.service.InterviewPeriodService;
-import com.oujiajun.recruitment.service.RecruitmentInfoService;
-import com.oujiajun.recruitment.service.RegistrationInfoService;
-import com.oujiajun.recruitment.service.UserService;
+import com.oujiajun.recruitment.service.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -59,6 +56,9 @@ public class RecruitmentInfoController {
     @GetMapping({ "/interviewer/myRecruitment","/interviewer/myRecruitment.html"})
     public String toMyRecruitment(HttpServletRequest request, HttpSession session) {
         User loginUser = (User)session.getAttribute("loginUser");
+        if (loginUser == null){
+            return "redirect:/login";
+        }
         ResultInfo resultInfo = recruitmentInfoService.queryRecruitmentInfoByUid(loginUser.getId());
         if(resultInfo.getSuccess()){
             List<RecruitmentInfo> infoList = (List<RecruitmentInfo>)resultInfo.getData();
@@ -239,35 +239,30 @@ public class RecruitmentInfoController {
         return "/interviewer/applicants";
     }
 
-    @GetMapping("/interviewer/registration/pass/id/{registrationInfoId}")
-    public String passRegistration(@PathVariable("registrationInfoId")Integer registrationInfoId, HttpServletRequest request, HttpSession session){
+    @GetMapping("/interviewer/registration/pass/id/{recruitmentInfoId}/{registrationInfoId}")
+    public String passRegistration(
+            @PathVariable("recruitmentInfoId")Integer recruitmentInfoId,
+            @PathVariable("registrationInfoId")Integer registrationInfoId,
+            HttpServletRequest request,
+            HttpSession session){
         ResultInfo resultInfo = registrationInfoService.passRegistration(registrationInfoId);
         if(!resultInfo.getSuccess()){
             session.setAttribute("errorMsg", resultInfo.getMessage());
         }
-        ResultInfo queryResult = registrationInfoService.queryRegistrationInfoById(registrationInfoId);
-        Integer recruitmentInfoId = null;
-        if (!resultInfo.getSuccess()){
-            session.setAttribute("errorMsg", resultInfo.getMessage());
-        }else {
-            recruitmentInfoId = ((RegistrationInfo)queryResult.getData()).getRecruitmentInfoId();
-        }
         return "redirect:/registrationInfo/show/allApplicants/id/" + recruitmentInfoId;
     }
 
-    @GetMapping("/interviewer/registration/out/id/{registrationInfoId}")
-    public String passOutRegistration(@PathVariable("registrationInfoId")Integer registrationInfoId, HttpServletRequest request, HttpSession session){
+    @GetMapping("/interviewer/registration/out/id/{recruitmentInfoId}/{registrationInfoId}")
+    public String passOutRegistration(
+            @PathVariable("recruitmentInfoId")Integer recruitmentInfoId,
+            @PathVariable("registrationInfoId")Integer registrationInfoId,
+            HttpServletRequest request,
+            HttpSession session){
         ResultInfo resultInfo = registrationInfoService.passOutRegistration(registrationInfoId);
         if(!resultInfo.getSuccess()){
             session.setAttribute("errorMsg", resultInfo.getMessage());
         }
         ResultInfo queryResult = registrationInfoService.queryRegistrationInfoById(registrationInfoId);
-        Integer recruitmentInfoId = null;
-        if (!resultInfo.getSuccess()){
-            session.setAttribute("errorMsg", resultInfo.getMessage());
-        }else {
-            recruitmentInfoId = ((RegistrationInfo)queryResult.getData()).getRecruitmentInfoId();
-        }
         return "redirect:/registrationInfo/show/allApplicants/id/" + recruitmentInfoId;
     }
 

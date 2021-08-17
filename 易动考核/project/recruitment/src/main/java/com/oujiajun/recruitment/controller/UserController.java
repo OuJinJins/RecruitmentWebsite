@@ -70,7 +70,7 @@ public class UserController {
             return "redirect:/login.html";
         } catch (IncorrectCredentialsException ice) {
             //如果密码错误
-            session.setAttribute("errorMsg", "密码错误");
+            session.setAttribute("errorMsg", "用户名或密码错误");
             return "redirect:/login.html";
         }
     }
