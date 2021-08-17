@@ -31,6 +31,13 @@ public interface UserService {
     ResultInfo queryUserById(int id);
 
     /**
+     * 通过用户名查询用户
+     * @param username 用户名
+     * @return 用户
+     */
+    ResultInfo queryUserByUsername(String username);
+
+    /**
      * 修改用户信息
      * @param user 用户信息
      * @return 服务结果

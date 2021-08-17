@@ -39,9 +39,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public ResultInfo shiroLogin() {
+        return null;
+    }
+
+    @Override
     public ResultInfo queryUserById(int id) {
         // 查询
         User user = userDao.queryUserById(id);
+        if(user == null){
+            return new ResultInfo(false,"该用户不存在");
+        }
+        return new ResultInfo(true,user);
+    }
+    @Override
+    public ResultInfo queryUserByUsername(String username) {
+        // 查询
+        User user = userDao.queryUserByUsername(username);
         if(user == null){
             return new ResultInfo(false,"该用户不存在");
         }
