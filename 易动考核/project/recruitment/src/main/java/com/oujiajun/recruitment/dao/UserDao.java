@@ -31,6 +31,13 @@ public interface UserDao {
     User queryUserById(int id);
 
     /**
+     * 通过用户名查询用户
+     * @param username 用户名
+     * @return 用户
+     */
+    User queryUserByUsername(String username);
+
+    /**
      * 修改用户信息
      * @param user 用户信息
      * @return 修改行数

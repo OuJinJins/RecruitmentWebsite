@@ -33,7 +33,7 @@
 
 
     <update id="updateUserById" parameterType="User">
-        update user
+        update recruitment.user
         set
             username=#{username},
             gender=#{gender},
@@ -53,7 +53,7 @@
                brief_introduction,
                age,
                education
-        from user
+        from recruitment.user
         where username=#{username}
           And password=#{password}
     </select>
@@ -67,8 +67,22 @@
                brief_introduction,
                age,
                education
-        from user
+        from recruitment.user
         where id=#{id}
     </select>
+
+    <select id="queryUserByUsername" parameterType="String" resultMap="UserMap">
+        select id,
+               username,
+               password,
+               gender,
+               city,
+               brief_introduction,
+               age,
+               education
+        from recruitment.user
+        where username=#{username}
+    </select>
+
 
 </mapper>
