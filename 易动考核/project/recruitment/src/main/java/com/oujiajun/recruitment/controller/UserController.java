@@ -5,6 +5,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.oujiajun.recruitment.entity.dto.ResultInfo;
 import com.oujiajun.recruitment.entity.po.User;
 import com.oujiajun.recruitment.service.UserService;
+import com.oujiajun.recruitment.utils.CheckUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,15 +50,27 @@ public class UserController {
 
     @PostMapping("/user/login")
     public String login(User user, Model model, HttpSession session){
-        // 登陆
-        ResultInfo resultInfo = userService.login(user);
-        if(resultInfo.getSuccess()){
-            User activeUser = (User) resultInfo.getData();
-            activeUser.setPassword(null);
-            session.setAttribute("loginUser",activeUser);
-            return "redirect:/index";
-        }else {
-            session.setAttribute("errorMsg",resultInfo.getMessage());
+        if (!CheckUtils.checkLoginUser(user)){
+            session.setAttribute("errorMsg", "请正确填写用户名和密码");
+            return "login";
+        }
+        //获取当前用户
+        Subject subject = SecurityUtils.getSubject();
+        //没有认证过
+        //封装用户的登录数据,获得令牌
+        UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), user.getPassword());
+        //登录 及 异常处理
+        try {
+            //用户登录
+            subject.login(token);
+            return "index";
+        } catch (UnknownAccountException uae) {
+            //如果用户名不存在
+            session.setAttribute("errorMsg", "用户名不存在");
+            return "login";
+        } catch (IncorrectCredentialsException ice) {
+            //如果密码错误
+            session.setAttribute("errorMsg", "密码错误");
             return "login";
         }
     }

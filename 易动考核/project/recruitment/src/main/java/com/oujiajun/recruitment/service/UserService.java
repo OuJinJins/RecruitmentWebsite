@@ -21,6 +21,8 @@ public interface UserService {
      */
     ResultInfo login(User user);
 
+    ResultInfo shiroLogin();
+
     /**
      * 查询用户
      * @param id 用户id
