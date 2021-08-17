@@ -15,6 +15,7 @@
         <result property="briefIntroduction" column="brief_introduction"/>
         <result property="age" column="age"/>
         <result property="education" column="education"/>
+        <result property="profile" column="profile"/>
     </resultMap>
 
     <insert id="insertUser" parameterType="User">
@@ -27,20 +28,37 @@
                #{city},
                #{briefIntroduction},
                #{age},
-               #{education}
+               #{education},
+               #{profile}
        )
     </insert>
 
 
     <update id="updateUserById" parameterType="User">
         update recruitment.user
-        set
-            username=#{username},
-            gender=#{gender},
-            city=#{city},
-            brief_introduction=#{briefIntroduction},
-            age=#{age},
-            education=#{education}
+        <set>
+            <if test="username != null">
+                username=#{username},
+            </if>
+            <if test="gender != null">
+                gender=#{gender},
+            </if>
+            <if test="city != null">
+                city=#{city},
+            </if>
+            <if test="briefIntroduction != null">
+                brief_introduction=#{briefIntroduction},
+            </if>
+            <if test="age != null">
+                age=#{age},
+            </if>
+            <if test="education != null">
+                education=#{education},
+            </if>
+            <if test="profile != null">
+                profile=#{profile},
+            </if>
+        </set>
         where id=#{id}
     </update>
 
@@ -52,7 +70,8 @@
                city,
                brief_introduction,
                age,
-               education
+               education,
+               profile
         from recruitment.user
         where username=#{username}
           And password=#{password}
@@ -66,7 +85,8 @@
                city,
                brief_introduction,
                age,
-               education
+               education,
+               profile
         from recruitment.user
         where id=#{id}
     </select>
@@ -79,7 +99,8 @@
                city,
                brief_introduction,
                age,
-               education
+               education,
+               profile
         from recruitment.user
         where username=#{username}
     </select>

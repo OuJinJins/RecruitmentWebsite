@@ -132,10 +132,14 @@
     </div>
     <div id="div-personalInfo">
         <div id="div-profile">
-                <span class="" id="text-profile">我的头像</span>
-                <a href="#">
-                        <img src="../static/img/logo.jpg" alt="点击更换头像" class="img-rounded personalInfo-profile">
-                    </a>
+            <span class="" id="text-profile">我的头像</span>
+            <a href="#">
+                    <img src="../static/img/logo.jpg" id="profile-img" alt="点击更换头像" class="img-rounded personalInfo-profile">
+            </a>
+            <div id="uploadForm">
+                <input id="file" type="file"/>
+                <button id="upload" type="button">upload</button>
+            </div>
         </div>
         <form class="form-horizontal" id="form-changInfo">
                 <div class="form-group form-div">
@@ -223,8 +227,27 @@
         $("#inputUid").val(loginUser.id);
         $("#inputEmail").val(loginUser.email);
         $("#inputUsername").val(loginUser.username);
+        $("#profile-img").attr("src","/recruitment/temp/"+loginUser.profile);
     }
 
+    $("#upload").on("click", function () {debugger;
+        var s = $('#file')[0].files[0];
+        var formData = new FormData();
+        formData.append("file", s);
+        formData.append("type", "1");
+        $.ajax({
+            url: "/recruitment/uploadImages",
+            type: 'POST',
+            cache: false,
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (result) {
+            },
+            error: function (err) {
+            }
+        });
+    });
 </script>
 <style>
 

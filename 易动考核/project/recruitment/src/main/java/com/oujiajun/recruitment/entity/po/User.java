@@ -20,4 +20,5 @@ public class User {
     private String briefIntroduction;
     private Integer age;
     private String education;
+    private String profile;
 }
