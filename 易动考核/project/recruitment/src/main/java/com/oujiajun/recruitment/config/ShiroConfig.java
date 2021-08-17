@@ -56,14 +56,32 @@ public class ShiroConfig {
         map.put("/interviewer/**","roles[interviewer]");
         map.put("/admin/**","roles[admin]");
         // 权限过滤
-        
+        map.put("/user/updateUser/**","perms[user:profile]");
+        map.put("/room/create/id/**","perms[room:createinterviewer]");
+        map.put("/room/create/private/**","perms[room:createprivate]");
+        map.put("/interviewer/myRecruitment/**","perms[recruitment:showmyrecruitment]");
+        map.put("/interviewer/publish/**","perms[recruitment:publish]");
+        map.put("/registrationInfo/cancel/**","perms[registration:cancel]");
+        map.put("/interviewer/myRecruitment/detail/**","perms[recruitment:interviewerdetail]");
+        map.put("/interview/doPublish/**","perms[recruitment:publish]");
+        map.put("/interviewer/registration/pass/**","perms[registration:pass]");
+        map.put("/registrationInfo/show/allApplicants/**","perms[registration:showapplicant]");
+        map.put("/interviewer/registration/out/**","perms[registration:passout]");
+        map.put("/registrationInfo/chooseDate/**","perms[registration:tochoosedate]");
+        map.put("/interview/chooseDate/**","perms[registration:choosedate]");
+        map.put("/registrationInfo/lineUp/**","perms[registration:lineup]");
+        map.put("/registrationInfo/start/interview/**","perms[interview:chooseperiod]");
+        map.put("/interview/startInterview/**","perms[interview:start]");
+        map.put("/next/**","perms[interview:next]");
         // 认证过滤
-        map.put("/chat/*","authc");
-        map.put("/chooseDate/*","authc");
-        map.put("/myRegistration/*","authc");
-        map.put("/selectRecruitment/*","authc");
-        map.put("/lineUp/*","authc");
-        map.put("/profile/*","authc");
+        map.put("/user/getLoginUser/**","authc");
+        map.put("/room/getRoom/**","authc");
+        map.put("/recruitment/detail/**","authc");
+        map.put("/logout/**","authc");
+        map.put("/chat/**","authc");
+        map.put("/chooseDate/**","authc");
+        map.put("/myRegistration/**","authc");
+        map.put("/profile/**","authc");
         // 静态资源
         map.put("/images/**","anon");
         map.put("/js/**","anon");
