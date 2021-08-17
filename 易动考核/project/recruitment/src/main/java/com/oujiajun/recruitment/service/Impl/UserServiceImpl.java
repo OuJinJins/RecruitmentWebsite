@@ -4,6 +4,7 @@ import com.oujiajun.recruitment.dao.UserDao;
 import com.oujiajun.recruitment.entity.dto.ResultInfo;
 import com.oujiajun.recruitment.entity.po.User;
 import com.oujiajun.recruitment.service.UserService;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -19,7 +20,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResultInfo register(User user) {
         // MD5加密
-        user.setPassword(DigestUtils.md5DigestAsHex(user.getPassword().getBytes()));
+        SimpleHash md5 = new SimpleHash(
+                "MD5",
+                user.getPassword(),
+                user.getUsername()+"",
+                1024
+        );
+        user.setPassword(String.valueOf(md5));
         if(userDao.insertUser(user) == 0){
             return new ResultInfo(false);
         }

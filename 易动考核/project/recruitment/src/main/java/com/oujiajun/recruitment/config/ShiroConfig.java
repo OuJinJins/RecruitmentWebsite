@@ -1,7 +1,11 @@
 package com.oujiajun.recruitment.config;
 
+import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +18,22 @@ import java.util.Map;
  */
 @Configuration
 public class ShiroConfig {
+
+    /**
+     * 用来声明bean 相当于在spring配置文件中配置<bean>标签
+     * 配置加密方式
+     * @return HashedCredentialsMatcher
+     */
+    @Bean
+    HashedCredentialsMatcher credentialsMatcher(){
+        HashedCredentialsMatcher matcher = new HashedCredentialsMatcher();
+        //设置属性值
+        //设置加密算法
+        matcher.setHashAlgorithmName("MD5");
+        //设置加密次数
+        matcher.setHashIterations(1024);
+        return matcher;
+    }
 
     // 1. subject -> ShiroFilterFactoryBean
     // @Qualifier("securityManager") 指定 Bean 的名字为 securityManager
@@ -37,6 +57,11 @@ public class ShiroConfig {
         // map.put("/user/deleteUser","authc");
         // 设置 /user/ 下面的所有请求,只有认证过才能访问
         map.put("/user/*","authc");
+        map.put("/interviewer/*","role:interviewer");
+        // 静态资源
+        map.put("/images/**","anon");
+        map.put("/js/**","anon");
+        map.put("/css/**","anon");
         subject.setFilterChainDefinitionMap(map);
         // 设置登录的请求
         subject.setLoginUrl("/login");
@@ -60,10 +85,25 @@ public class ShiroConfig {
         return securityManager;
     }
 
-    // 创建一个realm对象
+    /**
+     * 配置shiro方言，整合thymeleaf时使用，使其支持shiro标签
+     * @return ShiroDialect
+     */
+    @Bean
+    public ShiroDialect shiroDialect(){
+        return new ShiroDialect();
+    }
+
+    /**
+     * 创建一个realm对象
+     * @return UserRealm
+     */
     @Bean
     public UserRealm userRealm(){
-        return new UserRealm();
+        UserRealm userRealm = new UserRealm();
+        //设置加密方式
+        userRealm.setCredentialsMatcher(credentialsMatcher());
+        return userRealm;
     }
 }
 
