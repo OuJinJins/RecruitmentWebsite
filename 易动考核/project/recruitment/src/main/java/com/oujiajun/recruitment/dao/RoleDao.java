@@ -9,6 +9,15 @@ import java.util.List;
  * @author oujiajun
  */
 public interface RoleDao {
+
+    /**
+     * 给用户赋予身份
+     * @param roleId 身份id
+     * @param userId 用户id
+     * @return 改变行数
+     */
+    int insertRoleUser(@Param("roleId") int roleId,@Param("userId") int userId);
+
     /**
      * 通过用户id寻找身份
      * @param userId 用户id

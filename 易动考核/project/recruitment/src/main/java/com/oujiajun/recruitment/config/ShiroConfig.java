@@ -56,7 +56,7 @@ public class ShiroConfig {
         map.put("/interviewer/**","roles[interviewer]");
         map.put("/admin/**","roles[admin]");
         // 权限过滤
-        map.put("/user/updateUser/**","perms[user:profile]");
+        map.put("/user/updateUser/**","perms[user:updateUser]");
         map.put("/room/create/id/**","perms[room:createinterviewer]");
         map.put("/room/create/private/**","perms[room:createprivate]");
         map.put("/interviewer/myRecruitment/**","perms[recruitment:showmyrecruitment]");

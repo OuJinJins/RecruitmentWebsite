@@ -10,6 +10,15 @@
         <result property ="roleName"  column ="role_name"/>
     </resultMap>
 
+
+    <insert id="insertRoleUser">
+        insert into recruitment.room_user
+        values(
+               #{roleId},
+               #{userId}
+              )
+    </insert>
+
     <select id="queryRoleByUserId" parameterType="Int" resultMap="RoleMap">
         select r.role_id,
                r.role_name
