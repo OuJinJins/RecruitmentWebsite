@@ -6,9 +6,11 @@ import com.oujiajun.recruitment.entity.po.RecruitmentInfo;
 import com.oujiajun.recruitment.entity.po.Role;
 import com.oujiajun.recruitment.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class RoleServiceImpl implements RoleService {
 
     @Autowired

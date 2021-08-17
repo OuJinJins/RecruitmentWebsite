@@ -11,8 +11,8 @@
     </resultMap>
 
     <select id="queryPermissionByUserId" parameterType="Int" resultMap="PermissionMap">
-        select r.role_id,
-               r.role_name
+        select p.permission_id,
+               p.permission_name
         from recruitment.permission p
             left join recruitment.permission_role pr on p.permission_id = pr.permission_id
             left join recruitment.role r on pr.role_id = r.role_id
