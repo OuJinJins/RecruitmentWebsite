@@ -1,7 +1,9 @@
 package com.oujiajun.recruitment.service.Impl;
 
+import com.oujiajun.recruitment.dao.RoleDao;
 import com.oujiajun.recruitment.dao.UserDao;
 import com.oujiajun.recruitment.entity.dto.ResultInfo;
+import com.oujiajun.recruitment.entity.po.Role;
 import com.oujiajun.recruitment.entity.po.User;
 import com.oujiajun.recruitment.service.UserService;
 import org.apache.shiro.crypto.hash.SimpleHash;
@@ -17,6 +19,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserDao userDao;
 
+    @Autowired
+    RoleDao roleDao;
+
     @Override
     public ResultInfo register(User user) {
         // MD5加密
@@ -28,6 +33,9 @@ public class UserServiceImpl implements UserService {
         );
         user.setPassword(String.valueOf(md5));
         if(userDao.insertUser(user) == 0){
+            user = userDao.queryUserByUsername(user.getUsername());
+            int userId = user.getId();
+            roleDao.insertRoleUser(3,userId);
             return new ResultInfo(false);
         }
         return new ResultInfo(true);
