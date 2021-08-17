@@ -28,7 +28,6 @@ public class UserRealm extends AuthorizingRealm {
      * 让shiro先于service加载
      */
     @Resource
-    @Lazy
     UserService userService;
 
     // 授权

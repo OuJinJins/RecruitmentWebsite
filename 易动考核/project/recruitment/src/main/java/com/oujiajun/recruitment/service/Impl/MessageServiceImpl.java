@@ -6,6 +6,7 @@ import com.oujiajun.recruitment.entity.dto.ResultInfo;
 import com.oujiajun.recruitment.entity.po.Message;
 import com.oujiajun.recruitment.entity.po.RecruitmentInfo;
 import com.oujiajun.recruitment.entity.po.Room;
+import com.oujiajun.recruitment.entity.po.User;
 import com.oujiajun.recruitment.entity.vo.MessageVo;
 import com.oujiajun.recruitment.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,5 +52,15 @@ public class MessageServiceImpl implements MessageService {
             historyMessage.addAll(messageVoList);
         }
         return new ResultInfo(true,historyMessage);
+    }
+
+    @Override
+    public ResultInfo queryRoomUser(int roomId) {
+        List<User> userList = roomDao.queryRoomUser(roomId);
+        if (userList != null){
+            return new ResultInfo(true,userList);
+        }else {
+            return new ResultInfo(false,"查询聊天室用户信息错误");
+        }
     }
 }

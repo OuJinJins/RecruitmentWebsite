@@ -88,9 +88,9 @@ public class RegistrationInfoServiceImpl implements RegistrationInfoService {
 
         }
         // 如果已经有聊天室则加入聊天
-        Room room = roomDao.queryRoomByRecruitmentInfoId(registrationInfo.getRecruitmentInfoId());
+        Room room = roomDao.queryRoomByRecruitmentInfoId(info.getRecruitmentInfoId());
         if(room != null){
-            count = roomDao.insertRoomUser(room.getRoomId(),registrationInfo.getUserId());
+            count = roomDao.insertRoomUser(room.getRoomId(),info.getUserId());
             if (count < 1){
                 return new ResultInfo(false,"加入该招聘群聊失败");
             }
@@ -115,9 +115,9 @@ public class RegistrationInfoServiceImpl implements RegistrationInfoService {
             return new ResultInfo(false,"更新报名信息失败");
         }
         // 如果已经有聊天室则删除聊天
-        Room room = roomDao.queryRoomByRecruitmentInfoId(registrationInfo.getRecruitmentInfoId());
+        Room room = roomDao.queryRoomByRecruitmentInfoId(info.getRecruitmentInfoId());
         if(room != null){
-            count = roomDao.deleteRoomUser(room.getRoomId(),registrationInfo.getUserId());
+            count = roomDao.deleteRoomUser(room.getRoomId(),info.getUserId());
             if (count < 1){
                 return new ResultInfo(false,"从聊天室中删除失败");
             }

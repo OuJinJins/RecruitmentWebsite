@@ -126,8 +126,7 @@ public class ChatEndpoint {
             // 遍历自己所在的所有聊天房间内存在的在线用户id 除了自己
             // 发送数据到这些用户的客户端
             // 获取roomService
-            RoomService roomService =  SpringUtils.getBean(RoomServiceImpl.class);
-            ResultInfo resultInfo = roomService.queryRoomUser(toRoomId);
+            ResultInfo resultInfo = messageService.queryRoomUser(toRoomId);
             if(resultInfo.getSuccess()){
                 List<User> userList = (List<User>) resultInfo.getData();
                 for (User user : userList) {
