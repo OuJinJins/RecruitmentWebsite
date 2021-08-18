@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
         int userId = register.getId();
         // 插入到招聘官表中
         // 需要经过审核
-        register.setIsPass(null);
+        register.setIsPass(false);
         if(userDao.insertInterviewer(register) <= 0){
             return new ResultInfo(false,"注册失败");
         }
@@ -119,6 +119,16 @@ public class UserServiceImpl implements UserService {
             return new ResultInfo(false,"该用户不存在");
         }
         return new ResultInfo(true,user);
+    }
+
+    @Override
+    public ResultInfo queryInterviewerByUsername(String username) {
+        // 查询
+        Interviewer interviewer = userDao.queryInterviewerByUsername(username);
+        if(interviewer == null){
+            return new ResultInfo(false,"该用户不存在");
+        }
+        return new ResultInfo(true,interviewer);
     }
 
     @Override

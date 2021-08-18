@@ -1,6 +1,7 @@
 package com.oujiajun.recruitment.config;
 
 import com.oujiajun.recruitment.entity.dto.ResultInfo;
+import com.oujiajun.recruitment.entity.po.Interviewer;
 import com.oujiajun.recruitment.entity.po.Permission;
 import com.oujiajun.recruitment.entity.po.Role;
 import com.oujiajun.recruitment.entity.po.User;
@@ -87,6 +88,18 @@ public class UserRealm extends AuthorizingRealm {
             return null;
         }
         User user = (User)resultInfo.getData();
+        // 过滤掉没有审核的招聘官
+        ResultInfo queryUserResult = userService.queryInterviewerByUsername(user.getUsername());
+        if (!resultInfo.getSuccess()){
+            return null;
+        }
+        Interviewer interviewer = (Interviewer) queryUserResult.getData();
+        if (interviewer == null){
+            return null;
+        }
+        if(interviewer.getIsPass()!= null && (!interviewer.getIsPass())){
+            return null;
+        }
         // 如果存在，则返回一个AuthenticationInfo对象，
         // shiro会根据返回对象进行身份认证
         /*

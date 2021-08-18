@@ -54,6 +54,13 @@ public interface UserService {
     ResultInfo queryUserByUsername(String username);
 
     /**
+     * 通过用户名查询招聘官
+     * @param username 用户名
+     * @return 结果集
+     */
+    ResultInfo queryInterviewerByUsername(String username);
+
+    /**
      * 查询所有未通过审核的招聘官
      * @return 服务结果
      */
