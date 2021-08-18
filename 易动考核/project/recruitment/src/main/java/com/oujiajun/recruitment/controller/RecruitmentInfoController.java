@@ -8,8 +8,10 @@ import com.oujiajun.recruitment.entity.po.RegistrationInfo;
 import com.oujiajun.recruitment.entity.po.User;
 import com.oujiajun.recruitment.entity.vo.RecruitmentInfoPage;
 import com.oujiajun.recruitment.entity.vo.UserRegistrationInfo;
-import com.oujiajun.recruitment.service.*;
-import org.apache.ibatis.annotations.Param;
+import com.oujiajun.recruitment.service.InterviewPeriodService;
+import com.oujiajun.recruitment.service.RecruitmentInfoService;
+import com.oujiajun.recruitment.service.RegistrationInfoService;
+import com.oujiajun.recruitment.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -18,9 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.*;
 
 /**
@@ -221,6 +221,25 @@ public class RecruitmentInfoController {
         return "/myRegistration";
     }
 
+    @GetMapping({ "/registrationInfo/show/allInterviewees/id/{recruitmentInfoId}"})
+    public String toInterviewees(@PathVariable("recruitmentInfoId")Integer recruitmentInfoId, HttpServletRequest request, HttpSession session) {
+        User loginUser = (User)session.getAttribute("loginUser");
+        if (loginUser == null){
+            request.setAttribute("errorMsg","请登陆后进行该操作");
+            return "redirect:/login";
+        }
+        ResultInfo resultInfo = registrationInfoService.queryPassUserRegistrationInfo(recruitmentInfoId);
+        System.out.println(resultInfo);
+        if(resultInfo.getSuccess()){
+            List<UserRegistrationInfo> userRegistrationInfoList = (List<UserRegistrationInfo>)resultInfo.getData();
+            request.setAttribute("infoList",userRegistrationInfoList);
+        }else {
+            session.setAttribute("errorMsg",resultInfo.getMessage());
+            return "redirect:/interviewer/myRecruitment/detail/id/" + recruitmentInfoId;
+        }
+        return "/interviewer/interviewees";
+    }
+
     @GetMapping({ "/registrationInfo/show/allApplicants/id/{recruitmentInfoId}"})
     public String toApplicants(@PathVariable("recruitmentInfoId")Integer recruitmentInfoId, HttpServletRequest request, HttpSession session) {
         User loginUser = (User)session.getAttribute("loginUser");
@@ -335,12 +354,14 @@ public class RecruitmentInfoController {
             request.setAttribute("errorMsg","请登陆后进行该操作");
             return "redirect:/login";
         }
+        // 查询报名信息
         ResultInfo queryRegistrationInfoResult = registrationInfoService.queryRegistrationInfoById(registrationInfoId);
         if (!queryRegistrationInfoResult.getSuccess()){
             session.setAttribute("errorMsg",queryRegistrationInfoResult.getData()+" 面试排队失败");
             return "redirect:/myRegistration";
         }
         RegistrationInfo registrationInfo = (RegistrationInfo) queryRegistrationInfoResult.getData();
+        // 查询面试时间段
         ResultInfo queryInterviewPeriodResult = interviewPeriodService.queryInterviewPeriodByRegistrationInfoId(registrationInfoId);
         if (!queryInterviewPeriodResult.getSuccess()){
             session.setAttribute("errorMsg",queryInterviewPeriodResult.getData()+" 面试排队失败");
@@ -434,6 +455,7 @@ public class RecruitmentInfoController {
             return "redirect:/login";
         }
         List<UserRegistrationInfo> userRegistrationInfoList = interviewPeriodListMap.get(interviewPeriodId);
+        // 如果没有队伍
         if (userRegistrationInfoList == null) {
             // 创建一个新的
             LinkedList<UserRegistrationInfo> userRegistrationInfos = new LinkedList<>();
@@ -454,11 +476,13 @@ public class RecruitmentInfoController {
             HttpServletRequest request,
             HttpSession session
             ){
+        // 查询报名信息
         ResultInfo queryUserRegistrationInfoResult = registrationInfoService.queryUserRegistrationInfoByRegistrationInfoId(registrationInfoId);
         if (!queryUserRegistrationInfoResult.getSuccess()){
             return "redirect:/index";
         }
         UserRegistrationInfo userRegistrationInfo = (UserRegistrationInfo) queryUserRegistrationInfoResult.getData();
+        // 查询此报名信息参加的面试时间段
         ResultInfo queryInterviewPeriodResult = interviewPeriodService.queryInterviewPeriodByRegistrationInfoId(registrationInfoId);
         if (!queryInterviewPeriodResult.getSuccess()){
             session.setAttribute("errorMsg","步过失败");
@@ -466,10 +490,13 @@ public class RecruitmentInfoController {
         }
         InterviewPeriod interviewPeriod = (InterviewPeriod) queryInterviewPeriodResult.getData();
         LinkedList<UserRegistrationInfo> userRegistrationInfoList = interviewPeriodListMap.get(interviewPeriod.getInterviewPeriodId());
-        System.out.println(userRegistrationInfo);
-        System.out.println("qian"+userRegistrationInfoList);
-        userRegistrationInfoList.remove(userRegistrationInfo);
-        System.out.println("hou"+userRegistrationInfoList);
+        // 从排队队伍中移除
+        if(!userRegistrationInfoList.remove(userRegistrationInfo)){
+            System.out.println(userRegistrationInfo);
+            session.setAttribute("errorMsg","步过失败");
+        }
+        System.out.println(userRegistrationInfoList);
+        // userRegistrationInfoList
         return "redirect:/interview/startInterview/id/" + interviewPeriod.getInterviewPeriodId();
     }
 

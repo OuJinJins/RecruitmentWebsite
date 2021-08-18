@@ -96,6 +96,14 @@ public interface RegistrationInfoDao {
     List<UserRegistrationInfo> queryUserRegistrationInfoForInterviewer(@Param("recruitmentInfoId")Integer recruitmentInfoId);
 
     /**
+     * 寻找通过报名的用户报名信息
+     * @param recruitmentInfoId 招聘信息id
+     * @return 用户报名信息视图类
+     */
+    List<UserRegistrationInfo> queryPassUserRegistrationInfo(@Param("recruitmentInfoId")Integer recruitmentInfoId);
+
+
+    /**
      * 寻找用户报名信息
      * @param interviewPeriodId 时间段id
      * @return 用户报名信息视图类

@@ -108,7 +108,6 @@ public class ShiroConfig {
         // 认证过滤
         map.put("/user/getLoginUser/**","authc");
         map.put("/room/getRoom/**","authc");
-        map.put("/recruitment/detail/**","authc");
         map.put("/logout/**","authc");
         map.put("/chat/**","authc");
         map.put("/chooseDate/**","authc");
@@ -120,7 +119,7 @@ public class ShiroConfig {
         map.put("/css/**","anon");
         subject.setFilterChainDefinitionMap(map);
         // 设置登录的请求
-        subject.setLoginUrl("/user/login");
+        subject.setLoginUrl("/login");
         //============================================
         return subject;
     }

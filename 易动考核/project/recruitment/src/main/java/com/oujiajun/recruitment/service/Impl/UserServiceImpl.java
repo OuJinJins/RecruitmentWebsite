@@ -30,6 +30,10 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public ResultInfo interviewerRegister(Interviewer interviewer) {
+        User query = userDao.queryUserByUsername(interviewer.getUsername());
+        if (query != null){
+            return new ResultInfo(false,"用户名已存在");
+        }
         // MD5加密
         SimpleHash md5 = new SimpleHash(
                 "MD5",
@@ -61,7 +65,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public ResultInfo register(User user) {
+        User query = userDao.queryUserByUsername(user.getUsername());
+        if (query != null){
+            return new ResultInfo(false,"用户名已存在");
+        }
         // MD5加密
         SimpleHash md5 = new SimpleHash(
                 "MD5",

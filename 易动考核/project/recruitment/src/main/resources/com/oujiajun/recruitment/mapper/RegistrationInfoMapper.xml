@@ -32,6 +32,7 @@
             <result property="briefIntroduction" column="brief_introduction"/>
             <result property="age" column="age"/>
             <result property="education" column="education"/>
+            <result property="profile" column="profile"/>
         </association>
     </resultMap>
 
@@ -184,7 +185,8 @@
                user.city,
                user.brief_introduction,
                user.age,
-               user.education
+               user.education,
+               user.profile
         from recruitment.registration_info info,recruitment.user user
         where info.user_id=#{userId}
           and recruitment_info_id=#{recruitmentInfoId}
@@ -230,11 +232,35 @@
                user.city,
                user.brief_introduction,
                user.age,
-               user.education
+               user.education,
+               user.profile
         from recruitment.registration_info info,recruitment.user user
         where recruitment_info_id=#{recruitmentInfoId}
           and info.user_id=user.id
     </select>
 
-
+    <select id="queryPassUserRegistrationInfo" resultMap="UserRegistrationInfo">
+        select info.registration_info_id,
+               info.recruitment_info_id,
+               info.user_id,
+               info.is_registration_pass,
+               info.is_interview_pass,
+               info.interview_date,
+               info.interview_time_begin,
+               info.interview_time_end,
+               user.id,
+               user.email,
+               user.username,
+               user.password,
+               user.gender,
+               user.city,
+               user.brief_introduction,
+               user.age,
+               user.education,
+               user.profile
+        from recruitment.registration_info info,recruitment.user user
+        where recruitment_info_id=#{recruitmentInfoId}
+          and info.user_id=user.id
+          and info.is_registration_pass=true
+    </select>
 </mapper>

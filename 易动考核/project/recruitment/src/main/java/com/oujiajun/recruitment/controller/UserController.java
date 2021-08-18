@@ -92,6 +92,11 @@ public class UserController {
         return "/login";
     }
 
+    @GetMapping({"/register","/register.html"})
+    public String toRegister() {
+        return "/register";
+    }
+
     @PostMapping("/user/login")
     public String login(boolean rememberMe,User user, Model model, HttpSession session){
         if (!CheckUtils.checkLoginUser(user)){

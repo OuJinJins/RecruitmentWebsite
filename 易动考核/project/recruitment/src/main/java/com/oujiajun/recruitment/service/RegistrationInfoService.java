@@ -3,7 +3,6 @@ package com.oujiajun.recruitment.service;
 import com.oujiajun.recruitment.entity.dto.ResultInfo;
 import com.oujiajun.recruitment.entity.po.RegistrationInfo;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Service;
 
 /**
  * @author oujiajun
@@ -109,6 +108,14 @@ public interface RegistrationInfoService {
      * @return 用户报名信息视图类
      */
     ResultInfo queryUserRegistrationInfoByRegistrationInfoId(Integer registrationInfoId);
+
+    /**
+     * 寻找通过报名的用户报名信息
+     * @param recruitmentInfoId 招聘信息id
+     * @return 用户报名信息视图类
+     */
+    ResultInfo queryPassUserRegistrationInfo(@Param("recruitmentInfoId")Integer recruitmentInfoId);
+
     /**
      * 插入面试时间报名信息
      * @param interviewPeriodId 面试时间段id

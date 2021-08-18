@@ -119,6 +119,8 @@ public class UserRealm extends AuthorizingRealm {
 
         Subject subject = SecurityUtils.getSubject();
         Session session = subject.getSession();
+        // 清空密码
+        user.setPassword(null);
         session.setAttribute("loginUser",user);
         // 密码认证:shiro做
         // 密码可以加密:md5,md5盐值加密

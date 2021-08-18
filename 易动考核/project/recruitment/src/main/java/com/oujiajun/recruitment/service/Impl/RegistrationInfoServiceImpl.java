@@ -207,6 +207,15 @@ public class RegistrationInfoServiceImpl implements RegistrationInfoService {
         return new ResultInfo(false,"查询报名信息错误");
     }
 
+    @Override
+    public ResultInfo queryPassUserRegistrationInfo(Integer recruitmentInfoId) {
+        List<UserRegistrationInfo> infoList = registrationInfoDao.queryPassUserRegistrationInfo(recruitmentInfoId);
+        if (infoList == null){
+            throw new BizException("查询报名信息失败");
+        }
+        return new ResultInfo(true,infoList);
+    }
+
     //TODO 使用异常
     /**
      * 通过报名者参加某一时间段的面试
@@ -219,20 +228,20 @@ public class RegistrationInfoServiceImpl implements RegistrationInfoService {
     public ResultInfo insertInterviewRegistrationInfo(int interviewPeriodId, int registrationInfoId) {
         InterviewPeriod period = recruitmentInfoDao.queryInterviewPeriodByInterviewPeriodId(interviewPeriodId);
         if (period == null){
-            return new ResultInfo(false,"选择面试时间段失败");
+            throw new BizException("选择面试时间段失败");
         }
         if (period.getCurrentNumber() >= period.getMaxNumber()){
-            return new ResultInfo(false,"此时间段参加面试人数已满 ");
+            throw new BizException("此时间段参加面试人数已满");
         }
         // 乐观锁
         int count = recruitmentInfoDao.updateInterviewPeriod(interviewPeriodId,period.getVersion(),1);
         if(count < 0){
-            return new ResultInfo(false,"选择面试时间段失败");
+            throw new BizException("选择面试时间段失败");
         }
         count = registrationInfoDao.insertInterviewRegistrationInfo(interviewPeriodId,registrationInfoId);
         if (count < 0){
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return new ResultInfo(false,"选择面试时间段失败");
+            throw new BizException("选择面试时间段失败");
         }
         return new ResultInfo(true);
     }

@@ -12,7 +12,7 @@
 
 
     <insert id="insertRoleUser">
-        insert into recruitment.room_user
+        insert into recruitment.role_user
         values(
                #{roleId},
                #{userId}
