@@ -6,23 +6,23 @@ import com.alibaba.fastjson.JSONObject;
  * @author oujiajun
  */
 public class Result<T> {
-    private int resultCode;
+    private String resultCode;
     private String message;
     private T data;
 
     public Result() {
     }
 
-    public Result(int resultCode, String message) {
+    public Result(String resultCode, String message) {
         this.resultCode = resultCode;
         this.message = message;
     }
 
-    public int getResultCode() {
+    public String getResultCode() {
         return resultCode;
     }
 
-    public void setResultCode(int resultCode) {
+    public void setResultCode(String resultCode) {
         this.resultCode = resultCode;
     }
 

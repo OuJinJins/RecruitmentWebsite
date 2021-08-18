@@ -6,6 +6,7 @@ import com.oujiajun.recruitment.entity.dto.ResultInfo;
 import com.oujiajun.recruitment.entity.po.Interviewer;
 import com.oujiajun.recruitment.entity.po.Role;
 import com.oujiajun.recruitment.entity.po.User;
+import com.oujiajun.recruitment.exception.BizException;
 import com.oujiajun.recruitment.service.UserService;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,12 +40,12 @@ public class UserServiceImpl implements UserService {
         interviewer.setPassword(String.valueOf(md5));
         // 插入用户表
         if(userDao.insertUser(interviewer) <= 0){
-            return new ResultInfo(false,"注册失败");
+            throw new BizException("注册招聘官失败");
         }
         // 查询刚刚插入的用户
         Interviewer register = userDao.queryInterviewerByUsername(interviewer.getUsername());
         if(register == null){
-            return new ResultInfo(false,"注册失败");
+            throw new BizException("用户丢失");
         }
         register.setCompany(interviewer.getCompany());
         int userId = register.getId();
@@ -52,7 +53,7 @@ public class UserServiceImpl implements UserService {
         // 需要经过审核
         register.setIsPass(false);
         if(userDao.insertInterviewer(register) <= 0){
-            return new ResultInfo(false,"注册失败");
+            throw new BizException("注册招聘官失败");
         }
         // 添加身份信息 2 招聘官
         roleDao.insertRoleUser(2,userId);
@@ -71,7 +72,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(String.valueOf(md5));
         // 插入用户表
         if(userDao.insertUser(user) <= 0){
-            return new ResultInfo(false,"注册失败");
+            throw new BizException("注册报名者失败");
         }
         // 查询刚刚插入的用户
         user = userDao.queryUserByUsername(user.getUsername());
@@ -97,7 +98,7 @@ public class UserServiceImpl implements UserService {
     public ResultInfo passInterview(int id) {
         int count = userDao.passInterviewer(id);
         if(count <= 0){
-            return new ResultInfo(false,"审核通过失败");
+            throw new BizException("审核通过失败");
         }
         return new ResultInfo(true);
     }
@@ -107,7 +108,7 @@ public class UserServiceImpl implements UserService {
         // 查询
         User user = userDao.queryUserById(id);
         if(user == null){
-            return new ResultInfo(false,"该用户不存在");
+            throw new BizException("该用户不存在");
         }
         return new ResultInfo(true,user);
     }
@@ -116,7 +117,7 @@ public class UserServiceImpl implements UserService {
         // 查询
         User user = userDao.queryUserByUsername(username);
         if(user == null){
-            return new ResultInfo(false,"该用户不存在");
+            throw new BizException("该用户不存在");
         }
         return new ResultInfo(true,user);
     }
@@ -126,7 +127,7 @@ public class UserServiceImpl implements UserService {
         // 查询
         Interviewer interviewer = userDao.queryInterviewerByUsername(username);
         if(interviewer == null){
-            return new ResultInfo(false,"该用户不存在");
+            throw new BizException("该用户不存在");
         }
         return new ResultInfo(true,interviewer);
     }
@@ -136,7 +137,7 @@ public class UserServiceImpl implements UserService {
         // 查询
         List<Interviewer> interviewer = userDao.queryAllNoPassInterviewer();
         if(interviewer == null){
-            return new ResultInfo(false,"查询失败");
+            throw new BizException("查询未通过审核报名者失败");
         }
         return new ResultInfo(true,interviewer);
     }
@@ -147,7 +148,7 @@ public class UserServiceImpl implements UserService {
         if(result >= 1){
             return new ResultInfo(true);
         }else {
-            return new ResultInfo(false,"修改失败");
+            throw new BizException("更新个人信息失败");
         }
     }
 }

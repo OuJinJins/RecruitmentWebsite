@@ -258,6 +258,7 @@ public class RecruitmentInfoController {
             @PathVariable("registrationInfoId")Integer registrationInfoId,
             HttpServletRequest request,
             HttpSession session){
+        // 不通过报名审核
         ResultInfo resultInfo = registrationInfoService.passOutRegistration(registrationInfoId);
         if(!resultInfo.getSuccess()){
             session.setAttribute("errorMsg", resultInfo.getMessage());
@@ -273,6 +274,7 @@ public class RecruitmentInfoController {
             request.setAttribute("errorMsg","请登陆后进行该操作");
             return "redirect:/login";
         }
+        // 查询该招聘面试时间段
         ResultInfo resultInfo = recruitmentInfoService.queryInterviewPeriodByRecruitmentInfoId(recruitmentInfoId);
         if (resultInfo.getSuccess()) {
             List<InterviewPeriod> periodList = (List<InterviewPeriod>) resultInfo.getData();
@@ -294,27 +296,27 @@ public class RecruitmentInfoController {
             request.setAttribute("errorMsg","请登陆后进行该操作");
             return "redirect:/login";
         }
+        // 查询该招聘面试时间段
         ResultInfo resultInfo = recruitmentInfoService.queryInterviewPeriodByInterviewPeriodId(interviewPeriodId);
-        if (resultInfo.getSuccess()) {
-            InterviewPeriod interviewPeriod = (InterviewPeriod)resultInfo.getData();
-            ResultInfo registrationInfoResult = registrationInfoService.queryRegistrationInfoByUidAndRid(loginUser.getId(),interviewPeriod.getRecruitmentInfoId());
-            if (registrationInfoResult.getSuccess()){
-                RegistrationInfo registrationInfo = (RegistrationInfo) registrationInfoResult.getData();
-                ResultInfo insertResult = registrationInfoService.insertInterviewRegistrationInfo(interviewPeriodId,registrationInfo.getRegistrationInfoId());
-                if (insertResult.getSuccess()){
-                    return "redirect:/recruitment/detail/id/" + interviewPeriod.getRecruitmentInfoId();
-                }else {
-                    session.setAttribute("errorMsg",insertResult.getMessage());
-                    return "redirect:/registrationInfo/chooseDate/id/" + interviewPeriod.getRecruitmentInfoId();
-                }
-            }else {
-                session.setAttribute("errorMsg",registrationInfoResult.getMessage());
-                return "redirect:/registrationInfo/chooseDate/id/" + interviewPeriod.getRecruitmentInfoId();
-            }
-        }else {
+        if (!resultInfo.getSuccess()) {
             session.setAttribute("errorMsg",resultInfo.getMessage());
             return "redirect:/myRegistration";
         }
+        InterviewPeriod interviewPeriod = (InterviewPeriod)resultInfo.getData();
+        // 通过用户名和招聘信息查询报名信息
+        ResultInfo registrationInfoResult = registrationInfoService.queryRegistrationInfoByUidAndRid(loginUser.getId(),interviewPeriod.getRecruitmentInfoId());
+        if (!registrationInfoResult.getSuccess()){
+            session.setAttribute("errorMsg",registrationInfoResult.getMessage());
+            return "redirect:/registrationInfo/chooseDate/id/" + interviewPeriod.getRecruitmentInfoId();
+        }
+        RegistrationInfo registrationInfo = (RegistrationInfo) registrationInfoResult.getData();
+        // 插入面试时间段
+        ResultInfo insertResult = registrationInfoService.insertInterviewRegistrationInfo(interviewPeriodId,registrationInfo.getRegistrationInfoId());
+        if (!insertResult.getSuccess()){
+            session.setAttribute("errorMsg",insertResult.getMessage());
+            return "redirect:/registrationInfo/chooseDate/id/" + interviewPeriod.getRecruitmentInfoId();
+        }
+        return "redirect:/recruitment/detail/id/" + interviewPeriod.getRecruitmentInfoId();
     }
 
 

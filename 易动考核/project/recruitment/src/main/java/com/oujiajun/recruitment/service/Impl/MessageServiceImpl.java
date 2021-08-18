@@ -8,6 +8,7 @@ import com.oujiajun.recruitment.entity.po.RecruitmentInfo;
 import com.oujiajun.recruitment.entity.po.Room;
 import com.oujiajun.recruitment.entity.po.User;
 import com.oujiajun.recruitment.entity.vo.MessageVo;
+import com.oujiajun.recruitment.exception.BizException;
 import com.oujiajun.recruitment.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,13 +42,13 @@ public class MessageServiceImpl implements MessageService {
     public ResultInfo readUserMessageVo(int userId) {
         List<Room> rooms = roomDao.queryRoomByUserId(userId);
         if (rooms == null){
-            return new ResultInfo(false,"查询用户聊天对象失败");
+            throw new BizException("获取聊天室信息失败");
         }
         List<MessageVo> historyMessage = new LinkedList<>();
         for (Room room : rooms) {
             List<MessageVo> messageVoList = messageDao.queryMessageVoOfRoom(room.getRoomId());
             if(messageVoList == null){
-                return new ResultInfo(false,"查询与聊天对象的聊天记录失败");
+                throw new BizException("获取聊天室历史信息失败");
             }
             historyMessage.addAll(messageVoList);
         }

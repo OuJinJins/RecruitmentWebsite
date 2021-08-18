@@ -8,6 +8,7 @@ import com.oujiajun.recruitment.entity.po.InterviewPeriod;
 import com.oujiajun.recruitment.entity.po.RegistrationInfo;
 import com.oujiajun.recruitment.entity.po.Room;
 import com.oujiajun.recruitment.entity.vo.UserRegistrationInfo;
+import com.oujiajun.recruitment.exception.BizException;
 import com.oujiajun.recruitment.service.RegistrationInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -103,23 +104,22 @@ public class RegistrationInfoServiceImpl implements RegistrationInfoService {
         // 查询报名信息
         RegistrationInfo info = registrationInfoDao.queryRegistrationInfoById(registrationInfoId);
         if(info == null){
-            return new ResultInfo(false,"更新报名信息失败");
+            throw new BizException("报名信息丢失");
         }
-
         // 更新信息
         RegistrationInfo registrationInfo = new RegistrationInfo();
         registrationInfo.setRegistrationInfoId(registrationInfoId);
         registrationInfo.setIsRegistrationPass(false);
         int count = registrationInfoDao.updateRegistrationInfo(registrationInfo);
         if (count < 1){
-            return new ResultInfo(false,"更新报名信息失败");
+            throw new BizException("更新报名信息失败");
         }
         // 如果已经有聊天室则删除聊天
         Room room = roomDao.queryRoomByRecruitmentInfoId(info.getRecruitmentInfoId());
         if(room != null){
             count = roomDao.deleteRoomUser(room.getRoomId(),info.getUserId());
             if (count < 1){
-                return new ResultInfo(false,"从聊天室中删除失败");
+                throw new BizException("将报名者从聊天室中删除失败");
             }
         }
         return new ResultInfo(true);

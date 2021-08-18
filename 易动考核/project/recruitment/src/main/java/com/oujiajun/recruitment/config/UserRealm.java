@@ -5,6 +5,8 @@ import com.oujiajun.recruitment.entity.po.Interviewer;
 import com.oujiajun.recruitment.entity.po.Permission;
 import com.oujiajun.recruitment.entity.po.Role;
 import com.oujiajun.recruitment.entity.po.User;
+import com.oujiajun.recruitment.exception.BizException;
+import com.oujiajun.recruitment.exception.NotApprovedException;
 import com.oujiajun.recruitment.service.PermissionService;
 import com.oujiajun.recruitment.service.RoleService;
 import com.oujiajun.recruitment.service.UserService;
@@ -79,7 +81,7 @@ public class UserRealm extends AuthorizingRealm {
      * @throws AuthenticationException AuthenticationException
      */
     @Override
-    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException, NotApprovedException{
         UsernamePasswordToken userToken = (UsernamePasswordToken) token;
         // 查询用户是否存在
         ResultInfo resultInfo  = userService.queryUserByUsername(userToken.getUsername());
@@ -91,14 +93,11 @@ public class UserRealm extends AuthorizingRealm {
         // 过滤掉没有审核的招聘官
         ResultInfo queryUserResult = userService.queryInterviewerByUsername(user.getUsername());
         if (!resultInfo.getSuccess()){
-            return null;
+            throw new BizException("用户信息丢失");
         }
         Interviewer interviewer = (Interviewer) queryUserResult.getData();
-        if (interviewer == null){
-            return null;
-        }
         if(interviewer.getIsPass()!= null && (!interviewer.getIsPass())){
-            return null;
+            throw new NotApprovedException("招聘官身份尚未通过审核");
         }
         // 如果存在，则返回一个AuthenticationInfo对象，
         // shiro会根据返回对象进行身份认证

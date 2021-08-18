@@ -6,6 +6,7 @@ import com.oujiajun.recruitment.entity.dto.ResultInfo;
 import com.oujiajun.recruitment.entity.po.Message;
 import com.oujiajun.recruitment.entity.po.User;
 import com.oujiajun.recruitment.entity.vo.MessageVo;
+import com.oujiajun.recruitment.exception.BizException;
 import com.oujiajun.recruitment.service.Impl.MessageServiceImpl;
 import com.oujiajun.recruitment.service.Impl.RoomServiceImpl;
 import com.oujiajun.recruitment.service.MessageService;
@@ -112,14 +113,15 @@ public class ChatEndpoint {
             mess.setMessage(jsonObject.get("message"));
             int toRoomId = mess.getToRoomId();
             User loginUser = (User) httpSession.getAttribute("loginUser");
-            // TODO null
+            if (loginUser == null){
+                throw new BizException("请先登陆");
+            }
             // 获取messageService将消息保存在数据库
             MessageService messageService =  SpringUtils.getBean(MessageServiceImpl.class);
             Message insertedMessage = new Message(null,toRoomId,jsonObject.get("message"),loginUser.getId(),false);
             ResultInfo insertMessageResult = messageService.insertMessage(insertedMessage);
             if (!insertMessageResult.getSuccess()){
-                return;
-                // TODO 失败
+                throw new BizException("保存信息失败");
             }
             String resultMessage = MessageUtils.getMessage(false, loginUser, mess);
             // 发送数据
@@ -137,7 +139,6 @@ public class ChatEndpoint {
                     }
                 }
             }
-            // TODO 失败
         } catch (Exception e) {
             e.printStackTrace();
         }

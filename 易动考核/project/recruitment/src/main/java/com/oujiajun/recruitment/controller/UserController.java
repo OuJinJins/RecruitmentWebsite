@@ -29,6 +29,15 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @GetMapping("/test")
+    public boolean update() {
+        System.out.println("开始更新...");
+        //这里故意造成一个空指针的异常，并且不进行处理
+        String str=null;
+        str.equals("111");
+        return true;
+    }
+
     @GetMapping({ "/admin/reviewRecruiter","/admin/reviewRecruiter.html"})
     public String toReviewRecruiter(HttpServletRequest request) {
         ResultInfo resultInfo = userService.queryAllNoPassInterviewer();
