@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
-    <title>注册</title>
+    <title>招聘官注册</title>
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
@@ -11,13 +11,16 @@
 <div class="background" id="bg">
     <div id="register-bg">
         <div id="register-log">
-            <h2 id="register-text">注册</h2>
+            <h2 id="register-text">招聘官注册</h2>
         </div>
         <div id="register-form">
-            <form id="registerForm" method="post" action="/recruitment/user/register">
+            <form id="registerForm" method="post" action="/recruitment/user/interviewerRegister">
                 <input type="text" class="form-control register-input" id="username" name="username" placeholder="用户名 | 邮箱" >
                 <input type="password" class="form-control register-input" id="password" name="password" placeholder="密码" >
+                <input type="text" class="form-control register-input" id="city" name="city" placeholder="城市" >
+                <input type="text" class="form-control register-input" id="company" name="company" placeholder="所属公司" >
                 <input type="text" class="form-control register-input" id="checkCode" name="checkCode" placeholder="验证码" >
+
                 <input type="submit" class="form-control register-input" id="submit" name="submit" value="注册">
             </form>
             <hr id="register-hr">
@@ -25,7 +28,7 @@
                 <a href="/recruitment/login.html" class="login">登录</a>
             </div>
             <div class="register-input">
-                <a href="/recruitment/interviewerRegister.html" class="login">招聘官注册</a>
+                <a href="/recruitment/register.html" class="login">报名者注册</a>
             </div>
         </div>
     </div>

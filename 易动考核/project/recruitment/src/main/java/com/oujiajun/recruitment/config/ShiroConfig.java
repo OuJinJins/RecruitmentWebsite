@@ -2,9 +2,12 @@ package com.oujiajun.recruitment.config;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.codec.Base64;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.servlet.SimpleCookie;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +21,35 @@ import java.util.Map;
  */
 @Configuration
 public class ShiroConfig {
+
+
+    /**
+     * cookie管理对象
+     * @return CookieRememberMeManager
+     */
+    @Bean
+    public CookieRememberMeManager rememberMeManager(){
+        CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
+        cookieRememberMeManager.setCookie(rememberMeCookie());
+        //rememberMe cookie加密的密钥 建议每个项目都不一样 默认AES算法 密钥长度(128 256 512 位)
+        cookieRememberMeManager.setCipherKey(Base64.decode("4AvVhmFLUs0KTA3Kprsdag=="));
+        return cookieRememberMeManager;
+    }
+
+    @Bean
+    public SimpleCookie rememberMeCookie(){
+        //这个参数是cookie的名称，对应前端的checkbox的name = rememberMe
+        SimpleCookie simpleCookie = new SimpleCookie("rememberMe");
+        //setcookie的httponly属性如果设为true的话，会增加对xss防护的安全系数。它有以下特点：
+        //setcookie()的第七个参数
+        //设为true后，只能通过http访问，javascript无法访问
+        //防止xss读取cookie
+        simpleCookie.setHttpOnly(true);
+        simpleCookie.setPath("/");
+        //记住我cookie生效时间 ,单位秒
+        simpleCookie.setMaxAge(30);
+        return simpleCookie;
+    }
 
     /**
      * 用来声明bean 相当于在spring配置文件中配置<bean>标签

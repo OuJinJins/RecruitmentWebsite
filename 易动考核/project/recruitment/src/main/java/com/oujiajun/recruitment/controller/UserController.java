@@ -3,6 +3,7 @@ package com.oujiajun.recruitment.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.oujiajun.recruitment.entity.dto.ResultInfo;
+import com.oujiajun.recruitment.entity.po.Interviewer;
 import com.oujiajun.recruitment.entity.po.User;
 import com.oujiajun.recruitment.service.UserService;
 import com.oujiajun.recruitment.utils.CheckUtils;
@@ -14,11 +15,9 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -29,6 +28,42 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @GetMapping({ "/admin/reviewRecruiter","/admin/reviewRecruiter.html"})
+    public String toReviewRecruiter(HttpServletRequest request) {
+        ResultInfo resultInfo = userService.queryAllNoPassInterviewer();
+        if (!resultInfo.getSuccess()){
+            return "redirect:/index";
+        }
+        request.setAttribute("data",resultInfo.getData());
+        return "/admin/reviewRecruiter.html";
+    }
+
+    @GetMapping("/admin/interviewer/pass/{id}")
+    public String passInterviewer(
+            @PathVariable("id") Integer id,
+            HttpSession session){
+        // 通过审核
+        ResultInfo resultInfo = userService.passInterview(id);
+        if(!resultInfo.getSuccess()) {
+            session.setAttribute("errorMsg", resultInfo.getMessage());
+            return "redirect:/admin/reviewRecruiter";
+        }
+        return "redirect:/admin/reviewRecruiter";
+    }
+
+    @PostMapping("/user/interviewerRegister")
+    public String interviewerRegister(Interviewer interviewer, HttpSession session){
+        // 注册
+        ResultInfo resultInfo = userService.interviewerRegister(interviewer);
+        if(resultInfo.getSuccess()){
+            session.setAttribute("loginUser",(User)resultInfo.getData());
+            return "redirect:/login";
+        }else {
+            session.setAttribute("errorMsg",resultInfo.getMessage());
+            return "interviewerRegister";
+        }
+    }
 
     @PostMapping("/user/register")
     public String register(User user,HttpSession session){
@@ -49,7 +84,7 @@ public class UserController {
     }
 
     @PostMapping("/user/login")
-    public String login(User user, Model model, HttpSession session){
+    public String login(boolean rememberMe,User user, Model model, HttpSession session){
         if (!CheckUtils.checkLoginUser(user)){
             session.setAttribute("errorMsg", "请正确填写用户名和密码");
             return "login";
@@ -60,6 +95,9 @@ public class UserController {
         //封装用户的登录数据,获得令牌
         UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), user.getPassword());
         //登录 及 异常处理
+        //设置记住我
+        System.out.println(rememberMe);
+        ((UsernamePasswordToken) token).setRememberMe(rememberMe);
         try {
             //用户登录
             subject.login(token);
@@ -75,6 +113,11 @@ public class UserController {
         }
     }
 
+    /**
+     * 登出
+     * @param session session
+     * @return 视图路径
+     */
     @RequestMapping("/logout")
     public String logout(HttpSession session){
         User user = (User)session.getAttribute("loginUser");
@@ -92,12 +135,15 @@ public class UserController {
         if (user.getUsername() == null){
             return null;
         }
+        // 更新前用户 即当前用户
         User before = (User)session.getAttribute("loginUser");
         user.setId(before.getId());
+        // 更新
         ResultInfo resultInfo = userService.updateUser(user);
         if (!resultInfo.getSuccess()){
             session.setAttribute("errorMsg",resultInfo.getMessage());
         }else {
+            // 查询更新后的用户并返回
             ResultInfo queryResult = userService.queryUserById(before.getId());
             if(queryResult.getSuccess()){
                 session.setAttribute("loginUser",queryResult.getData());

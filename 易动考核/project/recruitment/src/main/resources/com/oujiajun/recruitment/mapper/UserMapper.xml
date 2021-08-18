@@ -18,6 +18,21 @@
         <result property="profile" column="profile"/>
     </resultMap>
 
+    <resultMap id="InterviewerMap" type="com.oujiajun.recruitment.entity.po.Interviewer">
+        <result property="id" column="id"/>
+        <result property="email" column="email"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="gender" column="gender"/>
+        <result property="city" column="city"/>
+        <result property="briefIntroduction" column="brief_introduction"/>
+        <result property="age" column="age"/>
+        <result property="education" column="education"/>
+        <result property="profile" column="profile"/>
+        <result property="company" column="company"/>
+        <result property="isPass" column="is_pass"/>
+    </resultMap>
+
     <insert id="insertUser" parameterType="User">
         insert into recruitment.user
         values(#{id},
@@ -31,6 +46,11 @@
                #{education},
                #{profile}
        )
+    </insert>
+
+    <insert id="insertInterviewer" parameterType="com.oujiajun.recruitment.entity.po.Interviewer">
+        insert into recruitment.interviewer
+        values(#{id},#{company},#{isPass})
     </insert>
 
 
@@ -60,6 +80,12 @@
             </if>
         </set>
         where id=#{id}
+    </update>
+
+    <update id="passInterviewer" parameterType="Int">
+        update recruitment.interviewer i
+        set i.is_pass=true
+        where i.user_id=#{id}
     </update>
 
     <select id="queryUserByUsernameAndPassword" parameterType="User" resultMap="UserMap">
@@ -105,5 +131,36 @@
         where username=#{username}
     </select>
 
+    <select id="queryInterviewerByUsername" parameterType="String" resultMap="InterviewerMap">
+        select id,
+               username,
+               password,
+               gender,
+               city,
+               brief_introduction,
+               age,
+               education,
+               profile,
+               company,
+               is_pass
+        from recruitment.user left join recruitment.interviewer i on user.id = i.user_id
+        where username=#{username}
+    </select>
+
+    <select id="queryAllNoPassInterviewer" resultMap="InterviewerMap">
+        select id,
+               username,
+               password,
+               gender,
+               city,
+               brief_introduction,
+               age,
+               education,
+               profile,
+               company,
+               is_pass
+        from recruitment.user left join recruitment.interviewer i on user.id = i.user_id
+        where is_pass= false or is_pass is null
+    </select>
 
 </mapper>

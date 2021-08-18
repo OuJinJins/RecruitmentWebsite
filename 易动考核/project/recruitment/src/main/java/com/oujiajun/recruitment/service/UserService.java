@@ -1,12 +1,22 @@
 package com.oujiajun.recruitment.service;
 
 import com.oujiajun.recruitment.entity.dto.ResultInfo;
+import com.oujiajun.recruitment.entity.po.Interviewer;
 import com.oujiajun.recruitment.entity.po.User;
 
 /**
  * @author oujiajun
  */
 public interface UserService {
+
+
+    /**
+     * 招聘官注册服务
+     * @param interviewer 招聘官注册数据
+     * @return 服务结果
+     */
+    ResultInfo interviewerRegister(Interviewer interviewer);
+
     /**
      * 注册服务
      * @param user 用户注册数据
@@ -21,7 +31,13 @@ public interface UserService {
      */
     ResultInfo login(User user);
 
-    ResultInfo shiroLogin();
+    /**
+     * 招聘官通过审核
+     * @param id 用户id
+     * @return 结果集
+     */
+    ResultInfo passInterview(int id);
+
 
     /**
      * 查询用户
@@ -37,6 +53,11 @@ public interface UserService {
      */
     ResultInfo queryUserByUsername(String username);
 
+    /**
+     * 查询所有未通过审核的招聘官
+     * @return 服务结果
+     */
+    ResultInfo queryAllNoPassInterviewer();
     /**
      * 修改用户信息
      * @param user 用户信息
