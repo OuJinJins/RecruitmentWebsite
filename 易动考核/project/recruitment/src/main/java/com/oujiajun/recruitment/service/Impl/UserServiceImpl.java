@@ -4,7 +4,6 @@ import com.oujiajun.recruitment.dao.RoleDao;
 import com.oujiajun.recruitment.dao.UserDao;
 import com.oujiajun.recruitment.entity.dto.ResultInfo;
 import com.oujiajun.recruitment.entity.po.Interviewer;
-import com.oujiajun.recruitment.entity.po.Role;
 import com.oujiajun.recruitment.entity.po.User;
 import com.oujiajun.recruitment.exception.BizException;
 import com.oujiajun.recruitment.service.UserService;

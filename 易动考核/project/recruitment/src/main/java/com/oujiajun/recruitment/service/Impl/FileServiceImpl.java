@@ -4,7 +4,6 @@ import com.oujiajun.recruitment.dao.UserDao;
 import com.oujiajun.recruitment.entity.dto.ResultInfo;
 import com.oujiajun.recruitment.entity.po.User;
 import com.oujiajun.recruitment.service.FileService;
-import com.oujiajun.recruitment.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
