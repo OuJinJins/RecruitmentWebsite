@@ -129,6 +129,11 @@
 <div id="bg">
     <div id="div-title">
         <span id="span-title" th:text="前面还有+ ':' +${beforeLineUpNumber} + 人在排队">我 的 报 名</span>
+        <div class="div-option">
+            <a th:href="@{/again/lineUp/pass/id/} + ${registrationInfoId}">
+                <button class="button-option">重新排队</button>
+            </a>
+        </div>
     </div>
 </div>
 </body>
@@ -157,6 +162,22 @@
 
 </script>
 <style>
+
+    .div-option{
+        margin-left: 16px;
+        margin-top: 12px;
+        float: right;
+    }
+
+    .button-option{
+        color: #ffffff;
+        font-size: 16px;
+        border: #5dd5c8;
+        background: #5dd5c8;
+        width: 130px;
+        height: 45px;
+        border-radius: 0px;
+    }
 
     #span-title{
         margin-left: 450px;
